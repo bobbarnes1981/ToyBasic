@@ -6,7 +6,9 @@ An attempt to write a simple basic interpreter.
 
 Implement FOR loop
 
-implement IF statement
+Implement IF statement
+
+Implement REM
 
 ##Example:
 
