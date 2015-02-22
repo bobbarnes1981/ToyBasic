@@ -21,5 +21,7 @@ namespace Basic
         }
 
         public abstract void Execute(IInterpreter interpreter);
+
+        public abstract string Text { get; }
     }
 }

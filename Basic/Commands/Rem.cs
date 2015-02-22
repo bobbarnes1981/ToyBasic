@@ -19,5 +19,10 @@ namespace Basic.Commands
         public override void Execute(IInterpreter interpreter)
         {
         }
+
+        public override string Text
+        {
+            get { return "Rem "+m_text; }
+        }
     }
 }

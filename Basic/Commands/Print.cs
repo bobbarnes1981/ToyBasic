@@ -20,5 +20,10 @@ namespace Basic.Commands
         {
             interpreter.Display.Output(m_expression.Result(interpreter).ToString());
         }
+
+        public override string Text
+        {
+            get { return "Print \""+m_expression.Text+"\""; }
+        }
     }
 }

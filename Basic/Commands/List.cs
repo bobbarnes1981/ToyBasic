@@ -21,5 +21,10 @@ namespace Basic.Commands
                 interpreter.Display.Output(interpreter.Buffer.Fetch.ToString());
             }
         }
+
+        public override string Text
+        {
+            get { return "List"; }
+        }
     }
 }

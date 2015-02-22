@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Basic.Commands
 {
+    // not a real command
     public class Exit : Command
     {
         public Exit()
@@ -16,6 +17,11 @@ namespace Basic.Commands
         public override void Execute(IInterpreter interpreter)
         {
             interpreter.Exit();
+        }
+
+        public override string Text
+        {
+            get { return "Exit"; }
         }
     }
 }

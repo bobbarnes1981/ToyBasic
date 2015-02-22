@@ -62,6 +62,8 @@ namespace Basic
             return result;
         }
 
+        public abstract string Text { get; }
+
         public abstract object Add(IInterpreter interpreter, object value);
         public abstract object Subtract(IInterpreter interpreter, object value);
         public abstract object Multiply(IInterpreter interpreter, object value);

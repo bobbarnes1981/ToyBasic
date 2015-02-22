@@ -21,6 +21,8 @@ namespace Basic
         Load,
         If,
         Rem,
-        For
+        New,
+        For,
+        Input
     }
 }

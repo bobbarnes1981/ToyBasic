@@ -95,12 +95,15 @@ namespace Basic
                     break;
                 case Operation.If:
                     IExpression comparison = readExpression();
-                    expect("THEN");
+                    expect("Then");
                     ICommand subCommand = readCommand();
                     command = new Basic.Commands.If(comparison, subCommand);
                     break;
                 case Operation.Rem:
                     command = new Basic.Commands.Rem(readUntil((offset, data) => offset >= data.Length));
+                    break;
+                case Operation.Input:
+                    command = new Basic.Commands.Input(readVariable());
                     break;
                 default:
                     throw new InterpreterError(string.Format("Operation not implemented in line parser: {0}", operation));

@@ -14,6 +14,25 @@ namespace Basic.Expressions
         {
         }
 
+        public override string Text
+        {
+            get
+            {
+                string output = string.Empty;
+                if (m_operator != Operator.None)
+                {
+                    // todo: convert to symbol
+                    output += m_operator.ToString() + " ";
+                }
+                output += ((int)m_obj).ToString() + " ";
+                if (m_child != null)
+                {
+                    output += m_child.Text;
+                }
+                return output;
+            }
+        }
+
         public override object Add(IInterpreter interpreter, object value)
         {
             switch(value.GetType().Name)

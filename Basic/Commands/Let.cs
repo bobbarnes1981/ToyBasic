@@ -23,5 +23,10 @@ namespace Basic.Commands
         {
             interpreter.Heap.Set(m_variable, m_expression.Result(interpreter));
         }
+
+        public override string Text
+        {
+            get { return "Let "+m_variable+" = " + m_expression.Text; }
+        }
     }
 }

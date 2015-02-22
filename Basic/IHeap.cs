@@ -10,5 +10,6 @@ namespace Basic
     {
         void Set(string variable, object value);
         object Get(string variable);
+        void Clear();
     }
 }

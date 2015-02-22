@@ -10,5 +10,6 @@ namespace Basic
     {
         Operation Operation { get; }
         void Execute(IInterpreter interpreter);
+        string Text { get; }
     }
 }

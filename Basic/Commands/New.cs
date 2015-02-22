@@ -6,21 +6,23 @@ using System.Threading.Tasks;
 
 namespace Basic.Commands
 {
-    public class Clear : Command
+    // not a real command
+    public class New : Command
     {
-        public Clear()
-            : base(Operation.Clear)
+        public New()
+            : base(Operation.New)
         {
         }
 
         public override void Execute(IInterpreter interpreter)
         {
-            interpreter.Display.Clear();
+            interpreter.Heap.Clear();
+            interpreter.Buffer.Clear();
         }
 
         public override string Text
         {
-            get { return "Clear"; }
+            get { return "New"; }
         }
     }
 }

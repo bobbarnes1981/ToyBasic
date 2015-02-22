@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Basic.Commands
 {
+    // not a real command
     public class Renumber : Command
     {
         public Renumber()
@@ -16,6 +17,11 @@ namespace Basic.Commands
         public override void Execute(IInterpreter interpreter)
         {
             interpreter.Buffer.Renumber(10);
+        }
+
+        public override string Text
+        {
+            get { return "Renumber"; }
         }
     }
 }

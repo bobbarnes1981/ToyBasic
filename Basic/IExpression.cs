@@ -11,6 +11,7 @@ namespace Basic
         object Result(IInterpreter interpreter);
         object Result(IInterpreter interpreter, object value);
         void Child(IExpression expression);
+        string Text { get; }
         object Add(IInterpreter interpreter, object value);
         object Subtract(IInterpreter interpreter, object value);
         object Multiply(IInterpreter interpreter, object value);

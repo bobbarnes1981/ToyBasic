@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Basic.Commands
 {
+    // not a real command
     public class Run : Command
     {
         public Run()
@@ -16,6 +17,11 @@ namespace Basic.Commands
         public override void Execute(IInterpreter interpreter)
         {
             interpreter.Execute();
+        }
+
+        public override string Text
+        {
+            get { return "Run"; }
         }
     }
 }

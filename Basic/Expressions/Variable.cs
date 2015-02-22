@@ -23,6 +23,25 @@ namespace Basic.Expressions
             return interpreter.Heap.Get((string)m_obj);
         }
 
+        public override string Text
+        {
+            get
+            {
+                string output = string.Empty;
+                if (m_operator != Operator.None)
+                {
+                    // todo: convert to symbol
+                    output += m_operator.ToString() + " ";
+                }
+                output += (string)m_obj + " ";
+                if (m_child != null)
+                {
+                    output += m_child.Text;
+                }
+                return output;
+
+            }
+        }
         public override object Add(IInterpreter interpreter, object value)
         {
             object other = interpreter.Heap.Get((string)m_obj);

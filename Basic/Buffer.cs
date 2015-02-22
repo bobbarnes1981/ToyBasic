@@ -64,5 +64,10 @@ namespace Basic
                 return m_currentLine == DEFAULT_LINE;
             }
         }
+
+        public void Clear()
+        {
+            m_buffer.Clear();
+        }
     }
 }

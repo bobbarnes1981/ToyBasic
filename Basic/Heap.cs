@@ -33,5 +33,10 @@ namespace Basic
             }
             return m_heap[variable];
         }
+
+        public void Clear()
+        {
+            m_heap.Clear();
+        }
     }
 }

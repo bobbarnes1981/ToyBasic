@@ -39,5 +39,10 @@ namespace Basic.Commands
                 m_command.Execute(interpreter);
             }
         }
+
+        public override string Text
+        {
+            get { return "If " + m_expression.Text + m_command.Text; }
+        }
     }
 }

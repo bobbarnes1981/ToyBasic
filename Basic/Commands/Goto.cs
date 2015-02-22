@@ -20,5 +20,10 @@ namespace Basic.Commands
         {
             interpreter.Buffer.Jump(m_lineNumber);
         }
+
+        public override string Text
+        {
+            get { return "Goto "+m_lineNumber; }
+        }
     }
 }

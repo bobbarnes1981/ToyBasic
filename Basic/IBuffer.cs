@@ -14,5 +14,6 @@ namespace Basic
         Line Fetch { get; }
         void Jump(int lineNumber);
         bool End { get; }
+        void Clear();
     }
 }
