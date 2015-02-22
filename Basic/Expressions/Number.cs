@@ -9,8 +9,8 @@ namespace Basic.Expressions
 {
     public class Number : Expression
     {
-        public Number(int number)
-            : base(number)
+        public Number(Operator op, int number)
+            : base(op, number)
         {
         }
 

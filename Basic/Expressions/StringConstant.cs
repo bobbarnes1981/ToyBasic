@@ -9,8 +9,8 @@ namespace Basic.Expressions
 {
     public class StringConstant : Expression
     {
-        public StringConstant(string text)
-            : base(text)
+        public StringConstant(Operator op, string text)
+            : base(op, text)
         {
         }
 

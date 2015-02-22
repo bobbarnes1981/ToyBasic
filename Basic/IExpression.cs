@@ -9,8 +9,8 @@ namespace Basic
     public interface IExpression
     {
         object Result(IInterpreter interpreter);
-        object Result(IInterpreter interpreter, Operator op, object value);
-        void Child(Operator op, IExpression expression);
+        object Result(IInterpreter interpreter, object value);
+        void Child(IExpression expression);
         object Add(IInterpreter interpreter, object value);
         object Subtract(IInterpreter interpreter, object value);
         object Multiply(IInterpreter interpreter, object value);

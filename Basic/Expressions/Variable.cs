@@ -9,8 +9,8 @@ namespace Basic.Expressions
 {
     public class Variable : Expression
     {
-        public Variable(string variable)
-            : base(variable)
+        public Variable(Operator op, string variable)
+            : base(op, variable)
         {
         }
 
@@ -18,7 +18,7 @@ namespace Basic.Expressions
         {
             if (m_child != null)
             {
-                return m_child.Result(interpreter, m_operator, interpreter.Heap.Get((string)m_obj));
+                return m_child.Result(interpreter, interpreter.Heap.Get((string)m_obj));
             }
             return interpreter.Heap.Get((string)m_obj);
         }

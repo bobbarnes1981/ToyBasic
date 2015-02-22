@@ -14,13 +14,18 @@ namespace Basic
         protected IExpression m_child;
 
         protected Expression(object obj)
+            : this(Operator.None, obj)
         {
+        }
+
+        protected Expression(Operator op, object obj)
+        {
+            m_operator = op;
             m_obj = obj;
         }
 
-        public void Child(Operator op, IExpression expression)
+        public void Child(IExpression expression)
         {
-            m_operator = op;
             m_child = expression;
         }
 
@@ -28,15 +33,15 @@ namespace Basic
         {
             if (m_child != null)
             {
-                return m_child.Result(interpreter, m_operator, m_obj);
+                return m_child.Result(interpreter, m_obj);
             }
             return m_obj;
         }
 
-        public object Result(IInterpreter interpreter, Operator op, object value)
+        public object Result(IInterpreter interpreter, object value)
         {
             object result;
-            switch (op)
+            switch (m_operator)
             {
                 case Operator.Add:
                     result = Add(interpreter, value);
@@ -48,11 +53,11 @@ namespace Basic
                     result = Equals(interpreter, value);
                     break;
                 default:
-                    throw new ExpressionError(string.Format("Unhandled operator '{0}'", op));
+                    throw new ExpressionError(string.Format("Unhandled operator '{0}'", m_operator));
             }
             if (m_child != null)
             {
-                result = m_child.Result(interpreter, m_operator, result);
+                result = m_child.Result(interpreter, result);
             }
             return result;
         }

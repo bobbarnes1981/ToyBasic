@@ -199,6 +199,11 @@ namespace Basic
 
         private IExpression readExpression()
         {
+            return readExpression(Operator.None);
+        }
+
+        private IExpression readExpression(Operator op)
+        {
             if (m_offset >= m_input.Length)
             {
                 throw new ParserError("Expecting expression but reached end of line");
@@ -209,10 +214,10 @@ namespace Basic
             switch(character)
             {
                 case '"':
-                    expression = new StringConstant(readString());
+                    expression = new StringConstant(op, readString());
                     break;
                 case '$':
-                    expression = new Variable(readVariable());
+                    expression = new Variable(op, readVariable());
                     break;
                 case '0':
                 case '1':
@@ -224,7 +229,7 @@ namespace Basic
                 case '7':
                 case '8':
                 case '9':
-                    expression = new Number(readInt());
+                    expression = new Number(op, readInt());
                     break;
                 default:
                     throw new ParserError(string.Format("'{0}' is not recognised as the start of a valid expression", character));
@@ -232,7 +237,7 @@ namespace Basic
             discardSpace();
             if (m_offset < m_input.Length && OPERATORS.Contains(m_input[m_offset]))
             {
-                expression.Child(readOperator(), readExpression());
+                expression.Child(readExpression(readOperator()));
             }
             return expression;
         }
