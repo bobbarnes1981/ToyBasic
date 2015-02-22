@@ -4,6 +4,8 @@ An attempt to write a simple basic interpreter.
 
 ##Todo:
 
+Implement Input
+
 Implement For loop
 
 Implement List
