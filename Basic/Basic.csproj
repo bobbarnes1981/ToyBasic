@@ -42,7 +42,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Buffer.cs" />
+    <Compile Include="Command.cs" />
+    <Compile Include="Commands\If.cs" />
     <Compile Include="Commands\Let.cs" />
+    <Compile Include="Commands\Rem.cs" />
     <Compile Include="Errors\ExpressionError.cs" />
     <Compile Include="Errors\HeapError.cs" />
     <Compile Include="Expression.cs" />

@@ -6,9 +6,14 @@ using System.Threading.Tasks;
 
 namespace Basic.Commands
 {
-    public class Exit : ICommand
+    public class Exit : Command
     {
-        public void Execute(IInterpreter interpreter)
+        public Exit()
+            : base(Operation.Exit)
+        {
+        }
+
+        public override void Execute(IInterpreter interpreter)
         {
             interpreter.Exit();
         }

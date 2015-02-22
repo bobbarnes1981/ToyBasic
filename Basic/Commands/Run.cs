@@ -6,9 +6,14 @@ using System.Threading.Tasks;
 
 namespace Basic.Commands
 {
-    public class Run : ICommand
+    public class Run : Command
     {
-        public void Execute(IInterpreter interpreter)
+        public Run()
+            : base(Operation.Run)
+        {
+        }
+
+        public override void Execute(IInterpreter interpreter)
         {
             interpreter.Execute();
         }

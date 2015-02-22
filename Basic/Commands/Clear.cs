@@ -6,9 +6,14 @@ using System.Threading.Tasks;
 
 namespace Basic.Commands
 {
-    public class Clear : ICommand
+    public class Clear : Command
     {
-        public void Execute(IInterpreter interpreter)
+        public Clear()
+            : base(Operation.Clear)
+        {
+        }
+
+        public override void Execute(IInterpreter interpreter)
         {
             interpreter.Display.Clear();
         }

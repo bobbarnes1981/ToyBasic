@@ -44,6 +44,9 @@ namespace Basic
                 case Operator.Subtract:
                     result = Subtract(interpreter, value);
                     break;
+                case Operator.Equals:
+                    result = Equals(interpreter, value);
+                    break;
                 default:
                     throw new ExpressionError(string.Format("Unhandled operator '{0}'", op));
             }
@@ -58,5 +61,6 @@ namespace Basic
         public abstract object Subtract(IInterpreter interpreter, object value);
         public abstract object Multiply(IInterpreter interpreter, object value);
         public abstract object Divide(IInterpreter interpreter, object value);
+        public abstract object Equals(IInterpreter interpreter, object value);
     }
 }

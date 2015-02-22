@@ -63,5 +63,10 @@ namespace Basic.Expressions
         {
             throw new NotImplementedException();
         }
+
+        public override object Equals(IInterpreter interpreter, object value)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

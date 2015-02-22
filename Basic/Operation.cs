@@ -18,6 +18,9 @@ namespace Basic
         Goto,
         Let,
         Save,
-        Load
+        Load,
+        If,
+        Rem,
+        For
     }
 }

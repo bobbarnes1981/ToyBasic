@@ -33,21 +33,29 @@ namespace Basic
             m_offset = 0;
 
             int number;
-            Operation operation;
 
-            string numberOrOperation = readUntil((offset, data) => offset >= data.Length || data[offset] == ' ');
+            string numberString = readUntil((offset, data) => offset >= data.Length || data[offset] == ' ');
 
-            if (int.TryParse(numberOrOperation, out number))
+            if (!int.TryParse(numberString, out number))
             {
-                numberOrOperation = readUntil((offset, data) => offset >= data.Length || data[offset] == ' ');
+                m_offset = 0;
             }
 
-            if (!Enum.TryParse(numberOrOperation, out operation))
-            {
-                throw new ParserError(string.Format("Could not parse command {0}", numberOrOperation));
-            }
+            ICommand command = readCommand();
 
+            return new Line(number, command);
+        }
+
+        private ICommand readCommand()
+        {
             ICommand command;
+
+            string operationString = readUntil((offset, data) => offset >= data.Length || data[offset] == ' ');
+            Operation operation;
+            if (!Enum.TryParse(operationString, out operation))
+            {
+                throw new ParserError(string.Format("Could not parse command {0}", operationString));
+            }
 
             switch (operation)
             {
@@ -85,11 +93,20 @@ namespace Basic
                     IExpression expression = readExpression();
                     command = new Basic.Commands.Let(variable, expression);
                     break;
+                case Operation.If:
+                    IExpression comparison = readExpression();
+                    expect("THEN");
+                    ICommand subCommand = readCommand();
+                    command = new Basic.Commands.If(comparison, subCommand);
+                    break;
+                case Operation.Rem:
+                    command = new Basic.Commands.Rem(readUntil((offset, data) => offset >= data.Length));
+                    break;
                 default:
                     throw new InterpreterError(string.Format("Operation not implemented in line parser: {0}", operation));
             }
 
-            return new Line(number, operation, command);
+            return command;
         }
 
         private string readUntil(Func<int, string, bool> untilFunc)
@@ -111,6 +128,19 @@ namespace Basic
                 }
             }
             return output;
+        }
+
+        private void expect(string expectedString)
+        {
+            if (m_offset >= m_input.Length)
+            {
+                throw new ParserError(string.Format("Expecting '{0}' but reached end of line", expectedString));
+            }
+            discardSpace();
+            foreach(char expectedChar in expectedString)
+            {
+                expect(expectedChar);
+            }
         }
 
         private void expect(char expectedChar)
@@ -199,7 +229,8 @@ namespace Basic
                 default:
                     throw new ParserError(string.Format("'{0}' is not recognised as the start of a valid expression", character));
             }
-            if (m_offset < m_input.Length)
+            discardSpace();
+            if (m_offset < m_input.Length && OPERATORS.Contains(m_input[m_offset]))
             {
                 expression.Child(readOperator(), readExpression());
             }

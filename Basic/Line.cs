@@ -10,25 +10,17 @@ namespace Basic
     {
         private readonly int m_number;
 
-        private readonly Operation m_operation;
-
         private readonly ICommand m_command;
 
-        public Line(int number, Operation operation, ICommand command)
+        public Line(int number, ICommand command)
         {
             m_number = number;
-            m_operation = operation;
             m_command = command;
         }
 
         public int Number
         {
             get { return m_number; }
-        }
-
-        public Operation Operation
-        {
-            get { return m_operation; }
         }
 
         public ICommand Command
@@ -38,7 +30,7 @@ namespace Basic
 
         public override string ToString()
         {
-            return string.Format("{0} {1} {2}", Number, Operation, Command);
+            return string.Format("{0} {1}", Number, Command.ToString());
         }
     }
 }

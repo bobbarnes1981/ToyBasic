@@ -12,6 +12,7 @@ namespace Basic
         Add,
         Subtract,
         Divide,
-        Multiply
+        Multiply,
+        Equals
     }
 }

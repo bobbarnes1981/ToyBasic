@@ -8,6 +8,7 @@ namespace Basic
 {
     public interface ICommand
     {
+        Operation Operation { get; }
         void Execute(IInterpreter interpreter);
     }
 }

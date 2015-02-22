@@ -6,19 +6,18 @@ using System.Threading.Tasks;
 
 namespace Basic.Commands
 {
-    public class Goto : Command
+    public class Rem : Command
     {
-        private int m_lineNumber;
+        private string m_text;
 
-        public Goto(int lineNumber)
-            : base(Operation.Goto)
+        public Rem(string text)
+            : base(Operation.Rem)
         {
-            m_lineNumber = lineNumber;
+            m_text = text;
         }
 
         public override void Execute(IInterpreter interpreter)
         {
-            interpreter.Buffer.Jump(m_lineNumber);
         }
     }
 }

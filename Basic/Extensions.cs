@@ -13,7 +13,8 @@ namespace Basic
             { "+", Operator.Add },
             { "-", Operator.Subtract },
             { "*", Operator.Multiply },
-            { "/", Operator.Divide }
+            { "/", Operator.Divide },
+            { "==", Operator.Equals }
         };
         public static bool TryParseOperator(this string str, out Operator op)
         {

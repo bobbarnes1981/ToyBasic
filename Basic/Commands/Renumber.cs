@@ -6,9 +6,14 @@ using System.Threading.Tasks;
 
 namespace Basic.Commands
 {
-    public class Renumber : ICommand
+    public class Renumber : Command
     {
-        public void Execute(IInterpreter interpreter)
+        public Renumber()
+            : base(Operation.Renumber)
+        {
+        }
+
+        public override void Execute(IInterpreter interpreter)
         {
             interpreter.Buffer.Renumber(10);
         }

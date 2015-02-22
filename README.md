@@ -4,11 +4,13 @@ An attempt to write a simple basic interpreter.
 
 ##Todo:
 
-Implement FOR loop
+Implement For loop
 
-Implement IF statement
+Implement List
 
-Implement REM
+Implement Save/Load
+
+Implement Help
 
 ##Example:
 
@@ -49,3 +51,9 @@ List
 ###exit the interpreter
 
 Exit
+
+###if statement
+
+Let $var = 8
+
+If 8 == $var THEN Print "are equal"

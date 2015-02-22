@@ -45,5 +45,16 @@ namespace Basic.Expressions
         {
             throw new NotImplementedException();
         }
+
+        public override object Equals(IInterpreter interpreter, object value)
+        {
+            switch (value.GetType().Name)
+            {
+                case "Int32":
+                    return ((int)value) == (int)m_obj;
+                default:
+                    throw new ExpressionError(string.Format("Cannot compare '{0}' and '{1}'", m_obj.GetType().Name, value.GetType().Name));
+            }
+        }
     }
 }
