@@ -10,7 +10,7 @@ namespace Basic.Commands
     public class Run : Command
     {
         public Run()
-            : base(Operation.Run)
+            : base(Keyword.Run)
         {
         }
 

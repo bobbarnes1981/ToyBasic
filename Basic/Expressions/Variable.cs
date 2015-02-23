@@ -1,91 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Basic.Errors;
-
-namespace Basic.Expressions
+﻿namespace Basic.Expressions
 {
     public class Variable : Expression
     {
-        public Variable(Operator op, string variable)
-            : base(op, variable)
+        private readonly IInterpreter m_interpreter;
+
+        private readonly string m_variable;
+
+        public Variable(IInterpreter interpreter, string variable)
         {
+            m_interpreter = interpreter;
+            m_variable = variable;
         }
 
-        public override object Result(IInterpreter interpreter)
+        public override object Result()
         {
-            if (m_child != null)
-            {
-                return m_child.Result(interpreter, interpreter.Heap.Get((string)m_obj));
-            }
-            return interpreter.Heap.Get((string)m_obj);
+            return m_interpreter.Heap.Get(m_variable);
         }
 
         public override string Text
         {
-            get
-            {
-                string output = string.Empty;
-                if (m_operator != Operator.None)
-                {
-                    // todo: convert to symbol
-                    output += m_operator.ToString() + " ";
-                }
-                output += (string)m_obj + " ";
-                if (m_child != null)
-                {
-                    output += m_child.Text;
-                }
-                return output;
-
-            }
-        }
-        public override object Add(IInterpreter interpreter, object value)
-        {
-            object other = interpreter.Heap.Get((string)m_obj);
-            if (value.GetType().Name == other.GetType().Name)
-            {
-                switch (value.GetType().Name)
-                {
-                    case "Int32":
-                        return ((int)value) + (int)other;
-                    case "String":
-                        return (string)value + (string)other;
-                    default:
-                        throw new ExpressionError(string.Format("Cannot add '{0}' and '{1}'", other.GetType().Name, value.GetType().Name));
-                }
-            }
-            if (value.GetType().Name == "String")
-            {
-                return (string)value + other.ToString();
-            }
-            if (other.GetType().Name == "String")
-            {
-                return value.ToString() + (string)other;
-            }
-            throw new ExpressionError(string.Format("Cannot add '{0}' and '{1}'", other.GetType().Name, value.GetType().Name));
-        }
-
-        public override object Subtract(IInterpreter interpreter, object value)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override object Multiply(IInterpreter interpreter, object value)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override object Divide(IInterpreter interpreter, object value)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override object Equals(IInterpreter interpreter, object value)
-        {
-            throw new NotImplementedException();
+            get { return m_variable; }
         }
     }
 }

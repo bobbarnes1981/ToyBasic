@@ -10,7 +10,7 @@ namespace Basic.Commands
     public class Exit : Command
     {
         public Exit()
-            : base(Operation.Exit)
+            : base(Keyword.Exit)
         {
         }
 

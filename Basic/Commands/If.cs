@@ -1,19 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Basic.Expressions;
 
 namespace Basic.Commands
 {
     public class If : Command
     {
-        private IExpression m_expression;
+        private readonly IExpression m_expression;
 
-        private ICommand m_command;
+        private readonly ICommand m_command;
 
         public If(IExpression expression, ICommand command)
-            : base(Operation.If)
+            : base(Keyword.If)
         {
             m_expression = expression;
             m_command = command;
@@ -21,8 +18,8 @@ namespace Basic.Commands
 
         public override void Execute(IInterpreter interpreter)
         {
-            object result = m_expression.Result(interpreter);
-            bool output = false;
+            object result = m_expression.Result();
+            bool output;
             switch (result.GetType().Name)
             {
                 case "Int32":
@@ -42,7 +39,7 @@ namespace Basic.Commands
 
         public override string Text
         {
-            get { return "If " + m_expression.Text + m_command.Text; }
+            get { return string.Format("If {0} {1}", m_expression.Text, m_command.Text); }
         }
     }
 }

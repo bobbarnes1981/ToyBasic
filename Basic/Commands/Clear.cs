@@ -1,26 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Basic.Commands
+﻿namespace Basic.Commands
 {
     public class Clear : Command
     {
         public Clear()
-            : base(Operation.Clear)
+            : base(Keyword.Clear)
         {
         }
 
         public override void Execute(IInterpreter interpreter)
         {
-            interpreter.Display.Clear();
+            interpreter.Console.Clear();
         }
 
         public override string Text
         {
-            get { return "Clear"; }
+            get { return Keyword.Clear.ToString(); }
         }
     }
 }

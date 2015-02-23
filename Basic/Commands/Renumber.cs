@@ -10,7 +10,7 @@ namespace Basic.Commands
     public class Renumber : Command
     {
         public Renumber()
-            : base(Operation.Renumber)
+            : base(Keyword.Renumber)
         {
         }
 

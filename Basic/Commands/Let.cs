@@ -1,19 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Basic.Expressions;
 
 namespace Basic.Commands
 {
     public class Let : Command
     {
-        private string m_variable;
+        private readonly string m_variable;
 
-        private IExpression m_expression;
+        private readonly IExpression m_expression;
 
         public Let(string variable, IExpression expression)
-            : base(Operation.Let)
+            : base(Keyword.Let)
         {
             m_variable = variable;
             m_expression = expression;
@@ -21,12 +17,12 @@ namespace Basic.Commands
 
         public override void Execute(IInterpreter interpreter)
         {
-            interpreter.Heap.Set(m_variable, m_expression.Result(interpreter));
+            interpreter.Heap.Set(m_variable, m_expression.Result());
         }
 
         public override string Text
         {
-            get { return "Let "+m_variable+" = " + m_expression.Text; }
+            get { return string.Format("{0} {1} = {2}", Keyword.Let, m_variable, m_expression.Text); }
         }
     }
 }

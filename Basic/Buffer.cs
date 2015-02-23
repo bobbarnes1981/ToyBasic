@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Basic
 {
@@ -10,7 +8,7 @@ namespace Basic
     {
         private const int DEFAULT_LINE = 0;
 
-        private SortedDictionary<int, Line> m_buffer;
+        private readonly SortedDictionary<int, Line> m_buffer;
 
         private int m_currentLine;
 

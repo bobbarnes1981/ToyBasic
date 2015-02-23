@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Reflection;
 
 namespace Basic
 {
@@ -14,21 +11,19 @@ namespace Basic
 
         private bool m_executing = false;
 
-        private string m_version = "0.1";
-
         private IParser m_parser;
 
         private IBuffer m_buffer;
 
-        private IDisplay m_display;
+        private IConsole m_console;
 
         private IHeap m_heap;
 
-        public Interpreter(IBuffer buffer, IParser parser, IDisplay display, IHeap heap)
+        public Interpreter(IBuffer buffer, IParser parser, IConsole display, IHeap heap)
         {
             m_buffer = buffer;
             m_parser = parser;
-            m_display = display;
+            m_console = display;
             m_heap = heap;
         }
 
@@ -37,9 +32,9 @@ namespace Basic
             get { return m_buffer; }
         }
 
-        public IDisplay Display
+        public IConsole Console
         {
-            get { return m_display; }
+            get { return m_console; }
         }
 
         public IHeap Heap
@@ -49,18 +44,18 @@ namespace Basic
 
         public void Run()
         {
-            Console.CancelKeyPress += Console_CancelKeyPress;
-            Console.WriteLine("Basic Interpreter\r\nVersion {0}\r\n(c) Bob Barnes 2015", m_version);
+            System.Console.CancelKeyPress += Console_CancelKeyPress; // TODO: make this part of IConsole
+            m_console.Output(string.Format("Basic Interpreter\r\nVersion {0}\r\nBob Barnes 2015\r\n", Assembly.GetEntryAssembly().GetName().Version));
 
             Line line;
             do
             {
-                Console.Write(m_prompt);
+                m_console.Output(m_prompt);
                 try
                 {
-                    line = m_parser.Parse(Console.ReadLine());
+                    line = m_parser.Parse(this, m_console.Input());
                 }
-                catch(Error error)
+                catch(Errors.Error error)
                 {
                     line = null;
                     displayError(error);
@@ -73,7 +68,7 @@ namespace Basic
                         {
                             line.Command.Execute(this);
                         }
-                        catch (Error error)
+                        catch (Errors.Error error)
                         {
                             displayError(error);
                         }
@@ -88,14 +83,14 @@ namespace Basic
 
         private void Console_CancelKeyPress(object sender, ConsoleCancelEventArgs e)
         {
-            Display.Output(string.Format("Interrupt {0}", e.SpecialKey));
+            Console.Output(string.Format("Interrupt {0}\r\n", e.SpecialKey));
             m_executing = false;
             e.Cancel = true;
         }
 
-        private void displayError(Error error)
+        private void displayError(Errors.Error error)
         {
-            Console.WriteLine("{0}: {1}", error.GetType(), error.Message);
+            m_console.Output(string.Format("{0}: {1}\r\n", error.GetType(), error.Message));
         }
 
         public void Execute()
@@ -106,7 +101,7 @@ namespace Basic
             {
                 m_buffer.Fetch.Command.Execute(this);
             }
-            Display.Output("Done");
+            Console.Output("Done\r\n");
         }
 
         public void Exit()

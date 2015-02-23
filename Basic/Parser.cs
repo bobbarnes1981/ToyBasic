@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Basic.Errors;
-using Basic.Expressions;
 
 namespace Basic
 {
@@ -24,11 +19,13 @@ namespace Basic
             'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
             'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'
         };
+        private IInterpreter m_interpreter;
         private string m_input;
         private int m_offset;
 
-        public Line Parse(string input)
+        public Line Parse(IInterpreter interpreter, string input)
         {
+            m_interpreter = interpreter;
             m_input = input;
             m_offset = 0;
 
@@ -41,72 +38,72 @@ namespace Basic
                 m_offset = 0;
             }
 
-            ICommand command = readCommand();
+            Commands.ICommand command = readCommand();
 
             return new Line(number, command);
         }
 
-        private ICommand readCommand()
+        private Commands.ICommand readCommand()
         {
-            ICommand command;
+            Commands.ICommand command;
 
             string operationString = readUntil((offset, data) => offset >= data.Length || data[offset] == ' ');
-            Operation operation;
+            Keyword operation;
             if (!Enum.TryParse(operationString, out operation))
             {
-                throw new ParserError(string.Format("Could not parse command {0}", operationString));
+                throw new Errors.Parser(string.Format("Could not parse command {0}", operationString));
             }
 
             switch (operation)
             {
-                case Operation.Exit:
+                case Keyword.Exit:
                     expectEnd();
-                    command = new Basic.Commands.Exit();
+                    command = new Commands.Exit();
                     break;
-                case Operation.Run:
+                case Keyword.Run:
                     expectEnd();
-                    command = new Basic.Commands.Run();
+                    command = new Commands.Run();
                     break;
-                case Operation.List:
+                case Keyword.List:
                     expectEnd();
-                    command = new Basic.Commands.List();
+                    command = new Commands.List();
                     break;
-                case Operation.Clear:
+                case Keyword.Clear:
                     expectEnd();
-                    command = new Basic.Commands.Clear();
+                    command = new Commands.Clear();
                     break;
-                case Operation.Renumber:
+                case Keyword.Renumber:
                     expectEnd();
-                    command = new Basic.Commands.Renumber();
+                    command = new Commands.Renumber();
                     break;
-                case Operation.Goto:
-                    command = new Basic.Commands.Goto(readInt());
+                case Keyword.Goto:
+                    command = new Commands.Goto(readInt());
                     break;
-                case Operation.Print:
-                    command = new Basic.Commands.Print(readExpression());
+                case Keyword.Print:
+                    command = new Commands.Print(readExpressionNode(null));
                     expectEnd();
                     break;
-                case Operation.Let:
+                case Keyword.Let:
                     string variable = readVariable();
                     discardSpace();
                     expect('=');
-                    IExpression expression = readExpression();
-                    command = new Basic.Commands.Let(variable, expression);
+                    Expressions.IExpression expression = readExpressionNode(null);
+                    command = new Commands.Let(variable, expression);
                     break;
-                case Operation.If:
-                    IExpression comparison = readExpression();
-                    expect("Then");
-                    ICommand subCommand = readCommand();
-                    command = new Basic.Commands.If(comparison, subCommand);
+                case Keyword.If:
+                    Expressions.IExpression comparison = readExpressionNode(null);
+                    expect(Keyword.Then);
+                    Commands.ICommand subCommand = readCommand();
+                    command = new Commands.If(comparison, subCommand);
                     break;
-                case Operation.Rem:
-                    command = new Basic.Commands.Rem(readUntil((offset, data) => offset >= data.Length));
+                case Keyword.Rem:
+                    command = new Commands.Rem(readUntil((offset, data) => offset >= data.Length));
                     break;
-                case Operation.Input:
-                    command = new Basic.Commands.Input(readVariable());
+                case Keyword.Input:
+                    command = new Commands.Input(readVariable());
                     break;
                 default:
-                    throw new InterpreterError(string.Format("Operation not implemented in line parser: {0}", operation));
+                    throw new Errors.Parser(string.Format("Operation not implemented in line parser: {0}", operation));
             }
 
             return command;
@@ -122,7 +119,7 @@ namespace Basic
                 output += currentChar;
                 if (m_offset >= m_input.Length)
                 {
-                    throw new ParserError(string.Format("Unexpected end of line"));
+                    throw new Errors.Parser(string.Format("Unexpected end of line"));
                 }
                 m_offset++;
                 if (untilFunc(m_offset, m_input))
@@ -133,13 +130,14 @@ namespace Basic
             return output;
         }
 
+        private void expect(Keyword keyword)
+        {
+            expect(keyword.ToString());
+        }
+
         private void expect(string expectedString)
         {
-            if (m_offset >= m_input.Length)
-            {
-                throw new ParserError(string.Format("Expecting '{0}' but reached end of line", expectedString));
-            }
-            discardSpace();
+            preChecks(expectedString);
             foreach(char expectedChar in expectedString)
             {
                 expect(expectedChar);
@@ -148,29 +146,25 @@ namespace Basic
 
         private void expect(char expectedChar)
         {
-            if (m_offset >= m_input.Length)
-            {
-                throw new ParserError(string.Format("Expecting '{0}' but reached end of line", expectedChar));
-            }
-            discardSpace();
+            preChecks(expectedChar.ToString());
             if (m_input[m_offset] != expectedChar)
             {
-                throw new ParserError(string.Format("Expecting '{0}' but found '{1}'", expectedChar, m_input[m_offset]));
+                throw new Errors.Parser(string.Format("Expecting '{0}' but found '{1}'", expectedChar, m_input[m_offset]));
             }
             m_offset++;
         }
 
         private void expectEnd()
         {
-            discardSpace();
             if (m_offset < m_input.Length)
             {
-                throw new ParserError(string.Format("Expecting end of line but found '{0}'", m_input[m_offset]));
+                throw new Errors.Parser(string.Format("Expecting end of line but found '{0}'", m_input[m_offset]));
             }
         }
 
         private string readString()
         {
+            preChecks("string");
             expect('\"');
             string output = readUntil((offset, data) => offset >= data.Length || data[offset] == '\"');
             m_offset++;
@@ -179,48 +173,149 @@ namespace Basic
 
         private int readInt()
         {
-            // TODO: pre checks
+            preChecks("int");
             int number;
             string input = readUntil((offset, data) => offset >= data.Length || !NUMBERS.Contains(data[offset]));
             if (!int.TryParse(input, out number))
             {
-                throw new ParserError(string.Format("'{0}' is not a number", input));
+                throw new Errors.Parser(string.Format("'{0}' is not a number", input));
             }
             return number;
         }
 
         private string readVariable()
         {
-            if (m_offset >= m_input.Length)
-            {
-                throw new ParserError("Expecting variable but reached end of line");
-            }
-            discardSpace();
+            preChecks("variable");
             expect(VARIABLE_PREFIX);
             return readUntil((offset, data) => offset >= data.Length || !CHARACTERS.Contains(data[offset]));
         }
 
-        private IExpression readExpression()
+        private Expressions.IExpression readExpressionNode(Expressions.IExpression parentNode)
         {
-            return readExpression(Operator.None);
+            Expressions.IExpression result = null;
+
+            Expressions.IExpression child = readExpressionLeaf();
+
+            OperatorType op = OperatorType.None;
+            discardSpace();
+            if (m_offset < m_input.Length && OPERATORS.Contains(m_input[m_offset]))
+            {
+                op = readOperator();
+            }
+            if (op == OperatorType.None)
+            {
+                // no operator found - end of expression
+                if (parentNode == null)
+                {
+                    // end of expression - no previous expression
+                    result = child;
+                }
+                else
+                {
+                    // end of expression - with previous expression
+                    if (parentNode.GetType() == typeof (Expressions.Operator))
+                    {
+                        // parent is operator
+                        if (parentNode.Right == null)
+                        {
+                            // parent has no right node
+                            parentNode.Right = child;
+                            parentNode.Right.Parent = parentNode;
+
+                            result = parentNode;
+
+                            // get top node
+                            while(result.Parent != null)
+                            {
+                                result = result.Parent;
+                            }
+                        }
+                        else
+                        {
+                            // parent already has a right node - shouldn't happen?
+                            throw new NotImplementedException();
+                        }
+                    }
+                    else
+                    {
+                        // parent is leaf - shouldn't happen?
+                        throw new NotImplementedException();
+                    }
+                }
+            }
+            else
+            {
+                // operator found - expression continues
+                Expressions.Operator opNode = new Expressions.Operator(op);
+                if (parentNode == null)
+                {
+                    // more to go - no previous expression
+                    opNode.Left = child;
+                    opNode.Left.Parent = opNode;
+
+                    result = readExpressionNode(opNode);
+                }
+                else
+                {
+                    // more to go - with previous expression
+                    if (parentNode.GetType() == typeof(Expressions.Operator))
+                    {
+                        // parent is operator
+                        if (parentNode.Right == null)
+                        {
+                            // parent has no right node
+                            if (((Expressions.Operator)parentNode).OperatorType > opNode.OperatorType)
+                            {
+                                // place above
+                                parentNode.Right = child;
+                                parentNode.Right.Parent = parentNode;
+                            
+                                opNode.Left = parentNode;
+                                opNode.Left.Parent = opNode;
+
+                                result = readExpressionNode(opNode);
+                            }
+                            else
+                            {
+                                // place below
+                                opNode.Left = child;
+                                opNode.Left.Parent = opNode;
+
+                                parentNode.Right = opNode;
+                                parentNode.Right.Parent = parentNode;
+
+                                result = readExpressionNode(opNode);
+                            }
+                        }
+                        else
+                        {
+                            // parent already has a right node - shouldn't happen?
+                            throw new NotImplementedException();
+                        }
+                    }
+                    else
+                    {
+                        // parent is leaf - shouldn't happen?
+                        throw new NotImplementedException();
+                    }
+                }
+            }
+
+            return result;
         }
 
-        private IExpression readExpression(Operator op)
+        private Expressions.IExpression readExpressionLeaf()
         {
-            if (m_offset >= m_input.Length)
-            {
-                throw new ParserError("Expecting expression but reached end of line");
-            }
-            discardSpace();
+            preChecks("expression");
             char character = m_input[m_offset];
-            IExpression expression;
-            switch(character)
+            Expressions.IExpression leafNode;
+            switch (character)
             {
                 case '"':
-                    expression = new StringConstant(op, readString());
+                    leafNode = new Expressions.String(readString());
                     break;
                 case '$':
-                    expression = new Variable(op, readVariable());
+                    leafNode = new Expressions.Variable(m_interpreter, readVariable());
                     break;
                 case '0':
                 case '1':
@@ -232,33 +327,33 @@ namespace Basic
                 case '7':
                 case '8':
                 case '9':
-                    expression = new Number(op, readInt());
+                    leafNode = new Expressions.Number(readInt());
                     break;
                 default:
-                    throw new ParserError(string.Format("'{0}' is not recognised as the start of a valid expression", character));
+                    throw new Errors.Parser(string.Format("'{0}' is not recognised as the start of a valid expression", character));
             }
-            discardSpace();
-            if (m_offset < m_input.Length && OPERATORS.Contains(m_input[m_offset]))
-            {
-                expression.Child(readExpression(readOperator()));
-            }
-            return expression;
+            return leafNode;
         }
 
-        private Operator readOperator()
+        private OperatorType readOperator()
         {
-            if (m_offset >= m_input.Length)
-            {
-                throw new ParserError("Expecting operator but reached end of line");
-            }
-            discardSpace();
-            Operator op;
+            preChecks("operator");
+            OperatorType op;
             string input = readUntil((offset, data) => offset >= data.Length || !OPERATORS.Contains(data[offset]));
             if (!input.TryParseOperator(out op))
             {
-                throw new ParserError(string.Format("'{0}' is not a valid operator", input));
+                throw new Errors.Parser(string.Format("'{0}' is not a valid operator", input));
             }
             return op;
+        }
+
+        private void preChecks(string expecting)
+        {
+            if (m_offset >= m_input.Length)
+            {
+                throw new Errors.Parser(string.Format("Expecting {0} but reached end of line", expecting));
+            }
+            discardSpace();
         }
 
         private void discardSpace()

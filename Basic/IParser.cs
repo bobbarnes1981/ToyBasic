@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Basic
+﻿namespace Basic
 {
     public interface IParser
     {
-        Line Parse(string input);
+        Line Parse(IInterpreter interpreter, string input);
     }
 }

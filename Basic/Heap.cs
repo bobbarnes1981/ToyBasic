@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Basic.Errors;
+﻿using System.Collections.Generic;
 
 namespace Basic
 {
@@ -29,7 +24,7 @@ namespace Basic
         {
             if (!m_heap.ContainsKey(variable))
             {
-                throw new HeapError(string.Format("variable '{0}' does not exist", variable));
+                throw new Errors.Heap(string.Format("variable '{0}' does not exist", variable));
             }
             return m_heap[variable];
         }

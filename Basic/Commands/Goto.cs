@@ -11,7 +11,7 @@ namespace Basic.Commands
         private int m_lineNumber;
 
         public Goto(int lineNumber)
-            : base(Operation.Goto)
+            : base(Keyword.Goto)
         {
             m_lineNumber = lineNumber;
         }

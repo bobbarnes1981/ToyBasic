@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Basic.Commands
+﻿namespace Basic.Commands
 {
     public class List : Command
     {
         public List()
-            : base(Operation.List)
+            : base(Keyword.List)
         {
         }
 
@@ -18,13 +12,13 @@ namespace Basic.Commands
             interpreter.Buffer.Reset();
             while(!interpreter.Buffer.End)
             {
-                interpreter.Display.Output(interpreter.Buffer.Fetch.ToString());
+                interpreter.Console.Output(string.Format("{0}\r\n", interpreter.Buffer.Fetch));
             }
         }
 
         public override string Text
         {
-            get { return "List"; }
+            get { return Keyword.List.ToString(); }
         }
     }
 }

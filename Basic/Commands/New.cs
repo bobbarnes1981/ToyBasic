@@ -10,7 +10,7 @@ namespace Basic.Commands
     public class New : Command
     {
         public New()
-            : base(Operation.New)
+            : base(Keyword.New)
         {
         }
 

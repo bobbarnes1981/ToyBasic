@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Basic.Commands
+﻿namespace Basic.Commands
 {
     public class Rem : Command
     {
-        private string m_text;
+        private readonly string m_text;
 
         public Rem(string text)
-            : base(Operation.Rem)
+            : base(Keyword.Rem)
         {
             m_text = text;
         }
@@ -22,7 +16,7 @@ namespace Basic.Commands
 
         public override string Text
         {
-            get { return "Rem "+m_text; }
+            get { return string.Format("{0}{1}", Keyword.Rem, m_text); }
         }
     }
 }
