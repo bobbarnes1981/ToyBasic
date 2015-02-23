@@ -50,6 +50,11 @@ namespace Basic
             }
         }
 
+        public int Current
+        {
+            get { return m_currentLine; }
+        }
+
         public void Jump(int lineNumber)
         {
             m_currentLine = lineNumber;

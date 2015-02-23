@@ -102,6 +102,21 @@ namespace Basic
             Commands.ICommand command;
             switch (keyword)
             {
+                case Keyword.For:
+                    string forVariable = readVariable();
+                    discardSpace();
+                    expect('=');
+                    int start = readInt();
+                    expect(Keyword.To);
+                    int end = readInt();
+                    expect(Keyword.Step);
+                    int step = readInt();
+                    command = new Commands.Program.For(forVariable, start, end, step);
+                    break;
+                case Keyword.Next:
+                    string nextVariable = readVariable();
+                    command = new Commands.Program.Next(nextVariable);
+                    break;
                 case Keyword.Clear:
                     expectEnd();
                     command = new Commands.Program.Clear();
@@ -114,11 +129,11 @@ namespace Basic
                     expectEnd();
                     break;
                 case Keyword.Let:
-                    string variable = readVariable();
+                    string letVariable = readVariable();
                     discardSpace();
                     expect('=');
                     Expressions.IExpression expression = readExpressionNode(null);
-                    command = new Commands.Program.Let(variable, expression);
+                    command = new Commands.Program.Let(letVariable, expression);
                     break;
                 case Keyword.If:
                     Expressions.IExpression comparison = readExpressionNode(null);

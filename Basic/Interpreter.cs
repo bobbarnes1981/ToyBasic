@@ -19,12 +19,15 @@ namespace Basic
 
         private IHeap m_heap;
 
-        public Interpreter(IBuffer buffer, IParser parser, IConsole display, IHeap heap)
+        private IStack m_stack;
+
+        public Interpreter(IBuffer buffer, IParser parser, IConsole display, IHeap heap, IStack stack)
         {
             m_buffer = buffer;
             m_parser = parser;
             m_console = display;
             m_heap = heap;
+            m_stack = stack;
         }
 
         public IBuffer Buffer
@@ -40,6 +43,11 @@ namespace Basic
         public IHeap Heap
         {
             get { return m_heap; }
+        }
+
+        public IStack Stack
+        {
+            get { return m_stack; }
         }
 
         public void Run()

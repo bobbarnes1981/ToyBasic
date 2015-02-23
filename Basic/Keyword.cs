@@ -8,6 +8,7 @@ namespace Basic
 {
     public enum Keyword
     {
+        For,
         Goto,
         If,
         Input,
@@ -16,6 +17,7 @@ namespace Basic
         Rem,
 
         Exit,
+        Help,
         List,
         Load,
         New,
@@ -24,8 +26,9 @@ namespace Basic
         Save,
 
         Clear,
-        For,
-        Help,
+        Next,
+        Step,
+        To,
         Then
     }
 }

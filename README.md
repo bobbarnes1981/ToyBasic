@@ -4,8 +4,6 @@ An attempt to write a simple basic interpreter.
 
 ##Todo:
 
-Implement For loop
-
 Implement Save/Load
 
 Implement Help
@@ -20,27 +18,23 @@ Implement Help
 
 Run
 
-###print some text immediately
-
-Print "This is executed immediately"
-
 ###two ways to print the sum of 8 and 9
 
-Let $a = 8
+10 Let $a = 8
 
-Let $b = 9
+20 Let $b = 9
 
-Print $a + $b
+30 Print $a + $b
 
-Print 8 + 9
+40 Print 8 + 9
 
 ###print bob9
 
-Let $a = "Bob"
+10 Let $a = "Bob"
 
-Let $b = 9
+20 Let $b = 9
 
-Print $a + $b
+30 Print $a + $b
 
 ###list the code
 
@@ -52,6 +46,16 @@ Exit
 
 ###if statement
 
-Let $var = 8
+10 Let $var = 8
 
-If 8 == $var THEN Print "are equal"
+20 If 8 == $var THEN Print "are equal"
+
+###for statement (1 to 10)
+
+10 For $x = 1 To 10 Step 1
+
+20 Print $x
+
+30 Next $x
+
+Run
