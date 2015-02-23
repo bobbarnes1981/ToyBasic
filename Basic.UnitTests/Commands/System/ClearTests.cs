@@ -1,8 +1,8 @@
-﻿using Basic.Commands;
+﻿using Basic.Commands.System;
 using Moq;
 using NUnit.Framework;
 
-namespace Basic.UnitTests.Commands
+namespace Basic.UnitTests.Commands.System
 {
     [TestFixture]
     public class ClearTests

@@ -38,49 +38,79 @@ namespace Basic
                 m_offset = 0;
             }
 
-            Commands.ICommand command = readCommand();
+            Commands.ICommand command = readCommand(m_offset == 0);
 
             return new Line(number, command);
         }
 
-        private Commands.ICommand readCommand()
+        private Commands.ICommand readCommand(bool isSystem)
         {
             Commands.ICommand command;
 
-            string operationString = readUntil((offset, data) => offset >= data.Length || data[offset] == ' ');
-            Keyword operation;
-            if (!Enum.TryParse(operationString, out operation))
+            string keywordString = readUntil((offset, data) => offset >= data.Length || data[offset] == ' ');
+            Keyword keyword;
+            if (!Enum.TryParse(keywordString, out keyword))
             {
-                throw new Errors.Parser(string.Format("Could not parse command {0}", operationString));
+                throw new Errors.Parser(string.Format("Could not parse keyword {0}", keywordString));
             }
 
-            switch (operation)
+            if (isSystem)
+            {
+                command = readSystemCommand(keyword);
+            }
+            else
+            {
+                command = readProgramCommand(keyword);
+            }
+
+            return command;
+        }
+
+        private Commands.ICommand readSystemCommand(Keyword keyword)
+        {
+            Commands.ICommand command;
+            switch (keyword)
             {
                 case Keyword.Exit:
                     expectEnd();
-                    command = new Commands.Exit();
+                    command = new Commands.System.Exit();
                     break;
                 case Keyword.Run:
                     expectEnd();
-                    command = new Commands.Run();
+                    command = new Commands.System.Run();
                     break;
                 case Keyword.List:
                     expectEnd();
-                    command = new Commands.List();
+                    command = new Commands.System.List();
                     break;
                 case Keyword.Clear:
                     expectEnd();
-                    command = new Commands.Clear();
+                    command = new Commands.System.Clear();
                     break;
                 case Keyword.Renumber:
                     expectEnd();
-                    command = new Commands.Renumber();
+                    command = new Commands.System.Renumber();
+                    break;
+                default:
+                    throw new Errors.Parser(string.Format("System keyword not implemented in line parser: {0}", keyword));
+            }
+            return command;
+        }
+
+        private Commands.ICommand readProgramCommand(Keyword keyword)
+        {
+            Commands.ICommand command;
+            switch (keyword)
+            {
+                case Keyword.Clear:
+                    expectEnd();
+                    command = new Commands.Program.Clear();
                     break;
                 case Keyword.Goto:
-                    command = new Commands.Goto(readInt());
+                    command = new Commands.Program.Goto(readInt());
                     break;
                 case Keyword.Print:
-                    command = new Commands.Print(readExpressionNode(null));
+                    command = new Commands.Program.Print(readExpressionNode(null));
                     expectEnd();
                     break;
                 case Keyword.Let:
@@ -88,24 +118,23 @@ namespace Basic
                     discardSpace();
                     expect('=');
                     Expressions.IExpression expression = readExpressionNode(null);
-                    command = new Commands.Let(variable, expression);
+                    command = new Commands.Program.Let(variable, expression);
                     break;
                 case Keyword.If:
                     Expressions.IExpression comparison = readExpressionNode(null);
                     expect(Keyword.Then);
-                    Commands.ICommand subCommand = readCommand();
-                    command = new Commands.If(comparison, subCommand);
+                    Commands.ICommand subCommand = readCommand(false);
+                    command = new Commands.Program.If(comparison, subCommand);
                     break;
                 case Keyword.Rem:
-                    command = new Commands.Rem(readUntil((offset, data) => offset >= data.Length));
+                    command = new Commands.Program.Rem(readUntil((offset, data) => offset >= data.Length));
                     break;
                 case Keyword.Input:
-                    command = new Commands.Input(readVariable());
+                    command = new Commands.Program.Input(readVariable());
                     break;
                 default:
-                    throw new Errors.Parser(string.Format("Operation not implemented in line parser: {0}", operation));
+                    throw new Errors.Parser(string.Format("Program command not implemented in line parser: {0}", keyword));
             }
-
             return command;
         }
 

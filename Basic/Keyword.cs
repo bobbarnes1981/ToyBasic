@@ -8,22 +8,24 @@ namespace Basic
 {
     public enum Keyword
     {
-        Exit,
-        Clear,
-        List,
-        Help,
-        Run,
-        Renumber,
-        Print,
         Goto,
-        Let,
-        Save,
-        Load,
         If,
-        Rem,
-        New,
-        For,
         Input,
+        Let,
+        Print,
+        Rem,
+
+        Exit,
+        List,
+        Load,
+        New,
+        Renumber,
+        Run,
+        Save,
+
+        Clear,
+        For,
+        Help,
         Then
     }
 }

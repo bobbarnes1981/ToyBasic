@@ -1,16 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Basic.Commands
+﻿namespace Basic.Commands.System
 {
-    // not a real command
     public class Renumber : Command
     {
         public Renumber()
-            : base(Keyword.Renumber)
+            : base(Keyword.Renumber, true)
         {
         }
 
@@ -21,7 +14,7 @@ namespace Basic.Commands
 
         public override string Text
         {
-            get { return "Renumber"; }
+            get { return Keyword.Renumber.ToString(); }
         }
     }
 }

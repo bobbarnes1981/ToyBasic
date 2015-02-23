@@ -1,9 +1,9 @@
-﻿namespace Basic.Commands
+﻿namespace Basic.Commands.System
 {
     public class List : Command
     {
         public List()
-            : base(Keyword.List)
+            : base(Keyword.List, true)
         {
         }
 

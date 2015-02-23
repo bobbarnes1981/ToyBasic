@@ -1,13 +1,11 @@
-﻿using System;
-
-namespace Basic.Commands
+﻿namespace Basic.Commands.System
 {
     public class Save : Command
     {
         private readonly string m_filename;
 
         public Save(string filename)
-            : base(Keyword.Save)
+            : base(Keyword.Save, true)
         {
             m_filename = filename;
         }
@@ -16,7 +14,7 @@ namespace Basic.Commands
         {
             // generate file from buffer
             //interpreter.Disk.Save(m_filename);
-            throw new NotImplementedException();
+            throw new global::System.NotImplementedException();
         }
 
         public override string Text

@@ -1,16 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Basic.Commands
+﻿namespace Basic.Commands.System
 {
-    // not a real command
     public class New : Command
     {
         public New()
-            : base(Keyword.New)
+            : base(Keyword.New, true)
         {
         }
 
