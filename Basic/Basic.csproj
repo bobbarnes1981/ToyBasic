@@ -59,12 +59,14 @@
     <Compile Include="Expressions\Number.cs" />
     <Compile Include="Expressions\Operator.cs" />
     <Compile Include="Extensions.cs" />
+    <Compile Include="FileStorage.cs" />
     <Compile Include="Frame.cs" />
     <Compile Include="Heap.cs" />
     <Compile Include="Expressions\IExpression.cs" />
     <Compile Include="IFrame.cs" />
     <Compile Include="IHeap.cs" />
     <Compile Include="IStack.cs" />
+    <Compile Include="IStorage.cs" />
     <Compile Include="Keyword.cs" />
     <Compile Include="Errors\Command.cs" />
     <Compile Include="Commands\System\Clear.cs" />
