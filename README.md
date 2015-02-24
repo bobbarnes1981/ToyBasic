@@ -4,8 +4,6 @@ An attempt to write a simple basic interpreter.
 
 ##Todo:
 
-Implement Save/Load
-
 Implement Help
 
 ##Example:
@@ -28,6 +26,8 @@ Run
 
 40 Print 8 + 9
 
+Run
+
 ###print bob9
 
 10 Let $a = "Bob"
@@ -35,6 +35,8 @@ Run
 20 Let $b = 9
 
 30 Print $a + $b
+
+Run
 
 ###list the code
 
