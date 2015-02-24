@@ -12,7 +12,12 @@
 
         public override void Execute(IInterpreter interpreter)
         {
-            throw new global::System.NotImplementedException();
+            interpreter.Buffer.Clear();
+            string[] lines = interpreter.Storage.Load(m_filename);
+            foreach (string line in lines)
+            {
+                interpreter.ProcessInput(line);
+            }
         }
 
         public override string Text

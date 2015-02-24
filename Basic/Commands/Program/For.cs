@@ -8,22 +8,22 @@
         /// <summary>
         /// The variable to modify
         /// </summary>
-        private string m_variable;
+        private readonly string m_variable;
 
         /// <summary>
         /// The start value
         /// </summary>
-        private int m_start;
+        private readonly int m_start;
 
         /// <summary>
         /// The end value
         /// </summary>
-        private int m_end;
+        private readonly int m_end;
 
         /// <summary>
         /// The step value
         /// </summary>
-        private int m_step;
+        private readonly int m_step;
 
         /// <summary>
         /// Creates an instance of the <see cref="For"/> class.
@@ -51,6 +51,7 @@
             frame.Set<int>("for_end", m_end);
             frame.Set<int>("for_step", m_step);
             frame.Set<int>("for_line", interpreter.Buffer.Current);
+            frame.Set<string>("for_var", m_variable);
             interpreter.Heap.Set(m_variable, m_start);
             interpreter.Stack.Push(frame);
         }

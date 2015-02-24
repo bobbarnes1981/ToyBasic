@@ -41,6 +41,8 @@ namespace Basic
             m_stack = stack;
         }
 
+        public IParser
+
         public IBuffer Buffer
         {
             get { return m_buffer; }
@@ -69,38 +71,47 @@ namespace Basic
             System.Console.CancelKeyPress += Console_CancelKeyPress; // TODO: make this part of IConsole
             m_console.Output(string.Format("Basic Interpreter\r\nVersion {0}\r\nBob Barnes 2015\r\n", Assembly.GetEntryAssembly().GetName().Version));
 
-            Line line;
             do
             {
                 m_console.Output(m_prompt);
-                try
-                {
-                    line = m_parser.Parse(this, m_console.Input());
-                }
-                catch(Errors.Error error)
-                {
-                    line = null;
-                    displayError(error);
-                }
-                if (line != null)
-                {
-                    if (line.Number == 0)
-                    {
-                        try
-                        {
-                            line.Command.Execute(this);
-                        }
-                        catch (Errors.Error error)
-                        {
-                            displayError(error);
-                        }
-                    }
-                    else
-                    {
-                        m_buffer.Add(line);
-                    }
-                }
+                ProcessInput(m_console.Input());
             } while (m_running);
+        }
+
+        /// <summary>
+        /// Parse and store/execute a line of input
+        /// </summary>
+        /// <param name="input"></param>
+        public void ProcessInput(string input)
+        {
+            Line line;
+            try
+            {
+                line = m_parser.Parse(this, input);
+            }
+            catch(Errors.Error error)
+            {
+                line = null;
+                displayError(error);
+            }
+            if (line != null)
+            {
+                if (line.Number == 0)
+                {
+                    try
+                    {
+                        line.Command.Execute(this);
+                    }
+                    catch (Errors.Error error)
+                    {
+                        displayError(error);
+                    }
+                }
+                else
+                {
+                    m_buffer.Add(line);
+                }
+            }
         }
 
         /// <summary>

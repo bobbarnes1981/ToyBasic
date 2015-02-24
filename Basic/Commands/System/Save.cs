@@ -12,9 +12,7 @@
 
         public override void Execute(IInterpreter interpreter)
         {
-            // generate file from buffer
-            //interpreter.Disk.Save(m_filename);
-            throw new global::System.NotImplementedException();
+            interpreter.Storage.Save(m_filename);
         }
 
         public override string Text
