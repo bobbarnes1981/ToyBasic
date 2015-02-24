@@ -1,5 +1,7 @@
 # ToyBasic
 
+[![Build Status](https://travis-ci.org/bobbarnes1981/ToyBasic.svg?branch=master)](https://travis-ci.org/bobbarnes1981/ToyBasic)
+
 An attempt to write a simple basic interpreter.
 
 ##Todo:
@@ -8,7 +10,7 @@ Implement Help
 
 Gosub/Return?
 
-##Example:
+##Examples
 
 ###print hello world forever
 
