@@ -3,26 +3,62 @@ using System.Linq;
 
 namespace Basic
 {
+    /// <summary>
+    /// Represents a string parser
+    /// </summary>
     public class Parser : IParser
     {
+        /// <summary>
+        /// The variable prefix character
+        /// </summary>
         private const char VARIABLE_PREFIX = '$';
+
+        /// <summary>
+        /// Valid numbers
+        /// </summary>
         private readonly char[] NUMBERS = 
         {
             '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'
         };
+
+        /// <summary>
+        /// Valid opeerator characters
+        /// </summary>
         private readonly char[] OPERATORS = 
         {
             '+', '-', '=', '*', '/', '!'
         };
+
+        /// <summary>
+        /// Valuid characters
+        /// </summary>
         private readonly char[] CHARACTERS = 
         {
             'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
             'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'
         };
+
+        /// <summary>
+        /// The interpreter interface
+        /// </summary>
         private IInterpreter m_interpreter;
+
+        /// <summary>
+        /// Input string
+        /// </summary>
         private string m_input;
+
+        /// <summary>
+        /// Current offset
+        /// </summary>
         private int m_offset;
 
+        /// <summary>
+        /// Creates a new instance of the <see cref="Parser"/> class.
+        /// </summary>
+        /// <param name="interpreter">The interpreter interface</param>
+        /// <param name="input">The input string to parse</param>
+        /// <returns>A parsed line object</returns>
         public Line Parse(IInterpreter interpreter, string input)
         {
             m_interpreter = interpreter;
@@ -43,6 +79,11 @@ namespace Basic
             return new Line(number, command);
         }
 
+        /// <summary>
+        /// Reas a command from the input string
+        /// </summary>
+        /// <param name="isSystem">True if a system command is expected</param>
+        /// <returns>A parsed ICommand object</returns>
         private Commands.ICommand readCommand(bool isSystem)
         {
             Commands.ICommand command;
@@ -66,6 +107,11 @@ namespace Basic
             return command;
         }
 
+        /// <summary>
+        /// Read a system command from the input string
+        /// </summary>
+        /// <param name="keyword">Keyword of the expected command</param>
+        /// <returns>A parsed ICommand object</returns>
         private Commands.ICommand readSystemCommand(Keyword keyword)
         {
             Commands.ICommand command;
@@ -97,6 +143,11 @@ namespace Basic
             return command;
         }
 
+        /// <summary>
+        /// Read a program command from the input string
+        /// </summary>
+        /// <param name="keyword">Keyword of the expected command</param>
+        /// <returns>A parsed ICommand object</returns>
         private Commands.ICommand readProgramCommand(Keyword keyword)
         {
             Commands.ICommand command;
@@ -153,6 +204,11 @@ namespace Basic
             return command;
         }
 
+        /// <summary>
+        /// Read characters into a string until <paramref name="untilFunc"/> is true.
+        /// </summary>
+        /// <param name="untilFunc">Function to designate end of string</param>
+        /// <returns>A string read from the input string</returns>
         private string readUntil(Func<int, string, bool> untilFunc)
         {
             string output = string.Empty;
@@ -174,11 +230,19 @@ namespace Basic
             return output;
         }
 
+        /// <summary>
+        /// Expect the spcified keyword in the input string
+        /// </summary>
+        /// <param name="keyword">Expected keyword</param>
         private void expect(Keyword keyword)
         {
             expect(keyword.ToString());
         }
 
+        /// <summary>
+        /// Expect the specified string in the input string
+        /// </summary>
+        /// <param name="expectedString">Expected string</param>
         private void expect(string expectedString)
         {
             preChecks(expectedString);
@@ -188,6 +252,10 @@ namespace Basic
             }
         }
 
+        /// <summary>
+        /// Expect the specified character in the input string
+        /// </summary>
+        /// <param name="expectedChar">Expected character</param>
         private void expect(char expectedChar)
         {
             preChecks(expectedChar.ToString());
@@ -198,6 +266,9 @@ namespace Basic
             m_offset++;
         }
 
+        /// <summary>
+        /// Expect the end of the input string
+        /// </summary>
         private void expectEnd()
         {
             if (m_offset < m_input.Length)
@@ -206,6 +277,10 @@ namespace Basic
             }
         }
 
+        /// <summary>
+        /// Read a string; a number of valid characters surrounded by double quotes
+        /// </summary>
+        /// <returns></returns>
         private string readString()
         {
             preChecks("string");
@@ -215,6 +290,10 @@ namespace Basic
             return output;
         }
 
+        /// <summary>
+        /// Read an integer; a number of valid numbers
+        /// </summary>
+        /// <returns></returns>
         private int readInt()
         {
             preChecks("int");
@@ -227,6 +306,10 @@ namespace Basic
             return number;
         }
 
+        /// <summary>
+        /// Read a variable; a number of characters prefixed by the variable prefix '$'
+        /// </summary>
+        /// <returns></returns>
         private string readVariable()
         {
             preChecks("variable");
@@ -234,12 +317,22 @@ namespace Basic
             return readUntil((offset, data) => offset >= data.Length || !CHARACTERS.Contains(data[offset]));
         }
 
+        /// <summary>
+        /// Read an expression node; a variable, number or string followed by an optional operator.
+        /// Builds a binary tree representing the expression, will return the top node when the end of
+        /// the expression is reached.
+        /// </summary>
+        /// <param name="parentNode">The current previous parent node</param>
+        /// <returns></returns>
         private Expressions.IExpression readExpressionNode(Expressions.IExpression parentNode)
         {
+            // current result node
             Expressions.IExpression result = null;
 
+            // read the current expression 
             Expressions.IExpression child = readExpressionLeaf();
 
+            // check for an operator
             OperatorType op = OperatorType.None;
             discardSpace();
             if (m_offset < m_input.Length && OPERATORS.Contains(m_input[m_offset]))
@@ -277,13 +370,13 @@ namespace Basic
                         else
                         {
                             // parent already has a right node - shouldn't happen?
-                            throw new NotImplementedException();
+                            throw new Errors.Parser("Parent expression already has a right node");
                         }
                     }
                     else
                     {
                         // parent is leaf - shouldn't happen?
-                        throw new NotImplementedException();
+                        throw new Errors.Parser("Parent expression is a leaf node");
                     }
                 }
             }
@@ -334,13 +427,13 @@ namespace Basic
                         else
                         {
                             // parent already has a right node - shouldn't happen?
-                            throw new NotImplementedException();
+                            throw new Errors.Parser("Parent expression already has a right node");
                         }
                     }
                     else
                     {
                         // parent is leaf - shouldn't happen?
-                        throw new NotImplementedException();
+                        throw new Errors.Parser("Parent expression is a leaf node");
                     }
                 }
             }
@@ -348,6 +441,10 @@ namespace Basic
             return result;
         }
 
+        /// <summary>
+        /// Read an expression leaf; a string, variable or number
+        /// </summary>
+        /// <returns></returns>
         private Expressions.IExpression readExpressionLeaf()
         {
             preChecks("expression");
@@ -374,11 +471,15 @@ namespace Basic
                     leafNode = new Expressions.Number(readInt());
                     break;
                 default:
-                    throw new Errors.Parser(string.Format("'{0}' is not recognised as the start of a valid expression", character));
+                    throw new Errors.Parser(string.Format("'{0}' is not recognised as the start of a valid expression leaf node", character));
             }
             return leafNode;
         }
 
+        /// <summary>
+        /// Read an operator from the input string
+        /// </summary>
+        /// <returns></returns>
         private OperatorType readOperator()
         {
             preChecks("operator");
@@ -391,6 +492,10 @@ namespace Basic
             return op;
         }
 
+        /// <summary>
+        /// Check for the end of the input string and discard any white space
+        /// </summary>
+        /// <param name="expecting"></param>
         private void preChecks(string expecting)
         {
             if (m_offset >= m_input.Length)
@@ -400,6 +505,9 @@ namespace Basic
             discardSpace();
         }
 
+        /// <summary>
+        /// Discard white space
+        /// </summary>
         private void discardSpace()
         {
             while (m_offset < m_input.Length && m_input[m_offset] == ' ')

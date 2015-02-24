@@ -3,6 +3,9 @@ using System.Reflection;
 
 namespace Basic
 {
+    /// <summary>
+    /// Represents the basic interpreter
+    /// </summary>
     public class Interpreter : IInterpreter
     {
         private string m_prompt = "> ";
@@ -21,6 +24,14 @@ namespace Basic
 
         private IStack m_stack;
 
+        /// <summary>
+        /// Creates a new instance of the <see cref="Interpreter"/> class.
+        /// </summary>
+        /// <param name="buffer"></param>
+        /// <param name="parser"></param>
+        /// <param name="display"></param>
+        /// <param name="heap"></param>
+        /// <param name="stack"></param>
         public Interpreter(IBuffer buffer, IParser parser, IConsole display, IHeap heap, IStack stack)
         {
             m_buffer = buffer;
@@ -50,6 +61,9 @@ namespace Basic
             get { return m_stack; }
         }
 
+        /// <summary>
+        /// Run the interpreter
+        /// </summary>
         public void Run()
         {
             System.Console.CancelKeyPress += Console_CancelKeyPress; // TODO: make this part of IConsole
@@ -89,6 +103,11 @@ namespace Basic
             } while (m_running);
         }
 
+        /// <summary>
+        /// Handle the control-c and control-break keypresses
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Console_CancelKeyPress(object sender, ConsoleCancelEventArgs e)
         {
             Console.Output(string.Format("Interrupt {0}\r\n", e.SpecialKey));
@@ -96,11 +115,19 @@ namespace Basic
             e.Cancel = true;
         }
 
+        /// <summary>
+        /// Display an error message
+        /// </summary>
+        /// <param name="error"></param>
         private void displayError(Errors.Error error)
         {
+            // TODO: colours
             m_console.Output(string.Format("{0}: {1}\r\n", error.GetType(), error.Message));
         }
 
+        /// <summary>
+        /// Execute the program in the interpreter buffer
+        /// </summary>
         public void Execute()
         {
             m_buffer.Reset();
@@ -109,9 +136,12 @@ namespace Basic
             {
                 m_buffer.Fetch.Command.Execute(this);
             }
-            Console.Output("Done\r\n");
+            m_console.Output("Done\r\n");
         }
 
+        /// <summary>
+        /// Exit the interpreter
+        /// </summary>
         public void Exit()
         {
             m_running = false;

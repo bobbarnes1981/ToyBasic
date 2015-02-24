@@ -1,5 +1,8 @@
 ﻿namespace Basic.Commands.Program
 {
+    /// <summary>
+    /// Represents the program command 'Next'
+    /// </summary>
     public class Next : Command
     {
         private string m_variable;
