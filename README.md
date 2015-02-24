@@ -28,16 +28,6 @@ Run
 
 Run
 
-###print bob9
-
-10 Let $a = "Bob"
-
-20 Let $b = 9
-
-30 Print $a + $b
-
-Run
-
 ###list the code
 
 List
@@ -51,6 +41,8 @@ Exit
 10 Let $var = 8
 
 20 If 8 == $var THEN Print "are equal"
+
+Run
 
 ###for statement (1 to 10)
 
