@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Basic
+﻿namespace Basic
 {
-    public enum Keyword
+    public enum Keywords
     {
         For,
         Goto,

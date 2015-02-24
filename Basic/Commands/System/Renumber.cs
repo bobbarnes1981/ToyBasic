@@ -3,7 +3,7 @@
     public class Renumber : Command
     {
         public Renumber()
-            : base(Keyword.Renumber, true)
+            : base(Keywords.Renumber, true)
         {
         }
 
@@ -14,7 +14,7 @@
 
         public override string Text
         {
-            get { return Keyword.Renumber.ToString(); }
+            get { return Keywords.Renumber.ToString(); }
         }
     }
 }

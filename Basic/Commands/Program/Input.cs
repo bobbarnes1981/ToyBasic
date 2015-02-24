@@ -15,7 +15,7 @@
         /// </summary>
         /// <param name="variable">The variable to store the input in</param>
         public Input(string variable)
-            : base(Keyword.Input, false)
+            : base(Keywords.Input, false)
         {
             m_variable = variable;
         }
@@ -34,7 +34,7 @@
         /// </summary>
         public override string Text
         {
-            get { return string.Format("{0} {1}", Keyword.Input, m_variable); }
+            get { return string.Format("{0} {1}", Keywords.Input, m_variable); }
         }
     }
 }

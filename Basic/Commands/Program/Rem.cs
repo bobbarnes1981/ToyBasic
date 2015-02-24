@@ -15,7 +15,7 @@
         /// </summary>
         /// <param name="text">The text to remember</param>
         public Rem(string text)
-            : base(Keyword.Rem, false)
+            : base(Keywords.Rem, false)
         {
             m_text = text;
         }
@@ -33,7 +33,7 @@
         /// </summary>
         public override string Text
         {
-            get { return string.Format("{0}{1}", Keyword.Rem, m_text); }
+            get { return string.Format("{0}{1}", Keywords.Rem, m_text); }
         }
     }
 }

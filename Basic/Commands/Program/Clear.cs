@@ -9,7 +9,7 @@
         /// Creates a new instance of the <see cref="Clear"/> class.
         /// </summary>
         public Clear()
-            : base(Keyword.Clear, false)
+            : base(Keywords.Clear, false)
         {
         }
 
@@ -27,7 +27,7 @@
         /// </summary>
         public override string Text
         {
-            get { return Keyword.Clear.ToString(); }
+            get { return Keywords.Clear.ToString(); }
         }
     }
 }

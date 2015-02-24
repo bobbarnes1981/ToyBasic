@@ -24,6 +24,8 @@ namespace Basic
 
         private IStack m_stack;
 
+        private IStorage m_storage;
+
         /// <summary>
         /// Creates a new instance of the <see cref="Interpreter"/> class.
         /// </summary>
@@ -32,16 +34,15 @@ namespace Basic
         /// <param name="display"></param>
         /// <param name="heap"></param>
         /// <param name="stack"></param>
-        public Interpreter(IBuffer buffer, IParser parser, IConsole display, IHeap heap, IStack stack)
+        public Interpreter(IBuffer buffer, IParser parser, IConsole display, IHeap heap, IStack stack, IStorage storage)
         {
             m_buffer = buffer;
             m_parser = parser;
             m_console = display;
             m_heap = heap;
             m_stack = stack;
+            m_storage = storage;
         }
-
-        public IParser
 
         public IBuffer Buffer
         {
@@ -61,6 +62,11 @@ namespace Basic
         public IStack Stack
         {
             get { return m_stack; }
+        }
+
+        public IStorage Storage
+        {
+            get { return m_storage; }
         }
 
         /// <summary>

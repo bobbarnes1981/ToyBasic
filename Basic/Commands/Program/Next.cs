@@ -15,7 +15,7 @@
         /// </summary>
         /// <param name="variable">The variable to modify</param>
         public Next(string variable)
-            : base(Keyword.Next, false)
+            : base(Keywords.Next, false)
         {
             m_variable = variable;
         }
@@ -39,7 +39,7 @@
 
         public override string Text
         {
-            get { return string.Format("{0} {1}", Keyword.Next, m_variable); }
+            get { return string.Format("{0} {1}", Keywords.Next, m_variable); }
         }
     }
 }

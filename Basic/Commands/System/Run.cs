@@ -3,7 +3,7 @@
     public class Run : Command
     {
         public Run()
-            : base(Keyword.Run, true)
+            : base(Keywords.Run, true)
         {
         }
 

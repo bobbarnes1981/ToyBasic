@@ -17,7 +17,7 @@ namespace Basic.Commands.Program
         /// </summary>
         /// <param name="expression">The expression to evaluate</param>
         public Print(IExpression expression)
-            : base(Keyword.Print, false)
+            : base(Keywords.Print, false)
         {
             m_expression = expression;
         }
@@ -36,7 +36,7 @@ namespace Basic.Commands.Program
         /// </summary>
         public override string Text
         {
-            get { return string.Format("{0} \"{1}\"", Keyword.Print, m_expression.Text); }
+            get { return string.Format("{0} \"{1}\"", Keywords.Print, m_expression.Text); }
         }
     }
 }

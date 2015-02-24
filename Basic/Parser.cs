@@ -89,7 +89,7 @@ namespace Basic
             Commands.ICommand command;
 
             string keywordString = readUntil((offset, data) => offset >= data.Length || data[offset] == ' ');
-            Keyword keyword;
+            Keywords keyword;
             if (!Enum.TryParse(keywordString, out keyword))
             {
                 throw new Errors.Parser(string.Format("Could not parse keyword {0}", keywordString));
@@ -112,28 +112,32 @@ namespace Basic
         /// </summary>
         /// <param name="keyword">Keyword of the expected command</param>
         /// <returns>A parsed ICommand object</returns>
-        private Commands.ICommand readSystemCommand(Keyword keyword)
+        private Commands.ICommand readSystemCommand(Keywords keyword)
         {
             Commands.ICommand command;
             switch (keyword)
             {
-                case Keyword.Exit:
-                    expectEnd();
-                    command = new Commands.System.Exit();
-                    break;
-                case Keyword.Run:
-                    expectEnd();
-                    command = new Commands.System.Run();
-                    break;
-                case Keyword.List:
-                    expectEnd();
-                    command = new Commands.System.List();
-                    break;
-                case Keyword.Clear:
+                case Keywords.Clear:
                     expectEnd();
                     command = new Commands.System.Clear();
                     break;
-                case Keyword.Renumber:
+                case Keywords.Exit:
+                    expectEnd();
+                    command = new Commands.System.Exit();
+                    break;
+                case Keywords.List:
+                    expectEnd();
+                    command = new Commands.System.List();
+                    break;
+                case Keywords.New:
+                    expectEnd();
+                    command = new Commands.System.New();
+                    break;
+                case Keywords.Run:
+                    expectEnd();
+                    command = new Commands.System.Run();
+                    break;
+                case Keywords.Renumber:
                     expectEnd();
                     command = new Commands.System.Renumber();
                     break;
@@ -148,55 +152,59 @@ namespace Basic
         /// </summary>
         /// <param name="keyword">Keyword of the expected command</param>
         /// <returns>A parsed ICommand object</returns>
-        private Commands.ICommand readProgramCommand(Keyword keyword)
+        private Commands.ICommand readProgramCommand(Keywords keyword)
         {
             Commands.ICommand command;
             switch (keyword)
             {
-                case Keyword.For:
+                case Keywords.Clear:
+                    expectEnd();
+                    command = new Commands.Program.Clear();
+                    break;
+                case Keywords.For:
                     string forVariable = readVariable();
                     discardSpace();
                     expect('=');
                     int start = readInt();
-                    expect(Keyword.To);
+                    expect(Keywords.To);
                     int end = readInt();
-                    expect(Keyword.Step);
+                    expect(Keywords.Step);
                     int step = readInt();
+                    expectEnd();
                     command = new Commands.Program.For(forVariable, start, end, step);
                     break;
-                case Keyword.Next:
-                    string nextVariable = readVariable();
-                    command = new Commands.Program.Next(nextVariable);
-                    break;
-                case Keyword.Clear:
-                    expectEnd();
-                    command = new Commands.Program.Clear();
-                    break;
-                case Keyword.Goto:
+                case Keywords.Goto:
                     command = new Commands.Program.Goto(readInt());
-                    break;
-                case Keyword.Print:
-                    command = new Commands.Program.Print(readExpressionNode(null));
                     expectEnd();
                     break;
-                case Keyword.Let:
+                case Keywords.If:
+                    Expressions.IExpression comparison = readExpressionNode(null);
+                    expect(Keywords.Then);
+                    command = new Commands.Program.If(comparison, readCommand(false));
+                    expectEnd();
+                    break;
+                case Keywords.Input:
+                    command = new Commands.Program.Input(readVariable());
+                    expectEnd();
+                    break;
+                case Keywords.Let:
                     string letVariable = readVariable();
                     discardSpace();
                     expect('=');
-                    Expressions.IExpression expression = readExpressionNode(null);
-                    command = new Commands.Program.Let(letVariable, expression);
+                    command = new Commands.Program.Let(letVariable, readExpressionNode(null));
+                    expectEnd();
                     break;
-                case Keyword.If:
-                    Expressions.IExpression comparison = readExpressionNode(null);
-                    expect(Keyword.Then);
-                    Commands.ICommand subCommand = readCommand(false);
-                    command = new Commands.Program.If(comparison, subCommand);
+                case Keywords.Next:
+                    command = new Commands.Program.Next(readVariable());
+                    expectEnd();
                     break;
-                case Keyword.Rem:
+                case Keywords.Print:
+                    command = new Commands.Program.Print(readExpressionNode(null));
+                    expectEnd();
+                    break;
+                case Keywords.Rem:
                     command = new Commands.Program.Rem(readUntil((offset, data) => offset >= data.Length));
-                    break;
-                case Keyword.Input:
-                    command = new Commands.Program.Input(readVariable());
+                    expectEnd();
                     break;
                 default:
                     throw new Errors.Parser(string.Format("Program command not implemented in line parser: {0}", keyword));
@@ -234,7 +242,7 @@ namespace Basic
         /// Expect the spcified keyword in the input string
         /// </summary>
         /// <param name="keyword">Expected keyword</param>
-        private void expect(Keyword keyword)
+        private void expect(Keywords keyword)
         {
             expect(keyword.ToString());
         }
@@ -333,13 +341,13 @@ namespace Basic
             Expressions.IExpression child = readExpressionLeaf();
 
             // check for an operator
-            OperatorType op = OperatorType.None;
+            Operators op = Operators.None;
             discardSpace();
             if (m_offset < m_input.Length && OPERATORS.Contains(m_input[m_offset]))
             {
                 op = readOperator();
             }
-            if (op == OperatorType.None)
+            if (op == Operators.None)
             {
                 // no operator found - end of expression
                 if (parentNode == null)
@@ -480,10 +488,10 @@ namespace Basic
         /// Read an operator from the input string
         /// </summary>
         /// <returns></returns>
-        private OperatorType readOperator()
+        private Operators readOperator()
         {
             preChecks("operator");
-            OperatorType op;
+            Operators op;
             string input = readUntil((offset, data) => offset >= data.Length || !OPERATORS.Contains(data[offset]));
             if (!input.TryParseOperator(out op))
             {

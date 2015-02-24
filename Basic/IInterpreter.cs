@@ -36,6 +36,11 @@
         void Execute();
 
         /// <summary>
+        /// Run interpreter
+        /// </summary>
+        void Run();
+
+        /// <summary>
         /// Parse and store/execute a line of input
         /// </summary>
         /// <param name="input"></param>

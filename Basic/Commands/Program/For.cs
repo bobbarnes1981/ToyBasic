@@ -33,7 +33,7 @@
         /// <param name="end">the end value</param>
         /// <param name="step">the step value</param>
         public For(string variable, int start, int end, int step)
-            : base(Keyword.For, false)
+            : base(Keywords.For, false)
         {
             m_variable = variable;
             m_start = start;
@@ -61,7 +61,7 @@
         /// </summary>
         public override string Text
         {
-            get { return string.Format("{0} {1} = {2} {3} {4} {5} {6}", Keyword.For, m_variable, m_start, Keyword.To, m_end, Keyword.Step, m_step); }
+            get { return string.Format("{0} {1} = {2} {3} {4} {5} {6}", Keywords.For, m_variable, m_start, Keywords.To, m_end, Keywords.Step, m_step); }
         }
     }
 }

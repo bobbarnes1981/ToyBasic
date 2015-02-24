@@ -8,22 +8,22 @@ namespace Basic
 {
     public static class Extensions
     {
-        private static Dictionary<string, OperatorType> m_operators = new Dictionary<string, OperatorType>
+        private static Dictionary<string, Operators> m_operators = new Dictionary<string, Operators>
         {
-            { "+", OperatorType.Add },
-            { "-", OperatorType.Subtract },
-            { "*", OperatorType.Multiply },
-            { "/", OperatorType.Divide },
-            { "==", OperatorType.Equals }
+            { "+", Operators.Add },
+            { "-", Operators.Subtract },
+            { "*", Operators.Multiply },
+            { "/", Operators.Divide },
+            { "==", Operators.Equals }
         };
-        public static bool TryParseOperator(this string str, out OperatorType op)
+        public static bool TryParseOperator(this string str, out Operators op)
         {
             if (m_operators.ContainsKey(str))
             {
                 op = m_operators[str];
                 return true;
             }
-            op = OperatorType.None;
+            op = Operators.None;
             return false;
         }
     }

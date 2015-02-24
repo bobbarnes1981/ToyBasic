@@ -23,7 +23,7 @@ namespace Basic.Commands.Program
         /// <param name="expression">The expression to evaluate</param>
         /// <param name="command">The command to execute if the expression is true</param>
         public If(IExpression expression, ICommand command)
-            : base(Keyword.If, false)
+            : base(Keywords.If, false)
         {
             m_expression = expression;
             m_command = command;

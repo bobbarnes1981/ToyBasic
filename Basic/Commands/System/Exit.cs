@@ -9,7 +9,7 @@
         /// Creates a new instance of the <see cref="Exit"/> class.
         /// </summary>
         public Exit()
-            : base(Keyword.Exit, true)
+            : base(Keywords.Exit, true)
         {
         }
 
@@ -27,7 +27,7 @@
         /// </summary>
         public override string Text
         {
-            get { return Keyword.Exit.ToString(); }
+            get { return Keywords.Exit.ToString(); }
         }
     }
 }

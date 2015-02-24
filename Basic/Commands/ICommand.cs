@@ -2,7 +2,7 @@
 {
     public interface ICommand
     {
-        Keyword Keyword { get; }
+        Keywords Keyword { get; }
         bool IsSystem { get; }
         void Execute(IInterpreter interpreter);
         string Text { get; }

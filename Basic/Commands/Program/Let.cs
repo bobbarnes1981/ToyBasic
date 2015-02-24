@@ -23,7 +23,7 @@ namespace Basic.Commands.Program
         /// <param name="variable">The variable to assign to</param>
         /// <param name="expression">The expression to assign to the variable</param>
         public Let(string variable, IExpression expression)
-            : base(Keyword.Let, false)
+            : base(Keywords.Let, false)
         {
             m_variable = variable;
             m_expression = expression;
@@ -43,7 +43,7 @@ namespace Basic.Commands.Program
         /// </summary>
         public override string Text
         {
-            get { return string.Format("{0} {1} = {2}", Keyword.Let, m_variable, m_expression.Text); }
+            get { return string.Format("{0} {1} = {2}", Keywords.Let, m_variable, m_expression.Text); }
         }
     }
 }

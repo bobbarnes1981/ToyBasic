@@ -3,7 +3,7 @@
     public class List : Command
     {
         public List()
-            : base(Keyword.List, true)
+            : base(Keywords.List, true)
         {
         }
 
@@ -18,7 +18,7 @@
 
         public override string Text
         {
-            get { return Keyword.List.ToString(); }
+            get { return Keywords.List.ToString(); }
         }
     }
 }

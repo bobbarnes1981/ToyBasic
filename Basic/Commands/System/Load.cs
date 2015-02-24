@@ -5,7 +5,7 @@
         private readonly string m_filename;
 
         public Load(string filename)
-            : base(Keyword.Load, true)
+            : base(Keywords.Load, true)
         {
             m_filename = filename;
         }
@@ -22,7 +22,7 @@
 
         public override string Text
         {
-            get { return string.Format("{0} {1}", Keyword.Load, m_filename); }
+            get { return string.Format("{0} {1}", Keywords.Load, m_filename); }
         }
     }
 }

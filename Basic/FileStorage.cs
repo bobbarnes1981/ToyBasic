@@ -1,10 +1,11 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 
 namespace Basic
 {
     public class FileStorage : IStorage
     {
-        public void Save(string filename, string[] lines)
+        public void Save(string filename, IEnumerable<string> lines)
         {
             File.WriteAllLines(filename, lines);
         }

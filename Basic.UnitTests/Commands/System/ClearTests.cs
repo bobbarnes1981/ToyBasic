@@ -12,7 +12,15 @@ namespace Basic.UnitTests.Commands.System
         {
             Clear underTest = new Clear();
 
-            Assert.That(underTest.Keyword, Is.EqualTo(Keyword.Clear));
+            Assert.That(underTest.Keyword, Is.EqualTo(Keywords.Clear));
+        }
+
+        [Test]
+        public void Clear_ConstructedObject_HasCorrectIsSystemValue()
+        {
+            Clear underTest = new Clear();
+
+            Assert.That(underTest.IsSystem, Is.True);
         }
 
         [Test]
@@ -20,7 +28,7 @@ namespace Basic.UnitTests.Commands.System
         {
             Clear underTest = new Clear();
 
-            Assert.That(underTest.Text, Is.EqualTo(Keyword.Clear.ToString()));
+            Assert.That(underTest.Text, Is.EqualTo(Keywords.Clear.ToString()));
         }
 
         [Test]

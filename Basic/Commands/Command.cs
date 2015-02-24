@@ -2,17 +2,17 @@
 {
     public abstract class Command : ICommand
     {
-        private readonly Keyword m_keyword;
+        private readonly Keywords m_keyword;
 
         private readonly bool m_isSystem;
 
-        protected Command(Keyword keyword, bool isSystem)
+        protected Command(Keywords keyword, bool isSystem)
         {
             m_keyword = keyword;
             m_isSystem = isSystem;
         }
 
-        public Keyword Keyword
+        public Keywords Keyword
         {
             get { return m_keyword; }
         }

@@ -2,9 +2,9 @@
 {
     public class Operator : Expression
     {
-        private readonly OperatorType m_operatorType;
+        private readonly Operators m_operatorType;
 
-        public Operator(OperatorType operatorType)
+        public Operator(Operators operatorType)
         {
             m_operatorType = operatorType;
         }
@@ -13,24 +13,24 @@
         {
             switch (m_operatorType)
             {
-                case OperatorType.Divide:
+                case Operators.Divide:
                     return Divide(Left.Result(), Right.Result());
-                case OperatorType.Multiply:
+                case Operators.Multiply:
                     return Multiply(Left.Result(), Right.Result());
-                case OperatorType.Add:
+                case Operators.Add:
                     return Add(Left.Result(), Right.Result());
-                case OperatorType.Subtract:
+                case Operators.Subtract:
                     return Subtract(Left.Result(), Right.Result());
-                case OperatorType.Equals:
+                case Operators.Equals:
                     return Equals(Left.Result(), Right.Result());
-                case OperatorType.None:
+                case Operators.None:
                     throw new Errors.Expression("None operator is invalid");
                 default:
                     throw new Errors.Expression(string.Format("Unhandled operator '{0}'", m_operatorType));
             }
         }
 
-        public OperatorType OperatorType { get { return m_operatorType; }}
+        public Operators OperatorType { get { return m_operatorType; }}
 
         public override string Text
         {

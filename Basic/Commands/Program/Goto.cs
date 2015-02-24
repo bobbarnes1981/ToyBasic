@@ -15,7 +15,7 @@
         /// </summary>
         /// <param name="lineNumber">The line number to go to</param>
         public Goto(int lineNumber)
-            : base(Keyword.Goto, false)
+            : base(Keywords.Goto, false)
         {
             m_lineNumber = lineNumber;
         }
@@ -34,7 +34,7 @@
         /// </summary>
         public override string Text
         {
-            get { return string.Format("{0} {1}", Keyword.Goto, m_lineNumber); }
+            get { return string.Format("{0} {1}", Keywords.Goto, m_lineNumber); }
         }
     }
 }

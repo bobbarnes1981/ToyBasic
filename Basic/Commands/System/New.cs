@@ -3,7 +3,7 @@
     public class New : Command
     {
         public New()
-            : base(Keyword.New, true)
+            : base(Keywords.New, true)
         {
         }
 

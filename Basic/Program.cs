@@ -1,10 +1,12 @@
-﻿namespace Basic
+﻿using Ninject;
+
+namespace Basic
 {
     public class Program
     {
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
-            new Interpreter(new Buffer(), new Parser(), new Console(), new Heap(), new Stack()).Run();
+            new StandardKernel(new InterpreterModule()).Get<Interpreter>().Run();
         }
     }
 }
