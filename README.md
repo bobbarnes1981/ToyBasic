@@ -6,6 +6,8 @@ An attempt to write a simple basic interpreter.
 
 Implement Help
 
+Gosub/Return?
+
 ##Example:
 
 ###print hello world forever
