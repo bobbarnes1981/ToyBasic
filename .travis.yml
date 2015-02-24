@@ -1,2 +1,7 @@
 language: csharp
 solution: Basic.sln
+install:
+ - nuget restore Basic.sln
+script:
+ - xbuild /p:Configuration=Release Basic.sln
+ - mono ./packages/NUnit.Runners.2.6.4/tools/nunit-console.exe ./Basic.UnitTests/bin/Release/Basic.UnitTests.dll
