@@ -8,7 +8,7 @@ namespace Basic.UnitTests.Commands.System
     public class NewTests
     {
         [Test]
-        public void Load_ConstructedObject_HasCorrectKeyword()
+        public void New_ConstructedObject_HasCorrectKeyword()
         {
             New underTest = new New();
 

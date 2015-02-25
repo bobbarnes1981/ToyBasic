@@ -29,6 +29,11 @@ namespace Basic.Commands.Program
             m_command = command;
         }
 
+        public ICommand Command
+        {
+            get { return m_command; }
+        }
+
         /// <summary>
         /// Executes the 'If' command by evaluating the expression and executing the command if the expression is true
         /// </summary>

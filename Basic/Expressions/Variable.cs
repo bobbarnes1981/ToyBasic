@@ -6,6 +6,8 @@
 
         private readonly string m_variable;
 
+        public static readonly char PREFIX = '$';
+
         public Variable(IInterpreter interpreter, string variable)
         {
             m_interpreter = interpreter;

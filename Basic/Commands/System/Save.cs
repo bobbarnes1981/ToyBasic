@@ -15,6 +15,7 @@ namespace Basic.Commands.System
         public override void Execute(IInterpreter interpreter)
         {
             List<string> lines = new List<string>();
+            interpreter.Buffer.Reset();
             while(!interpreter.Buffer.End)
             {
                 lines.Add(interpreter.Buffer.Fetch.Command.Text);

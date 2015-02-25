@@ -2,14 +2,16 @@
 
 namespace Basic
 {
-    public class Line
+    public class Line : ILine
     {
-        private readonly int m_number;
+        private int m_number;
 
         private readonly ICommand m_command;
 
         public Line(int number, ICommand command)
         {
+            if (number < 1)
+                throw new Errors.Line(string.Format("Invalid line number '{0}'", number));
             m_number = number;
             m_command = command;
         }
@@ -17,6 +19,7 @@ namespace Basic
         public int Number
         {
             get { return m_number; }
+            set { m_number = value; }
         }
 
         public ICommand Command

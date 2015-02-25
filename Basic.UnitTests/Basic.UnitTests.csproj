@@ -79,12 +79,17 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="BufferTests.cs" />
+    <Compile Include="Commands\Program\IfTests.cs" />
+    <Compile Include="Commands\System\SaveTests.cs" />
+    <Compile Include="Commands\System\RunTests.cs" />
     <Compile Include="Commands\System\NewTests.cs" />
     <Compile Include="Commands\System\LoadTests.cs" />
     <Compile Include="Commands\System\ListTests.cs" />
     <Compile Include="Commands\System\ExitTests.cs" />
     <Compile Include="Commands\System\ClearTests.cs" />
-    <Compile Include="ParserTests.cs" />
+    <Compile Include="Commands\System\RenumberTests.cs" />
+    <Compile Include="Parsers\ExpressionTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

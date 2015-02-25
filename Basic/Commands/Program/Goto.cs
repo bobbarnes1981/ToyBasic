@@ -30,6 +30,15 @@
         }
 
         /// <summary>
+        /// Gets or sets the line number to jump to
+        /// </summary>
+        public int LineNumber
+        {
+            get { return m_lineNumber; }
+            set { m_lineNumber = value; }
+        }
+
+        /// <summary>
         /// Gets the text representation of the command
         /// </summary>
         public override string Text

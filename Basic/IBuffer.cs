@@ -2,10 +2,10 @@
 {
     public interface IBuffer
     {
-        void Add(Line line);
-        void Renumber(int step);
+        void Add(ILine line);
+        void Renumber();
         void Reset();
-        Line Fetch { get; }
+        ILine Fetch { get; }
         int Current { get; }
         void Jump(int lineNumber);
         bool End { get; }

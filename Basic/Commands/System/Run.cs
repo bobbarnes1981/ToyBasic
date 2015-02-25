@@ -14,7 +14,7 @@
 
         public override string Text
         {
-            get { return "Run"; }
+            get { return Keywords.Run.ToString(); }
         }
     }
 }

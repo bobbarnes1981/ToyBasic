@@ -9,7 +9,7 @@
 
         public override void Execute(IInterpreter interpreter)
         {
-            interpreter.Buffer.Renumber(10);
+            interpreter.Buffer.Renumber();
         }
 
         public override string Text
