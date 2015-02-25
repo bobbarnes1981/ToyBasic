@@ -6,6 +6,10 @@ An attempt to write a simple basic interpreter.
 
 ##Todo:
 
+THINK ABOUT DESIGN OF PARSER/EXPRESSION-VARIABLE
+
+Does interpreter need to pass into parser or should it be passed into expression.Result(), should we just pass in the IHeap?
+
 Implement brackets in Expressions
 
 Implement Help
