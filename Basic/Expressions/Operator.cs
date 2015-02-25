@@ -6,6 +6,14 @@ namespace Basic.Expressions
     {
         private readonly Operators m_operatorType;
 
+        /// <summary>
+        /// Valid operator characters
+        /// </summary>
+        public static readonly List<char> VALID_CHARACTERS = new List<char>
+        {
+            '+', '-', '=', '*', '/', '!'
+        };
+
         public static readonly Dictionary<Operators, string> Representations = new Dictionary<Operators, string>
         {
             { Operators.Equals, "==" },

@@ -57,6 +57,7 @@
     <Compile Include="Commands\Program\Input.cs" />
     <Compile Include="Commands\Program\Rem.cs" />
     <Compile Include="Commands\System\Save.cs" />
+    <Compile Include="Errors\Buffer.cs" />
     <Compile Include="Errors\Expression.cs" />
     <Compile Include="Errors\Heap.cs" />
     <Compile Include="Expressions\Expression.cs" />
@@ -69,6 +70,7 @@
     <Compile Include="Expressions\IExpression.cs" />
     <Compile Include="IFrame.cs" />
     <Compile Include="IHeap.cs" />
+    <Compile Include="ILine.cs" />
     <Compile Include="InterpreterModule.cs" />
     <Compile Include="IStack.cs" />
     <Compile Include="IStorage.cs" />
@@ -90,12 +92,14 @@
     <Compile Include="IInterpreter.cs" />
     <Compile Include="Interpreter.cs" />
     <Compile Include="Errors\Interpreter.cs" />
-    <Compile Include="IParser.cs" />
+    <Compile Include="Parsers\Expression.cs" />
+    <Compile Include="Parsers\IParser.cs" />
     <Compile Include="Line.cs" />
     <Compile Include="Errors\Line.cs" />
     <Compile Include="Operators.cs" />
-    <Compile Include="Parser.cs" />
+    <Compile Include="Parsers\Line.cs" />
     <Compile Include="Errors\Parser.cs" />
+    <Compile Include="Parsers\Parser.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Expressions\String.cs" />

@@ -37,5 +37,16 @@ namespace Basic
         {
             m_offset = 0;
         }
+
+        /// <summary>
+        /// Discard white space
+        /// </summary>
+        public void DiscardSpaces()
+        {
+            while (!End && Peek() == ' ')
+            {
+                Next();
+            }
+        }
     }
 }

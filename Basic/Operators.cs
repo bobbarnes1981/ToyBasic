@@ -2,11 +2,11 @@
 {
     public enum Operators
     {
-        None,
         Equals,
         Divide,
         Multiply,
         Add,
-        Subtract
+        Subtract,
+        None
     }
 }

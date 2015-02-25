@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reflection;
+using Basic.Parsers;
 
 namespace Basic
 {
@@ -14,7 +15,7 @@ namespace Basic
 
         private bool m_executing = false;
 
-        private IParser m_parser;
+        private IParser<ILine> m_parser;
 
         private IBuffer m_buffer;
 
@@ -30,18 +31,16 @@ namespace Basic
         /// Creates a new instance of the <see cref="Interpreter"/> class.
         /// </summary>
         /// <param name="buffer"></param>
-        /// <param name="parser"></param>
         /// <param name="console"></param>
         /// <param name="heap"></param>
         /// <param name="stack"></param>
-        public Interpreter(IBuffer buffer, IParser parser, IConsole console, IHeap heap, IStack stack, IStorage storage)
+        /// <param name="storage"></param>
+        /// <param name="parser"></param>
+        public Interpreter(IBuffer buffer, IConsole console, IHeap heap, IStack stack, IStorage storage, IParser<ILine> parser)
         {
             if (buffer == null)
                 throw new ArgumentNullException("buffer");
             m_buffer = buffer;
-            if (parser == null)
-                throw new ArgumentNullException("parser");
-            m_parser = parser;
             if (console == null)
                 throw new ArgumentNullException("console");
             m_console = console;
@@ -54,6 +53,10 @@ namespace Basic
             if (storage == null)
                 throw new ArgumentNullException("storage");
             m_storage = storage;
+
+            if (parser == null)
+                throw new ArgumentNullException("parser");
+            m_parser = parser;
         }
 
         public IBuffer Buffer
@@ -102,7 +105,7 @@ namespace Basic
         /// <param name="input"></param>
         public void ProcessInput(string input)
         {
-            Line line;
+            ILine line;
             try
             {
                 line = m_parser.Parse(this, new TextStream(input));

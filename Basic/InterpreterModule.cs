@@ -1,4 +1,6 @@
-﻿using Ninject.Modules;
+﻿using Basic.Expressions;
+using Basic.Parsers;
+using Ninject.Modules;
 
 namespace Basic
 {
@@ -8,11 +10,12 @@ namespace Basic
         {
             Bind<IBuffer>().To<Buffer>();
             Bind<IConsole>().To<Console>();
-            //Bind<IFrame>().To<Frame>();
             Bind<IHeap>().To<Heap>();
-            Bind<IParser>().To<Parser>();
             Bind<IStack>().To<Stack>();
             Bind<IStorage>().To<FileStorage>();
+
+            Bind<IParser<ILine>>().To<Parsers.Line>();
+            Bind<IParser<IExpression>>().To<Parsers.Expression>();
         }
     }
 }
