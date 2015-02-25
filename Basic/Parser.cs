@@ -39,20 +39,12 @@ namespace Basic
         };
 
         /// <summary>
-        /// The interpreter interface
-        /// </summary>
-        private IInterpreter m_interpreter;
-
-        /// <summary>
         /// Creates a new instance of the <see cref="Parser"/> class.
         /// </summary>
-        /// <param name="interpreter">The interpreter interface</param>
         /// <param name="input">The input string to parse</param>
         /// <returns>A parsed line object</returns>
         public Line Parse(IInterpreter interpreter, ITextStream input)
         {
-            m_interpreter = interpreter;
-
             int number;
 
             string numberString = readUntil(input, character => character == ' ');
@@ -62,7 +54,7 @@ namespace Basic
                 input.Reset();
             }
 
-            Commands.ICommand command = readCommand(input, number == 0);
+            Commands.ICommand command = readCommand(interpreter, input, number == 0);
 
             return new Line(number, command);
         }
@@ -72,7 +64,7 @@ namespace Basic
         /// </summary>
         /// <param name="isSystem">True if a system command is expected</param>
         /// <returns>A parsed ICommand object</returns>
-        private Commands.ICommand readCommand(ITextStream input, bool isSystem)
+        private Commands.ICommand readCommand(IInterpreter interpreter, ITextStream input, bool isSystem)
         {
             Commands.ICommand command;
 
@@ -84,7 +76,7 @@ namespace Basic
             }
             else
             {
-                command = readProgramCommand(input, keyword);
+                command = readProgramCommand(interpreter, input, keyword);
             }
 
             return command;
@@ -150,7 +142,7 @@ namespace Basic
         /// </summary>
         /// <param name="keyword">Keyword of the expected command</param>
         /// <returns>A parsed ICommand object</returns>
-        private Commands.ICommand readProgramCommand(ITextStream input, Keywords keyword)
+        private Commands.ICommand readProgramCommand(IInterpreter interpreter, ITextStream input, Keywords keyword)
         {
             Commands.ICommand command;
             switch (keyword)
@@ -181,9 +173,9 @@ namespace Basic
                     expectEnd(input);
                     break;
                 case Keywords.If:
-                    Expressions.IExpression comparison = ReadExpressionNode(input, null);
+                    Expressions.IExpression comparison = ReadExpressionNode(interpreter, input, null);
                     expect(input, Keywords.Then);
-                    command = new Commands.Program.If(comparison, readCommand(input, false));
+                    command = new Commands.Program.If(comparison, readCommand(interpreter, input, false));
                     expectEnd(input);
                     break;
                 case Keywords.Input:
@@ -194,7 +186,7 @@ namespace Basic
                     string letVariable = readVariable(input);
                     discardSpace(input);
                     expect(input, '=');
-                    command = new Commands.Program.Let(letVariable, ReadExpressionNode(input, null));
+                    command = new Commands.Program.Let(letVariable, ReadExpressionNode(interpreter, input, null));
                     expectEnd(input);
                     break;
                 case Keywords.Next:
@@ -202,7 +194,7 @@ namespace Basic
                     expectEnd(input);
                     break;
                 case Keywords.Print:
-                    command = new Commands.Program.Print(ReadExpressionNode(input, null));
+                    command = new Commands.Program.Print(ReadExpressionNode(interpreter, input, null));
                     expectEnd(input);
                     break;
                 case Keywords.Rem:
@@ -335,13 +327,13 @@ namespace Basic
         /// </summary>
         /// <param name="parentNode">The current previous parent node</param>
         /// <returns></returns>
-        public Expressions.IExpression ReadExpressionNode(ITextStream input, Expressions.IExpression parentNode)
+        public Expressions.IExpression ReadExpressionNode(IInterpreter interpreter, ITextStream input, Expressions.IExpression parentNode)
         {
             // current result node
             Expressions.IExpression result = null;
 
             // read the current expression 
-            Expressions.IExpression child = readExpressionLeaf(input);
+            Expressions.IExpression child = readExpressionLeaf(interpreter, input);
 
             // check for an operator
             Operators op = Operators.None;
@@ -401,7 +393,7 @@ namespace Basic
                     opNode.Left = child;
                     opNode.Left.Parent = opNode;
 
-                    result = ReadExpressionNode(input, opNode);
+                    result = ReadExpressionNode(interpreter, input, opNode);
                 }
                 else
                 {
@@ -421,7 +413,7 @@ namespace Basic
                                 opNode.Left = parentNode;
                                 opNode.Left.Parent = opNode;
 
-                                result = ReadExpressionNode(input, opNode);
+                                result = ReadExpressionNode(interpreter, input, opNode);
                             }
                             else
                             {
@@ -432,7 +424,7 @@ namespace Basic
                                 parentNode.Right = opNode;
                                 parentNode.Right.Parent = parentNode;
 
-                                result = ReadExpressionNode(input, opNode);
+                                result = ReadExpressionNode(interpreter, input, opNode);
                             }
                         }
                         else
@@ -456,7 +448,7 @@ namespace Basic
         /// Read an expression leaf; a string, variable or number
         /// </summary>
         /// <returns></returns>
-        private Expressions.IExpression readExpressionLeaf(ITextStream input)
+        private Expressions.IExpression readExpressionLeaf(IInterpreter interpreter, ITextStream input)
         {
             preChecks(input, "expression");
             char character = input.Peek();
@@ -467,7 +459,7 @@ namespace Basic
                     leafNode = new Expressions.String(readString(input));
                     break;
                 case '$':
-                    leafNode = new Expressions.Variable(m_interpreter, readVariable(input));
+                    leafNode = new Expressions.Variable(interpreter, readVariable(input));
                     break;
                 case '0':
                 case '1':

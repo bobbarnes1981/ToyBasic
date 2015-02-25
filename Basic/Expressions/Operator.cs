@@ -1,8 +1,19 @@
-﻿namespace Basic.Expressions
+﻿using System.Collections.Generic;
+
+namespace Basic.Expressions
 {
     public class Operator : Expression
     {
         private readonly Operators m_operatorType;
+
+        public static readonly Dictionary<Operators, string> Representations = new Dictionary<Operators, string>
+        {
+            { Operators.Equals, "==" },
+            { Operators.Divide, "/" },
+            { Operators.Multiply, "*" },
+            { Operators.Add, "+" },
+            { Operators.Subtract, "-" },
+        };
 
         public Operator(Operators operatorType)
         {
@@ -34,7 +45,7 @@
 
         public override string Text
         {
-            get { return string.Format("{0} {1} {2}", Left.Text, m_operatorType, Right.Text ); }
+            get { return string.Format("{0} {1} {2}", Left.Text, Representations[m_operatorType], Right.Text ); }
         }
 
         private object Divide(object left, object right)
