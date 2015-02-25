@@ -66,6 +66,7 @@ namespace Basic.Parsers
         /// <returns></returns>
         private Keywords readKeyword(ITextStream input)
         {
+            preChecks(input, "keyword");
             string keywordString = readUntil(input, character => character == ' ');
             Keywords keyword;
             if (!Enum.TryParse(keywordString, out keyword))

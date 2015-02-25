@@ -10,7 +10,7 @@ namespace Basic
 
         public Line(int number, ICommand command)
         {
-            if (number < 1)
+            if (number < 0)
                 throw new Errors.Line(string.Format("Invalid line number '{0}'", number));
             m_number = number;
             m_command = command;
