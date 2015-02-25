@@ -44,37 +44,25 @@ namespace Basic
         private IInterpreter m_interpreter;
 
         /// <summary>
-        /// Input string
-        /// </summary>
-        private string m_input;
-
-        /// <summary>
-        /// Current offset
-        /// </summary>
-        private int m_offset;
-
-        /// <summary>
         /// Creates a new instance of the <see cref="Parser"/> class.
         /// </summary>
         /// <param name="interpreter">The interpreter interface</param>
         /// <param name="input">The input string to parse</param>
         /// <returns>A parsed line object</returns>
-        public Line Parse(IInterpreter interpreter, string input)
+        public Line Parse(IInterpreter interpreter, ITextStream input)
         {
             m_interpreter = interpreter;
-            m_input = input;
-            m_offset = 0;
 
             int number;
 
-            string numberString = readUntil((offset, data) => offset >= data.Length || data[offset] == ' ');
+            string numberString = readUntil(input, character => character == ' ');
 
             if (!int.TryParse(numberString, out number))
             {
-                m_offset = 0;
+                input.Reset();
             }
 
-            Commands.ICommand command = readCommand(m_offset == 0);
+            Commands.ICommand command = readCommand(input, number == 0);
 
             return new Line(number, command);
         }
@@ -84,27 +72,37 @@ namespace Basic
         /// </summary>
         /// <param name="isSystem">True if a system command is expected</param>
         /// <returns>A parsed ICommand object</returns>
-        private Commands.ICommand readCommand(bool isSystem)
+        private Commands.ICommand readCommand(ITextStream input, bool isSystem)
         {
             Commands.ICommand command;
 
-            string keywordString = readUntil((offset, data) => offset >= data.Length || data[offset] == ' ');
+            Keywords keyword = readKeyword(input);
+
+            if (isSystem)
+            {
+                command = readSystemCommand(input, keyword);
+            }
+            else
+            {
+                command = readProgramCommand(input, keyword);
+            }
+
+            return command;
+        }
+
+        /// <summary>
+        /// Read a keyword from the input string
+        /// </summary>
+        /// <returns></returns>
+        private Keywords readKeyword(ITextStream input)
+        {
+            string keywordString = readUntil(input, character => character == ' ');
             Keywords keyword;
             if (!Enum.TryParse(keywordString, out keyword))
             {
                 throw new Errors.Parser(string.Format("Could not parse keyword {0}", keywordString));
             }
-
-            if (isSystem)
-            {
-                command = readSystemCommand(keyword);
-            }
-            else
-            {
-                command = readProgramCommand(keyword);
-            }
-
-            return command;
+            return keyword;
         }
 
         /// <summary>
@@ -112,33 +110,33 @@ namespace Basic
         /// </summary>
         /// <param name="keyword">Keyword of the expected command</param>
         /// <returns>A parsed ICommand object</returns>
-        private Commands.ICommand readSystemCommand(Keywords keyword)
+        private Commands.ICommand readSystemCommand(ITextStream input, Keywords keyword)
         {
             Commands.ICommand command;
             switch (keyword)
             {
                 case Keywords.Clear:
-                    expectEnd();
+                    expectEnd(input);
                     command = new Commands.System.Clear();
                     break;
                 case Keywords.Exit:
-                    expectEnd();
+                    expectEnd(input);
                     command = new Commands.System.Exit();
                     break;
                 case Keywords.List:
-                    expectEnd();
+                    expectEnd(input);
                     command = new Commands.System.List();
                     break;
                 case Keywords.New:
-                    expectEnd();
+                    expectEnd(input);
                     command = new Commands.System.New();
                     break;
                 case Keywords.Run:
-                    expectEnd();
+                    expectEnd(input);
                     command = new Commands.System.Run();
                     break;
                 case Keywords.Renumber:
-                    expectEnd();
+                    expectEnd(input);
                     command = new Commands.System.Renumber();
                     break;
                 default:
@@ -152,59 +150,64 @@ namespace Basic
         /// </summary>
         /// <param name="keyword">Keyword of the expected command</param>
         /// <returns>A parsed ICommand object</returns>
-        private Commands.ICommand readProgramCommand(Keywords keyword)
+        private Commands.ICommand readProgramCommand(ITextStream input, Keywords keyword)
         {
             Commands.ICommand command;
             switch (keyword)
             {
                 case Keywords.Clear:
-                    expectEnd();
+                    expectEnd(input);
                     command = new Commands.Program.Clear();
                     break;
+                case Keywords.Dim:
+                    string variable = readVariable(input);
+                    // TODO: expect [<number>]
+                    throw new NotImplementedException();
+                    break;
                 case Keywords.For:
-                    string forVariable = readVariable();
-                    discardSpace();
-                    expect('=');
-                    int start = readInt();
-                    expect(Keywords.To);
-                    int end = readInt();
-                    expect(Keywords.Step);
-                    int step = readInt();
-                    expectEnd();
+                    string forVariable = readVariable(input);
+                    discardSpace(input);
+                    expect(input, '=');
+                    int start = readInt(input);
+                    expect(input, Keywords.To);
+                    int end = readInt(input);
+                    expect(input, Keywords.Step);
+                    int step = readInt(input);
+                    expectEnd(input);
                     command = new Commands.Program.For(forVariable, start, end, step);
                     break;
                 case Keywords.Goto:
-                    command = new Commands.Program.Goto(readInt());
-                    expectEnd();
+                    command = new Commands.Program.Goto(readInt(input));
+                    expectEnd(input);
                     break;
                 case Keywords.If:
-                    Expressions.IExpression comparison = readExpressionNode(null);
-                    expect(Keywords.Then);
-                    command = new Commands.Program.If(comparison, readCommand(false));
-                    expectEnd();
+                    Expressions.IExpression comparison = ReadExpressionNode(input, null);
+                    expect(input, Keywords.Then);
+                    command = new Commands.Program.If(comparison, readCommand(input, false));
+                    expectEnd(input);
                     break;
                 case Keywords.Input:
-                    command = new Commands.Program.Input(readVariable());
-                    expectEnd();
+                    command = new Commands.Program.Input(readVariable(input));
+                    expectEnd(input);
                     break;
                 case Keywords.Let:
-                    string letVariable = readVariable();
-                    discardSpace();
-                    expect('=');
-                    command = new Commands.Program.Let(letVariable, readExpressionNode(null));
-                    expectEnd();
+                    string letVariable = readVariable(input);
+                    discardSpace(input);
+                    expect(input, '=');
+                    command = new Commands.Program.Let(letVariable, ReadExpressionNode(input, null));
+                    expectEnd(input);
                     break;
                 case Keywords.Next:
-                    command = new Commands.Program.Next(readVariable());
-                    expectEnd();
+                    command = new Commands.Program.Next(readVariable(input));
+                    expectEnd(input);
                     break;
                 case Keywords.Print:
-                    command = new Commands.Program.Print(readExpressionNode(null));
-                    expectEnd();
+                    command = new Commands.Program.Print(ReadExpressionNode(input, null));
+                    expectEnd(input);
                     break;
                 case Keywords.Rem:
-                    command = new Commands.Program.Rem(readUntil((offset, data) => offset >= data.Length));
-                    expectEnd();
+                    command = new Commands.Program.Rem(readUntil(input, character => false));
+                    expectEnd(input);
                     break;
                 default:
                     throw new Errors.Parser(string.Format("Program command not implemented in line parser: {0}", keyword));
@@ -217,20 +220,20 @@ namespace Basic
         /// </summary>
         /// <param name="untilFunc">Function to designate end of string</param>
         /// <returns>A string read from the input string</returns>
-        private string readUntil(Func<int, string, bool> untilFunc)
+        private string readUntil(ITextStream input, Func<char, bool> untilFunc)
         {
             string output = string.Empty;
             char currentChar;
             while (true)
             {
-                currentChar = m_input[m_offset];
+                currentChar = input.Peek();
                 output += currentChar;
-                if (m_offset >= m_input.Length)
+                if (input.End)
                 {
                     throw new Errors.Parser(string.Format("Unexpected end of line"));
                 }
-                m_offset++;
-                if (untilFunc(m_offset, m_input))
+                input.Next();
+                if (input.End || untilFunc(input.Peek()))
                 {
                     break;
                 }
@@ -242,21 +245,21 @@ namespace Basic
         /// Expect the spcified keyword in the input string
         /// </summary>
         /// <param name="keyword">Expected keyword</param>
-        private void expect(Keywords keyword)
+        private void expect(ITextStream input, Keywords keyword)
         {
-            expect(keyword.ToString());
+            expect(input, keyword.ToString());
         }
 
         /// <summary>
         /// Expect the specified string in the input string
         /// </summary>
         /// <param name="expectedString">Expected string</param>
-        private void expect(string expectedString)
+        private void expect(ITextStream input, string expectedString)
         {
-            preChecks(expectedString);
+            preChecks(input, expectedString);
             foreach(char expectedChar in expectedString)
             {
-                expect(expectedChar);
+                expect(input, expectedChar);
             }
         }
 
@@ -264,24 +267,24 @@ namespace Basic
         /// Expect the specified character in the input string
         /// </summary>
         /// <param name="expectedChar">Expected character</param>
-        private void expect(char expectedChar)
+        private void expect(ITextStream input, char expectedChar)
         {
-            preChecks(expectedChar.ToString());
-            if (m_input[m_offset] != expectedChar)
+            preChecks(input, expectedChar.ToString());
+            if (input.Peek() != expectedChar)
             {
-                throw new Errors.Parser(string.Format("Expecting '{0}' but found '{1}'", expectedChar, m_input[m_offset]));
+                throw new Errors.Parser(string.Format("Expecting '{0}' but found '{1}'", expectedChar, input.Peek()));
             }
-            m_offset++;
+            input.Next();
         }
 
         /// <summary>
         /// Expect the end of the input string
         /// </summary>
-        private void expectEnd()
+        private void expectEnd(ITextStream input)
         {
-            if (m_offset < m_input.Length)
+            if (!input.End)
             {
-                throw new Errors.Parser(string.Format("Expecting end of line but found '{0}'", m_input[m_offset]));
+                throw new Errors.Parser(string.Format("Expecting end of line but found '{0}'", input.Peek()));
             }
         }
 
@@ -289,12 +292,12 @@ namespace Basic
         /// Read a string; a number of valid characters surrounded by double quotes
         /// </summary>
         /// <returns></returns>
-        private string readString()
+        private string readString(ITextStream input)
         {
-            preChecks("string");
-            expect('\"');
-            string output = readUntil((offset, data) => offset >= data.Length || data[offset] == '\"');
-            m_offset++;
+            preChecks(input, "string");
+            expect(input, '\"');
+            string output = readUntil(input, character => character == '\"');
+            input.Next();
             return output;
         }
 
@@ -302,14 +305,14 @@ namespace Basic
         /// Read an integer; a number of valid numbers
         /// </summary>
         /// <returns></returns>
-        private int readInt()
+        private int readInt(ITextStream input)
         {
-            preChecks("int");
+            preChecks(input, "int");
             int number;
-            string input = readUntil((offset, data) => offset >= data.Length || !NUMBERS.Contains(data[offset]));
-            if (!int.TryParse(input, out number))
+            string numberString = readUntil(input, character => !NUMBERS.Contains(character));
+            if (!int.TryParse(numberString, out number))
             {
-                throw new Errors.Parser(string.Format("'{0}' is not a number", input));
+                throw new Errors.Parser(string.Format("'{0}' is not a number", numberString));
             }
             return number;
         }
@@ -318,11 +321,11 @@ namespace Basic
         /// Read a variable; a number of characters prefixed by the variable prefix '$'
         /// </summary>
         /// <returns></returns>
-        private string readVariable()
+        private string readVariable(ITextStream input)
         {
-            preChecks("variable");
-            expect(VARIABLE_PREFIX);
-            return readUntil((offset, data) => offset >= data.Length || !CHARACTERS.Contains(data[offset]));
+            preChecks(input, "variable");
+            expect(input, VARIABLE_PREFIX);
+            return readUntil(input, character => !CHARACTERS.Contains(character));
         }
 
         /// <summary>
@@ -332,20 +335,20 @@ namespace Basic
         /// </summary>
         /// <param name="parentNode">The current previous parent node</param>
         /// <returns></returns>
-        private Expressions.IExpression readExpressionNode(Expressions.IExpression parentNode)
+        public Expressions.IExpression ReadExpressionNode(ITextStream input, Expressions.IExpression parentNode)
         {
             // current result node
             Expressions.IExpression result = null;
 
             // read the current expression 
-            Expressions.IExpression child = readExpressionLeaf();
+            Expressions.IExpression child = readExpressionLeaf(input);
 
             // check for an operator
             Operators op = Operators.None;
-            discardSpace();
-            if (m_offset < m_input.Length && OPERATORS.Contains(m_input[m_offset]))
+            discardSpace(input);
+            if (!input.End && OPERATORS.Contains(input.Peek()))
             {
-                op = readOperator();
+                op = readOperator(input);
             }
             if (op == Operators.None)
             {
@@ -398,7 +401,7 @@ namespace Basic
                     opNode.Left = child;
                     opNode.Left.Parent = opNode;
 
-                    result = readExpressionNode(opNode);
+                    result = ReadExpressionNode(input, opNode);
                 }
                 else
                 {
@@ -418,7 +421,7 @@ namespace Basic
                                 opNode.Left = parentNode;
                                 opNode.Left.Parent = opNode;
 
-                                result = readExpressionNode(opNode);
+                                result = ReadExpressionNode(input, opNode);
                             }
                             else
                             {
@@ -429,7 +432,7 @@ namespace Basic
                                 parentNode.Right = opNode;
                                 parentNode.Right.Parent = parentNode;
 
-                                result = readExpressionNode(opNode);
+                                result = ReadExpressionNode(input, opNode);
                             }
                         }
                         else
@@ -453,18 +456,18 @@ namespace Basic
         /// Read an expression leaf; a string, variable or number
         /// </summary>
         /// <returns></returns>
-        private Expressions.IExpression readExpressionLeaf()
+        private Expressions.IExpression readExpressionLeaf(ITextStream input)
         {
-            preChecks("expression");
-            char character = m_input[m_offset];
+            preChecks(input, "expression");
+            char character = input.Peek();
             Expressions.IExpression leafNode;
             switch (character)
             {
                 case '"':
-                    leafNode = new Expressions.String(readString());
+                    leafNode = new Expressions.String(readString(input));
                     break;
                 case '$':
-                    leafNode = new Expressions.Variable(m_interpreter, readVariable());
+                    leafNode = new Expressions.Variable(m_interpreter, readVariable(input));
                     break;
                 case '0':
                 case '1':
@@ -476,7 +479,7 @@ namespace Basic
                 case '7':
                 case '8':
                 case '9':
-                    leafNode = new Expressions.Number(readInt());
+                    leafNode = new Expressions.Number(readInt(input));
                     break;
                 default:
                     throw new Errors.Parser(string.Format("'{0}' is not recognised as the start of a valid expression leaf node", character));
@@ -488,14 +491,14 @@ namespace Basic
         /// Read an operator from the input string
         /// </summary>
         /// <returns></returns>
-        private Operators readOperator()
+        private Operators readOperator(ITextStream input)
         {
-            preChecks("operator");
+            preChecks(input, "operator");
             Operators op;
-            string input = readUntil((offset, data) => offset >= data.Length || !OPERATORS.Contains(data[offset]));
-            if (!input.TryParseOperator(out op))
+            string operatorString = readUntil(input, character => !OPERATORS.Contains(character));
+            if (!operatorString.TryParseOperator(out op))
             {
-                throw new Errors.Parser(string.Format("'{0}' is not a valid operator", input));
+                throw new Errors.Parser(string.Format("'{0}' is not a valid operator", operatorString));
             }
             return op;
         }
@@ -504,23 +507,23 @@ namespace Basic
         /// Check for the end of the input string and discard any white space
         /// </summary>
         /// <param name="expecting"></param>
-        private void preChecks(string expecting)
+        private void preChecks(ITextStream input, string expecting)
         {
-            if (m_offset >= m_input.Length)
+            if (input.End)
             {
                 throw new Errors.Parser(string.Format("Expecting {0} but reached end of line", expecting));
             }
-            discardSpace();
+            discardSpace(input);
         }
 
         /// <summary>
         /// Discard white space
         /// </summary>
-        private void discardSpace()
+        private void discardSpace(ITextStream input)
         {
-            while (m_offset < m_input.Length && m_input[m_offset] == ' ')
+            while (!input.End && input.Peek() == ' ')
             {
-                m_offset++;
+                input.Next();
             }
         }
     }

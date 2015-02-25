@@ -2,6 +2,7 @@
 {
     public enum Keywords
     {
+        Dim,
         For,
         Goto,
         If,

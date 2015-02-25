@@ -31,16 +31,28 @@ namespace Basic
         /// </summary>
         /// <param name="buffer"></param>
         /// <param name="parser"></param>
-        /// <param name="display"></param>
+        /// <param name="console"></param>
         /// <param name="heap"></param>
         /// <param name="stack"></param>
-        public Interpreter(IBuffer buffer, IParser parser, IConsole display, IHeap heap, IStack stack, IStorage storage)
+        public Interpreter(IBuffer buffer, IParser parser, IConsole console, IHeap heap, IStack stack, IStorage storage)
         {
+            if (buffer == null)
+                throw new ArgumentNullException("buffer");
             m_buffer = buffer;
+            if (parser == null)
+                throw new ArgumentNullException("parser");
             m_parser = parser;
-            m_console = display;
+            if (console == null)
+                throw new ArgumentNullException("console");
+            m_console = console;
+            if (heap == null)
+                throw new ArgumentNullException("heap");
             m_heap = heap;
+            if (stack == null)
+                throw new ArgumentNullException("stack");
             m_stack = stack;
+            if (storage == null)
+                throw new ArgumentNullException("storage");
             m_storage = storage;
         }
 
@@ -93,7 +105,7 @@ namespace Basic
             Line line;
             try
             {
-                line = m_parser.Parse(this, input);
+                line = m_parser.Parse(this, new TextStream(input));
             }
             catch(Errors.Error error)
             {

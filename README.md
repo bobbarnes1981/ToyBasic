@@ -6,9 +6,13 @@ An attempt to write a simple basic interpreter.
 
 ##Todo:
 
+Implement brackets in Expressions
+
 Implement Help
 
 Gosub/Return?
+
+Allow extensions? Graphics for example...
 
 ##Examples
 

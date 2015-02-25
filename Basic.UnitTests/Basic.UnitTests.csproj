@@ -84,6 +84,7 @@
     <Compile Include="Commands\System\ListTests.cs" />
     <Compile Include="Commands\System\ExitTests.cs" />
     <Compile Include="Commands\System\ClearTests.cs" />
+    <Compile Include="ParserTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
