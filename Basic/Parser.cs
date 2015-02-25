@@ -404,7 +404,7 @@ namespace Basic
                         if (parentNode.Right == null)
                         {
                             // parent has no right node
-                            if (((Expressions.Operator)parentNode).OperatorType > opNode.OperatorType)
+                            if ((int)((Expressions.Operator)parentNode).OperatorType < (int)opNode.OperatorType)
                             {
                                 // place above
                                 parentNode.Right = child;

@@ -173,14 +173,26 @@ namespace Basic.UnitTests
         [Test]
         public void Parser_ReadExpressionNode_BODMAS()
         {
-            ITextStream input = new TextStream("11 - 2 + 4 * 8 / 2");
+            string expectedText = "11 - 2 + 4 * 4 / 2";
+            ITextStream input = new TextStream(expectedText);
 
             Mock<IInterpreter> interpreterMock = new Mock<IInterpreter>();
 
             Parser underTest = new Parser();
             IExpression expression = underTest.ReadExpressionNode(interpreterMock.Object, input, null);
 
-            // TODO
+            Assert.That(expression, Is.TypeOf<Operator>());
+            Assert.That(expression.Text, Is.EqualTo(expectedText));
+
+            Assert.That(expression.Left, Is.Not.Null);
+            //Assert.That(expression.Left, Is.TypeOf<Number>());
+            //Assert.That(expression.Left.Result(), Is.EqualTo(3));
+
+            Assert.That(expression.Right, Is.Not.Null);
+            //Assert.That(expression.Right, Is.TypeOf<Number>());
+            //Assert.That(expression.Right.Result(), Is.EqualTo(2));
+
+            Assert.That(expression.Result(), Is.EqualTo(1));
         }
     }
 }
