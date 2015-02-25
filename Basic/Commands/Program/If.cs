@@ -67,7 +67,7 @@ namespace Basic.Commands.Program
         /// </summary>
         public override string Text
         {
-            get { return string.Format("If {0} {1}", m_expression.Text, m_command.Text); }
+            get { return string.Format("{0} {1} {2} {3}", Keywords.If, m_expression.Text, Keywords.Then, m_command.Text); }
         }
     }
 }

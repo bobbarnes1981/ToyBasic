@@ -10,6 +10,12 @@ THINK ABOUT DESIGN OF PARSER/EXPRESSION-VARIABLE
 
 Does interpreter need to pass into parser or should it be passed into expression.Result(), should we just pass in the IHeap?
 
+Maybe remove variable prefix
+
+Implement logical operators AND,OR,NOT (XOR,NAND?)
+
+Implement Dim
+
 Implement brackets in Expressions
 
 Implement Help

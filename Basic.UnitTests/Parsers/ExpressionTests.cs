@@ -264,7 +264,63 @@ namespace Basic.UnitTests.Parsers
             Assert.That(expression.Left, Is.Not.Null);
             Assert.That(expression.Right, Is.Not.Null);
 
-            // TODO: add more asserts, see above
+            // 2 left 
+            Assert.That(expression.Left, Is.TypeOf<Operator>());
+            Assert.That(expression.Left.Text, Is.EqualTo("10 / 2"));
+            Assert.That(expression.Left.Result(), Is.EqualTo(5));
+            Assert.That(expression.Left.Left, Is.Not.Null);
+            Assert.That(expression.Left.Right, Is.Not.Null);
+
+            // 3 left left
+            Assert.That(expression.Left.Left, Is.TypeOf<Number>());
+            Assert.That(expression.Left.Left.Text, Is.EqualTo("10"));
+            Assert.That(expression.Left.Left.Result(), Is.EqualTo(10));
+            Assert.That(expression.Left.Left.Left, Is.Null);
+            Assert.That(expression.Left.Left.Right, Is.Null);
+
+            // 3 left right
+            Assert.That(expression.Left.Right, Is.TypeOf<Number>());
+            Assert.That(expression.Left.Right.Text, Is.EqualTo("2"));
+            Assert.That(expression.Left.Right.Result(), Is.EqualTo(2));
+            Assert.That(expression.Left.Right.Left, Is.Null);
+            Assert.That(expression.Left.Right.Right, Is.Null);
+
+            // 2 right 
+            Assert.That(expression.Right, Is.TypeOf<Operator>());
+            Assert.That(expression.Right.Text, Is.EqualTo("4 * 4 / 2"));
+            Assert.That(expression.Right.Result(), Is.EqualTo(8));
+            Assert.That(expression.Right.Left, Is.Not.Null);
+            Assert.That(expression.Right.Right, Is.Not.Null);
+
+            // 3 right left
+            Assert.That(expression.Right.Left, Is.TypeOf<Number>());
+            Assert.That(expression.Right.Left.Text, Is.EqualTo("4"));
+            Assert.That(expression.Right.Left.Result(), Is.EqualTo(4));
+            Assert.That(expression.Right.Left.Left, Is.Null);
+            Assert.That(expression.Right.Left.Right, Is.Null);
+
+            // 3 right right
+            Assert.That(expression.Right.Right, Is.TypeOf<Operator>());
+            Assert.That(expression.Right.Right.Text, Is.EqualTo("4 / 2"));
+            Assert.That(expression.Right.Right.Result(), Is.EqualTo(2));
+            Assert.That(expression.Right.Right.Left, Is.Not.Null);
+            Assert.That(expression.Right.Right.Right, Is.Not.Null);
+
+            // 4 right right left
+            Assert.That(expression.Right.Right.Left, Is.TypeOf<Number>());
+            Assert.That(expression.Right.Right.Left.Text, Is.EqualTo("4"));
+            Assert.That(expression.Right.Right.Left.Result(), Is.EqualTo(4));
+            Assert.That(expression.Right.Right.Left.Left, Is.Null);
+            Assert.That(expression.Right.Right.Left.Right, Is.Null);
+
+            // 4 right right right
+            Assert.That(expression.Right.Right.Right, Is.TypeOf<Number>());
+            Assert.That(expression.Right.Right.Right.Text, Is.EqualTo("2"));
+            Assert.That(expression.Right.Right.Right.Result(), Is.EqualTo(2));
+            Assert.That(expression.Right.Right.Right.Left, Is.Null);
+            Assert.That(expression.Right.Right.Right.Right, Is.Null);
+
+
         }
     }
 }

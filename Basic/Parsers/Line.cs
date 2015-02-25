@@ -98,6 +98,10 @@ namespace Basic.Parsers
                     expectEnd(input);
                     command = new Commands.System.List();
                     break;
+                case Keywords.Load:
+                    command = new Commands.System.Load(readString(input));
+                    expectEnd(input);
+                    break;
                 case Keywords.New:
                     expectEnd(input);
                     command = new Commands.System.New();
@@ -109,6 +113,10 @@ namespace Basic.Parsers
                 case Keywords.Renumber:
                     expectEnd(input);
                     command = new Commands.System.Renumber();
+                    break;
+                case Keywords.Save:
+                    command = new Commands.System.Save(readString(input));
+                    expectEnd(input);
                     break;
                 default:
                     throw new Errors.Parser(string.Format("System keyword not implemented in line parser: {0}", keyword));

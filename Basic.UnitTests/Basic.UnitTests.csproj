@@ -80,6 +80,10 @@
   </Choose>
   <ItemGroup>
     <Compile Include="BufferTests.cs" />
+    <Compile Include="Commands\Program\ClearTests.cs" />
+    <Compile Include="Commands\Program\LetTests.cs" />
+    <Compile Include="Commands\Program\InputTests.cs" />
+    <Compile Include="Commands\Program\GotoTests.cs" />
     <Compile Include="Commands\Program\IfTests.cs" />
     <Compile Include="Commands\System\SaveTests.cs" />
     <Compile Include="Commands\System\RunTests.cs" />
@@ -89,6 +93,7 @@
     <Compile Include="Commands\System\ExitTests.cs" />
     <Compile Include="Commands\System\ClearTests.cs" />
     <Compile Include="Commands\System\RenumberTests.cs" />
+    <Compile Include="HeapTests.cs" />
     <Compile Include="Parsers\ExpressionTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

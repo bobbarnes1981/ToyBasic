@@ -18,7 +18,7 @@ namespace Basic.Commands.System
             interpreter.Buffer.Reset();
             while(!interpreter.Buffer.End)
             {
-                lines.Add(interpreter.Buffer.Fetch.Command.Text);
+                lines.Add(interpreter.Buffer.Fetch.ToString());
             }
             interpreter.Storage.Save(m_filename, lines);
         }

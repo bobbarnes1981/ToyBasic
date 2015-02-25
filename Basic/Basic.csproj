@@ -63,7 +63,6 @@
     <Compile Include="Expressions\Expression.cs" />
     <Compile Include="Expressions\Number.cs" />
     <Compile Include="Expressions\Operator.cs" />
-    <Compile Include="Extensions.cs" />
     <Compile Include="FileStorage.cs" />
     <Compile Include="Frame.cs" />
     <Compile Include="Heap.cs" />

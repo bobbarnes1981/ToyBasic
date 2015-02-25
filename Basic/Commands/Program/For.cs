@@ -61,7 +61,7 @@
         /// </summary>
         public override string Text
         {
-            get { return string.Format("{0} {1} = {2} {3} {4} {5} {6}", Keywords.For, m_variable, m_start, Keywords.To, m_end, Keywords.Step, m_step); }
+            get { return string.Format("{0} {1}{2} = {3} {4} {5} {6} {7}", Keywords.For, Basic.Expressions.Variable.PREFIX, m_variable, m_start, Keywords.To, m_end, Keywords.Step, m_step); }
         }
     }
 }

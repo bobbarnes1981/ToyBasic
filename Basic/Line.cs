@@ -10,16 +10,21 @@ namespace Basic
 
         public Line(int number, ICommand command)
         {
-            if (number < 0)
-                throw new Errors.Line(string.Format("Invalid line number '{0}'", number));
-            m_number = number;
+            Number = number;
+            if (command == null)
+                throw new System.ArgumentNullException("command");
             m_command = command;
         }
 
         public int Number
         {
             get { return m_number; }
-            set { m_number = value; }
+            set
+            {
+                if (value < 0)
+                    throw new Errors.Line(string.Format("Invalid line number '{0}'", value));
+                m_number = value;
+            }
         }
 
         public ICommand Command

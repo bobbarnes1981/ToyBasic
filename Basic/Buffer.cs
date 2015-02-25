@@ -19,6 +19,7 @@ namespace Basic
         public Buffer()
         {
             m_buffer = new SortedDictionary<int, ILine>();
+            Reset();
         }
 
         public void Add(ILine line)
@@ -100,6 +101,9 @@ namespace Basic
             m_currentLine = m_buffer.Keys.FirstOrDefault(x => x > DEFAULT_LINE);
         }
 
+        /// <summary>
+        /// Fetch the next line and increment the current line number
+        /// </summary>
         public ILine Fetch
         {
             get
@@ -121,6 +125,10 @@ namespace Basic
 
         public void Jump(int lineNumber)
         {
+            if (!m_buffer.Keys.Contains(lineNumber))
+            {
+                throw new Errors.Buffer(string.Format("Invalid line number '{0}'", lineNumber));
+            }
             m_currentLine = lineNumber;
         }
 

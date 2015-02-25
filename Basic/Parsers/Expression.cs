@@ -1,4 +1,5 @@
-﻿using Basic.Expressions;
+﻿using System.Linq;
+using Basic.Expressions;
 
 namespace Basic.Parsers
 {
@@ -183,13 +184,12 @@ namespace Basic.Parsers
         public Operators ReadOperator(ITextStream input)
         {
             preChecks(input, "operator");
-            Operators op;
             string operatorString = readUntil(input, character => !Operator.VALID_CHARACTERS.Contains(character));
-            if (!operatorString.TryParseOperator(out op))
+            if (!Operator.Representations.ContainsValue(operatorString))
             {
                 throw new Errors.Parser(string.Format("'{0}' is not a valid operator", operatorString));
             }
-            return op;
+            return Operator.Representations.First(x => x.Value == operatorString).Key;
         }
     }
 }

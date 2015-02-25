@@ -39,7 +39,7 @@
 
         public override string Text
         {
-            get { return string.Format("{0} {1}", Keywords.Next, m_variable); }
+            get { return string.Format("{0} {1}{2}", Keywords.Next, Basic.Expressions.Variable.PREFIX, m_variable); }
         }
     }
 }
