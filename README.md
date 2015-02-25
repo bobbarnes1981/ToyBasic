@@ -14,6 +14,8 @@ Maybe remove variable prefix
 
 Implement logical operators AND,OR,NOT (XOR,NAND?)
 
+Implement explicit concatenate operator ';' instead of '+'?
+
 Implement Dim
 
 Implement brackets in Expressions
