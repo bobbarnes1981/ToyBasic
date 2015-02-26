@@ -92,9 +92,9 @@ namespace Basic
                             case Keywords.Goto:
                                 // renumber goto command
                                 Goto cmd = (Goto)command;
-                                if (cmd.LineNumber == oldLineNumber)
+                                if ((int)cmd.LineNumber.Value() == oldLineNumber)
                                 {
-                                    cmd.LineNumber = newLineNumber;
+                                    cmd.LineNumber = new Types.Number(newLineNumber);
                                 }
 
                                 command = null;

@@ -19,7 +19,7 @@ namespace Basic.UnitTests.Parsers
             Basic.Parsers.ExpressionParser underTest = new Basic.Parsers.ExpressionParser();
             INode expression = underTest.ReadExpressionNode(interpreterMock.Object, input, null);
 
-            Assert.That(expression, Is.TypeOf<String>());
+            Assert.That(expression, Is.TypeOf<Value>());
             Assert.That(expression.Text, Is.EqualTo(expectedText));
             Assert.That(expression.Result(), Is.EqualTo(expectedString));
 
@@ -38,7 +38,7 @@ namespace Basic.UnitTests.Parsers
             Basic.Parsers.ExpressionParser underTest = new Basic.Parsers.ExpressionParser();
             INode expression = underTest.ReadExpressionNode(interpreterMock.Object, input, null);
 
-            Assert.That(expression, Is.TypeOf<Number>());
+            Assert.That(expression, Is.TypeOf<Value>());
             Assert.That(expression.Text, Is.EqualTo(expectedNumber.ToString()));
             Assert.That(expression.Result(), Is.EqualTo(expectedNumber));
 
@@ -55,7 +55,7 @@ namespace Basic.UnitTests.Parsers
             ITextStream input = new TextStream(expectedVariable);
 
             Mock<IHeap> heapMock = new Mock<IHeap>();
-            heapMock.Setup(x => x.Get(expectedName)).Returns(expectedValue);
+            heapMock.Setup(x => x.Get(expectedVariable)).Returns(expectedValue);
 
             Mock<IInterpreter> interpreterMock = new Mock<IInterpreter>();
             interpreterMock.Setup(x => x.Heap).Returns(heapMock.Object);
@@ -63,8 +63,8 @@ namespace Basic.UnitTests.Parsers
             Basic.Parsers.ExpressionParser underTest = new Basic.Parsers.ExpressionParser();
             INode expression = underTest.ReadExpressionNode(interpreterMock.Object, input, null);
 
-            Assert.That(expression, Is.TypeOf<Variable>());
-            Assert.That(expression.Text, Is.EqualTo(expectedName));
+            Assert.That(expression, Is.TypeOf<Value>());
+            Assert.That(expression.Text, Is.EqualTo(expectedVariable));
             Assert.That(expression.Result(), Is.EqualTo(expectedValue));
 
             Assert.That(expression.Left, Is.Null);
@@ -86,11 +86,11 @@ namespace Basic.UnitTests.Parsers
             Assert.That(expression.Text, Is.EqualTo(expectedText));
 
             Assert.That(expression.Left, Is.Not.Null);
-            Assert.That(expression.Left, Is.TypeOf<Number>());
+            Assert.That(expression.Left, Is.TypeOf<Value>());
             Assert.That(expression.Left.Result(), Is.EqualTo(6));
 
             Assert.That(expression.Right, Is.Not.Null);
-            Assert.That(expression.Right, Is.TypeOf<Number>());
+            Assert.That(expression.Right, Is.TypeOf<Value>());
             Assert.That(expression.Right.Result(), Is.EqualTo(2));
 
             Assert.That(expression.Result(), Is.EqualTo(3));
@@ -111,11 +111,11 @@ namespace Basic.UnitTests.Parsers
             Assert.That(expression.Text, Is.EqualTo(expectedText));
 
             Assert.That(expression.Left, Is.Not.Null);
-            Assert.That(expression.Left, Is.TypeOf<Number>());
+            Assert.That(expression.Left, Is.TypeOf<Value>());
             Assert.That(expression.Left.Result(), Is.EqualTo(4));
 
             Assert.That(expression.Right, Is.Not.Null);
-            Assert.That(expression.Right, Is.TypeOf<Number>());
+            Assert.That(expression.Right, Is.TypeOf<Value>());
             Assert.That(expression.Right.Result(), Is.EqualTo(2));
 
             Assert.That(expression.Result(), Is.EqualTo(8));
@@ -136,11 +136,11 @@ namespace Basic.UnitTests.Parsers
             Assert.That(expression.Text, Is.EqualTo(expectedText));
 
             Assert.That(expression.Left, Is.Not.Null);
-            Assert.That(expression.Left, Is.TypeOf<Number>());
+            Assert.That(expression.Left, Is.TypeOf<Value>());
             Assert.That(expression.Left.Result(), Is.EqualTo(3));
 
             Assert.That(expression.Right, Is.Not.Null);
-            Assert.That(expression.Right, Is.TypeOf<Number>());
+            Assert.That(expression.Right, Is.TypeOf<Value>());
             Assert.That(expression.Right.Result(), Is.EqualTo(2));
 
             Assert.That(expression.Result(), Is.EqualTo(5));
@@ -161,11 +161,11 @@ namespace Basic.UnitTests.Parsers
             Assert.That(expression.Text, Is.EqualTo(expectedText));
 
             Assert.That(expression.Left, Is.Not.Null);
-            Assert.That(expression.Left, Is.TypeOf<Number>());
+            Assert.That(expression.Left, Is.TypeOf<Value>());
             Assert.That(expression.Left.Result(), Is.EqualTo(3));
 
             Assert.That(expression.Right, Is.Not.Null);
-            Assert.That(expression.Right, Is.TypeOf<Number>());
+            Assert.That(expression.Right, Is.TypeOf<Value>());
             Assert.That(expression.Right.Result(), Is.EqualTo(2));
 
             Assert.That(expression.Result(), Is.EqualTo(1));
@@ -190,7 +190,7 @@ namespace Basic.UnitTests.Parsers
             Assert.That(expression.Right, Is.Not.Null);
 
             // 2 left node
-            Assert.That(expression.Left, Is.TypeOf<Number>());
+            Assert.That(expression.Left, Is.TypeOf<Value>());
             Assert.That(expression.Left.Text, Is.EqualTo("11"));
             Assert.That(expression.Left.Result(), Is.EqualTo(11));
             Assert.That(expression.Left.Left, Is.Null);
@@ -204,7 +204,7 @@ namespace Basic.UnitTests.Parsers
             Assert.That(expression.Right.Right, Is.Not.Null);
 
             // 3 left node
-            Assert.That(expression.Right.Left, Is.TypeOf<Number>());
+            Assert.That(expression.Right.Left, Is.TypeOf<Value>());
             Assert.That(expression.Right.Left.Text, Is.EqualTo("2"));
             Assert.That(expression.Right.Left.Result(), Is.EqualTo(2));
             Assert.That(expression.Right.Left.Left, Is.Null);
@@ -218,7 +218,7 @@ namespace Basic.UnitTests.Parsers
             Assert.That(expression.Right.Right.Right, Is.Not.Null);
 
             // 4 left node
-            Assert.That(expression.Right.Right.Left, Is.TypeOf<Number>());
+            Assert.That(expression.Right.Right.Left, Is.TypeOf<Value>());
             Assert.That(expression.Right.Right.Left.Text, Is.EqualTo("4"));
             Assert.That(expression.Right.Right.Left.Result(), Is.EqualTo(4));
             Assert.That(expression.Right.Right.Left.Left, Is.Null);
@@ -232,14 +232,14 @@ namespace Basic.UnitTests.Parsers
             Assert.That(expression.Right.Right.Right.Right, Is.Not.Null);
 
             // 5 left node
-            Assert.That(expression.Right.Right.Right.Left, Is.TypeOf<Number>());
+            Assert.That(expression.Right.Right.Right.Left, Is.TypeOf<Value>());
             Assert.That(expression.Right.Right.Right.Left.Text, Is.EqualTo("4"));
             Assert.That(expression.Right.Right.Right.Left.Result(), Is.EqualTo(4));
             Assert.That(expression.Right.Right.Right.Left.Left, Is.Null);
             Assert.That(expression.Right.Right.Right.Left.Right, Is.Null);
 
             // 5 right node
-            Assert.That(expression.Right.Right.Right.Right, Is.TypeOf<Number>());
+            Assert.That(expression.Right.Right.Right.Right, Is.TypeOf<Value>());
             Assert.That(expression.Right.Right.Right.Right.Text, Is.EqualTo("2"));
             Assert.That(expression.Right.Right.Right.Right.Result(), Is.EqualTo(2));
             Assert.That(expression.Right.Right.Right.Right.Left, Is.Null);
@@ -272,14 +272,14 @@ namespace Basic.UnitTests.Parsers
             Assert.That(expression.Left.Right, Is.Not.Null);
 
             // 3 left left
-            Assert.That(expression.Left.Left, Is.TypeOf<Number>());
+            Assert.That(expression.Left.Left, Is.TypeOf<Value>());
             Assert.That(expression.Left.Left.Text, Is.EqualTo("10"));
             Assert.That(expression.Left.Left.Result(), Is.EqualTo(10));
             Assert.That(expression.Left.Left.Left, Is.Null);
             Assert.That(expression.Left.Left.Right, Is.Null);
 
             // 3 left right
-            Assert.That(expression.Left.Right, Is.TypeOf<Number>());
+            Assert.That(expression.Left.Right, Is.TypeOf<Value>());
             Assert.That(expression.Left.Right.Text, Is.EqualTo("2"));
             Assert.That(expression.Left.Right.Result(), Is.EqualTo(2));
             Assert.That(expression.Left.Right.Left, Is.Null);
@@ -293,7 +293,7 @@ namespace Basic.UnitTests.Parsers
             Assert.That(expression.Right.Right, Is.Not.Null);
 
             // 3 right left
-            Assert.That(expression.Right.Left, Is.TypeOf<Number>());
+            Assert.That(expression.Right.Left, Is.TypeOf<Value>());
             Assert.That(expression.Right.Left.Text, Is.EqualTo("4"));
             Assert.That(expression.Right.Left.Result(), Is.EqualTo(4));
             Assert.That(expression.Right.Left.Left, Is.Null);
@@ -307,14 +307,14 @@ namespace Basic.UnitTests.Parsers
             Assert.That(expression.Right.Right.Right, Is.Not.Null);
 
             // 4 right right left
-            Assert.That(expression.Right.Right.Left, Is.TypeOf<Number>());
+            Assert.That(expression.Right.Right.Left, Is.TypeOf<Value>());
             Assert.That(expression.Right.Right.Left.Text, Is.EqualTo("4"));
             Assert.That(expression.Right.Right.Left.Result(), Is.EqualTo(4));
             Assert.That(expression.Right.Right.Left.Left, Is.Null);
             Assert.That(expression.Right.Right.Left.Right, Is.Null);
 
             // 4 right right right
-            Assert.That(expression.Right.Right.Right, Is.TypeOf<Number>());
+            Assert.That(expression.Right.Right.Right, Is.TypeOf<Value>());
             Assert.That(expression.Right.Right.Right.Text, Is.EqualTo("2"));
             Assert.That(expression.Right.Right.Right.Result(), Is.EqualTo(2));
             Assert.That(expression.Right.Right.Right.Left, Is.Null);

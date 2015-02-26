@@ -12,5 +12,10 @@
             : base(message)
         {
         }
+
+        public CommandError(string message, Error innerError)
+            : base(message, innerError)
+        {
+        }
     }
 }

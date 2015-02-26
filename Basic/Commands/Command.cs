@@ -1,4 +1,6 @@
-﻿namespace Basic.Commands
+﻿using Basic.Errors;
+
+namespace Basic.Commands
 {
     /// <summary>
     /// Represents an abstract command
@@ -38,7 +40,19 @@
         /// Executes the command
         /// </summary>
         /// <param name="interpreter"></param>
-        public abstract void Execute(IInterpreter interpreter);
+        public void Execute(IInterpreter interpreter)
+        {
+            try
+            {
+                execute(interpreter);
+            }
+            catch(Error error)
+            {
+                throw new CommandError(string.Format("Error executing '{0}'", Text), error);
+            }
+        }
+
+        public abstract void execute(IInterpreter interpreter);
 
         /// <summary>
         /// Gets the text representation of the command

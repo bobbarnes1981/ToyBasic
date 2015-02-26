@@ -1,4 +1,5 @@
 ﻿using Basic.Expressions;
+using Basic.Types;
 
 namespace Basic.Commands.Program
 {
@@ -10,22 +11,22 @@ namespace Basic.Commands.Program
         /// <summary>
         /// The variable to modify
         /// </summary>
-        private readonly string m_variable;
+        private readonly Variable m_variable;
 
         /// <summary>
         /// The start value
         /// </summary>
-        private readonly int m_start;
+        private readonly INode m_start;
 
         /// <summary>
         /// The end value
         /// </summary>
-        private readonly int m_end;
+        private readonly INode m_end;
 
         /// <summary>
         /// The step value
         /// </summary>
-        private readonly int m_step;
+        private readonly INode m_step;
 
         /// <summary>
         /// Creates an instance of the <see cref="For"/> class.
@@ -34,7 +35,7 @@ namespace Basic.Commands.Program
         /// <param name="start">the start value</param>
         /// <param name="end">the end value</param>
         /// <param name="step">the step value</param>
-        public For(string variable, int start, int end, int step)
+        public For(Variable variable, INode start, INode end, INode step)
             : base(Keywords.For, false)
         {
             m_variable = variable;
@@ -47,18 +48,18 @@ namespace Basic.Commands.Program
         /// Executes the 'For' command by initialising the variable on the heap and adding a frame to the stack provided by the interpreter heap and stack interfaces
         /// </summary>
         /// <param name="interpreter"></param>
-        public override void Execute(IInterpreter interpreter)
+        public override void execute(IInterpreter interpreter)
         {
             if (interpreter.Stack.Count == 0
                 || !interpreter.Stack.Peek().Exists("for_var")
-                || interpreter.Stack.Peek().Get<string>("for_var") != m_variable)
+                || interpreter.Stack.Peek().Get<string>("for_var") != m_variable.Text)
             {
                 IFrame frame = new Frame();
-                frame.Set("for_end", m_end);
-                frame.Set("for_step", m_step);
+                frame.Set("for_end", m_end.Result());
+                frame.Set("for_step", m_step.Result());
                 frame.Set("for_line", interpreter.Buffer.Current.Number);
-                frame.Set("for_var", m_variable);
-                interpreter.Heap.Set(m_variable, m_start);
+                frame.Set("for_var", m_variable.Text);
+                interpreter.Heap.Set(m_variable.Text, m_start.Result());
                 interpreter.Stack.Push(frame);
             }
         }
@@ -68,7 +69,7 @@ namespace Basic.Commands.Program
         /// </summary>
         public override string Text
         {
-            get { return string.Format("{0} {1}{2} = {3} {4} {5} {6} {7}", Keywords.For, Variable.PREFIX, m_variable, m_start, Keywords.To, m_end, Keywords.Step, m_step); }
+            get { return string.Format("{0} {1} = {2} {3} {4} {5} {6}", Keywords.For, m_variable.Text, m_start.Text, Keywords.To, m_end.Text, Keywords.Step, m_step.Text); }
         }
     }
 }

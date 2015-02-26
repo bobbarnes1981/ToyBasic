@@ -17,7 +17,7 @@
         /// Executes the 'Clear' command by calling clear on the interpreter console interface
         /// </summary>
         /// <param name="interpreter">interpreter to provide the console interface</param>
-        public override void Execute(IInterpreter interpreter)
+        public override void execute(IInterpreter interpreter)
         {
             interpreter.Console.Clear();
         }

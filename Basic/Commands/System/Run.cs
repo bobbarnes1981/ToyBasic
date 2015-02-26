@@ -17,7 +17,7 @@
         /// Executes the 'Run'command by calling execute on the interpreter interface
         /// </summary>
         /// <param name="interpreter"></param>
-        public override void Execute(IInterpreter interpreter)
+        public override void execute(IInterpreter interpreter)
         {
             interpreter.Execute();
         }

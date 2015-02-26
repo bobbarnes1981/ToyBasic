@@ -12,5 +12,10 @@
             : base(message)
         {
         }
+
+        public InterpreterError(string message, Error innerError)
+            : base(message, innerError)
+        {
+        }
     }
 }

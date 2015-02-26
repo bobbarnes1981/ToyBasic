@@ -1,30 +1,28 @@
-﻿namespace Basic.Expressions
+﻿namespace Basic.Types
 {
     /// <summary>
-    /// Represents a variable expression node
+    /// Represents a variable type
     /// </summary>
-    public class Variable : Node
+    public class Variable : Type
     {
         private readonly IInterpreter m_interpreter;
-
-        private readonly string m_variable;
 
         public static readonly char PREFIX = '$';
 
         public Variable(IInterpreter interpreter, string variable)
+            : base(variable)
         {
             m_interpreter = interpreter;
-            m_variable = variable;
         }
 
-        public override object Result()
+        public override object Value()
         {
-            return m_interpreter.Heap.Get(m_variable);
+            return m_interpreter.Heap.Get(Text);
         }
 
         public override string Text
         {
-            get { return m_variable; }
+            get { return string.Format("{0}{1}", PREFIX, m_value); }
         }
     }
 }

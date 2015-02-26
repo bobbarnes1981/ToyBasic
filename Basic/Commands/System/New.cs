@@ -17,7 +17,7 @@
         /// Executes the 'New' command by clearing the heap and the buffer
         /// </summary>
         /// <param name="interpreter"></param>
-        public override void Execute(IInterpreter interpreter)
+        public override void execute(IInterpreter interpreter)
         {
             interpreter.Heap.Clear();
             interpreter.Buffer.Clear();

@@ -94,7 +94,7 @@
     <Compile Include="Commands\System\ClearTests.cs" />
     <Compile Include="Commands\System\RenumberTests.cs" />
     <Compile Include="Expressions\OperatorTests.cs" />
-    <Compile Include="Expressions\VariableTests.cs" />
+    <Compile Include="Types\VariableTests.cs" />
     <Compile Include="HeapTests.cs" />
     <Compile Include="Parsers\ExpressionTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

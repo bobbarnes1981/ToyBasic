@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Reflection;
 using Basic.Errors;
 using Basic.Parsers;
@@ -156,6 +157,10 @@ namespace Basic
         {
             // TODO: colours
             m_console.Output(string.Format("{0}: {1}\r\n", error.GetType(), error.Message));
+            if (error.InnerError != null)
+            {
+                displayError(error.InnerError);
+            }
         }
 
         /// <summary>
@@ -168,7 +173,14 @@ namespace Basic
             while (!m_buffer.End && m_executing)
             {
                 m_buffer.Next();
-                m_buffer.Current.Command.Execute(this);
+                try
+                {
+                    m_buffer.Current.Command.Execute(this);
+                }
+                catch (Error error)
+                {
+                    throw new InterpreterError(string.Format("Error at line '{0}'", m_buffer.Current.Number), error);
+                }
             }
 
             m_console.Output("Done\r\n");

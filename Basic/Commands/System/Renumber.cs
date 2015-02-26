@@ -17,7 +17,7 @@
         /// Executes the 'Renumber' command by executing renumber on the buffer interface
         /// </summary>
         /// <param name="interpreter"></param>
-        public override void Execute(IInterpreter interpreter)
+        public override void execute(IInterpreter interpreter)
         {
             interpreter.Buffer.Renumber();
         }

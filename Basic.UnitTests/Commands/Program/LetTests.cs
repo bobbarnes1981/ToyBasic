@@ -1,5 +1,6 @@
 ﻿using Basic.Commands.Program;
 using Basic.Expressions;
+using Basic.Types;
 using Moq;
 using NUnit.Framework;
 
@@ -11,7 +12,7 @@ namespace Basic.UnitTests.Commands.Program
         [Test]
         public void Let_ConstructedObject_HasCorrectKeyword()
         {
-            string variable = "variable";
+            Variable variable = new Variable(null, "variable");
 
             Mock<INode> expressionMock = new Mock<INode>();
 
@@ -23,7 +24,7 @@ namespace Basic.UnitTests.Commands.Program
         [Test]
         public void Let_ConstructedObject_HasCorrectIsSystemValue()
         {
-            string variable = "variable";
+            Variable variable = new Variable(null, "variable");
 
             Mock<INode> expressionMock = new Mock<INode>();
 
@@ -35,7 +36,7 @@ namespace Basic.UnitTests.Commands.Program
         [Test]
         public void Let_ConstructedObject_HasCorrectTextRepresentation()
         {
-            string variable = "variable";
+            Variable variable = new Variable(null, "variable");
             string expressionText = "my expresison text";
 
             Mock<INode> expressionMock = new Mock<INode>();
@@ -43,13 +44,12 @@ namespace Basic.UnitTests.Commands.Program
 
             Let underTest = new Let(variable, expressionMock.Object);
 
-            Assert.That(underTest.Text, Is.EqualTo(string.Format("{0} {1} = {2}", Keywords.Let, variable, expressionText)));
+            Assert.That(underTest.Text, Is.EqualTo(string.Format("{0} {1} = {2}", Keywords.Let, variable.Text, expressionText)));
         }
 
         [Test]
         public void Let_Execute_CallsCorrectInterfaceMethod()
         {
-            string variable = "variable";
             string value = "10";
 
             Mock<IHeap> heapMock = new Mock<IHeap>();
@@ -60,13 +60,15 @@ namespace Basic.UnitTests.Commands.Program
             Mock<INode> expressionMock = new Mock<INode>();
             expressionMock.Setup(x => x.Result()).Returns(value);
 
+            Variable variable = new Variable(interpreterMock.Object, "variable");
+
             Let underTest = new Let(variable, expressionMock.Object);
 
             underTest.Execute(interpreterMock.Object);
 
             interpreterMock.Verify(x => x.Heap, Times.Once);
 
-            heapMock.Verify(x => x.Set(variable, value), Times.Once);
+            heapMock.Verify(x => x.Set(variable.Text, value), Times.Once);
         }
     }
 }

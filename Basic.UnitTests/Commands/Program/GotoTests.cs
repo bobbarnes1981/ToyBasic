@@ -2,6 +2,7 @@
 using Basic.Expressions;
 using Moq;
 using NUnit.Framework;
+using Basic.Types;
 
 namespace Basic.UnitTests.Commands.Program
 {
@@ -11,7 +12,7 @@ namespace Basic.UnitTests.Commands.Program
         [Test]
         public void Goto_ConstructedObject_HasCorrectKeyword()
         {
-            Goto underTest = new Goto(0);
+            Goto underTest = new Goto(new Number(0));
 
             Assert.That(underTest.Keyword, Is.EqualTo(Keywords.Goto));
         }
@@ -19,7 +20,7 @@ namespace Basic.UnitTests.Commands.Program
         [Test]
         public void Goto_ConstructedObject_HasCorrectIsSystemValue()
         {
-            Goto underTest = new Goto(0);
+            Goto underTest = new Goto(new Number(0));
 
             Assert.That(underTest.IsSystem, Is.False);
         }
@@ -27,17 +28,17 @@ namespace Basic.UnitTests.Commands.Program
         [Test]
         public void Goto_ConstructedObject_HasCorrectTextRepresentation()
         {
-            int line = 0;
+            Number line = new Number(0);
 
             Goto underTest = new Goto(line);
 
-            Assert.That(underTest.Text, Is.EqualTo(string.Format("{0} {1}", Keywords.Goto, line)));
+            Assert.That(underTest.Text, Is.EqualTo(string.Format("{0} {1}", Keywords.Goto, line.Value())));
         }
 
         [Test]
         public void Goto_Execute_CallsCorrectInterfaceMethod()
         {
-            int line = 0;
+            Number line = new Number(0);
 
             Mock<ILineBuffer> bufferMock = new Mock<ILineBuffer>();
 
@@ -50,7 +51,7 @@ namespace Basic.UnitTests.Commands.Program
 
             interpreterMock.Verify(x => x.Buffer, Times.Once);
 
-            bufferMock.Verify(x => x.Jump(line), Times.Once);
+            bufferMock.Verify(x => x.Jump((int)line.Value()), Times.Once);
         }
     }
 }

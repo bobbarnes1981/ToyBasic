@@ -1,5 +1,6 @@
 ﻿using Basic.Errors;
 using Basic.Expressions;
+using Basic.Types;
 
 namespace Basic.Commands.Program
 {
@@ -11,33 +12,33 @@ namespace Basic.Commands.Program
         /// <summary>
         /// The variable to modify
         /// </summary>
-        private readonly string m_variable;
+        private readonly Variable m_variable;
 
         /// <summary>
         /// Creates a new instance of the <see cref="Next"/> class.
         /// </summary>
         /// <param name="variable">The variable to modify</param>
-        public Next(string variable)
+        public Next(Variable variable)
             : base(Keywords.Next, false)
         {
             m_variable = variable;
         }
 
-        public override void Execute(IInterpreter interpreter)
+        public override void execute(IInterpreter interpreter)
         {
             if (interpreter.Stack.Count == 0
                 || !interpreter.Stack.Peek().Exists("for_var")
-                || interpreter.Stack.Peek().Get<string>("for_var") != m_variable)
+                || interpreter.Stack.Peek().Get<string>("for_var") != m_variable.Text)
             {
                 throw new CommandError("Invalid for_var in current stack frame");
             }
 
             IFrame frame = interpreter.Stack.Pop();
-            int value = (int)interpreter.Heap.Get(m_variable);
+            int value = (int)interpreter.Heap.Get(m_variable.Text);
             if (value < frame.Get<int>("for_end"))
             {
                 value += frame.Get<int>("for_step");
-                interpreter.Heap.Set(m_variable, value);
+                interpreter.Heap.Set(m_variable.Text, value);
                 interpreter.Stack.Push(frame);
                 interpreter.Buffer.Jump(frame.Get<int>("for_line"));
             }
@@ -45,7 +46,7 @@ namespace Basic.Commands.Program
 
         public override string Text
         {
-            get { return string.Format("{0} {1}{2}", Keywords.Next, Variable.PREFIX, m_variable); }
+            get { return string.Format("{0} {1}", Keywords.Next, m_variable.Text); }
         }
     }
 }

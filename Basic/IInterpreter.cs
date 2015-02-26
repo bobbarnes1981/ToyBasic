@@ -1,4 +1,6 @@
-﻿namespace Basic
+﻿using System.Collections.Generic;
+
+namespace Basic
 {
     /// <summary>
     /// Interpreter interface

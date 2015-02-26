@@ -151,14 +151,14 @@ namespace Basic.Parsers
         {
             preChecks(input, "expression");
             char character = input.Peek();
-            INode leafNode;
+            Value leafNode;
             switch (character)
             {
                 case '"':
-                    leafNode = new String(readString(input));
+                    leafNode = new Value(readString(input));
                     break;
                 case '$':
-                    leafNode = new Variable(interpreter, readVariable(input));
+                    leafNode = new Value(readVariable(interpreter, input));
                     break;
                 case '0':
                 case '1':
@@ -170,7 +170,7 @@ namespace Basic.Parsers
                 case '7':
                 case '8':
                 case '9':
-                    leafNode = new Number(readInt(input));
+                    leafNode = new Value(readInt(input));
                     break;
                 default:
                     throw new ParserError(string.Format("'{0}' is not recognised as the start of a valid expression leaf node", character));

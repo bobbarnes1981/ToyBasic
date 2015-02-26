@@ -10,7 +10,7 @@
             m_variable = variable;
         }
 
-        public override void Execute(IInterpreter interpreter)
+        public override void execute(IInterpreter interpreter)
         {
             throw new global::System.NotImplementedException();
         }

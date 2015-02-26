@@ -1,16 +1,18 @@
-﻿namespace Basic.Commands.System
+﻿using Basic.Types;
+
+namespace Basic.Commands.System
 {
     /// <summary>
     /// Represents the program command 'Load'
     /// </summary>
     public class Load : Command
     {
-        private readonly string m_filename;
+        private readonly String m_filename;
 
         /// <summary>
         /// Creates a new instance of the <see cref="Load"/> class.
         /// </summary>
-        public Load(string filename)
+        public Load(String filename)
             : base(Keywords.Load, true)
         {
             m_filename = filename;
@@ -20,10 +22,10 @@
         /// Executes the load command by clearing the buffer and loading the lines from the specified file
         /// </summary>
         /// <param name="interpreter"></param>
-        public override void Execute(IInterpreter interpreter)
+        public override void execute(IInterpreter interpreter)
         {
             interpreter.Buffer.Clear();
-            string[] lines = interpreter.Storage.Load(m_filename);
+            string[] lines = interpreter.Storage.Load((string)m_filename.Value());
             foreach (string line in lines)
             {
                 interpreter.ProcessInput(line);

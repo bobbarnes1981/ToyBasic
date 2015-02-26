@@ -1,6 +1,7 @@
 ﻿using System;
 using Basic.Commands;
 using Basic.Errors;
+using Basic.Types;
 using Moq;
 using NUnit.Framework;
 
@@ -114,7 +115,7 @@ namespace Basic.UnitTests
             underTest.Add(
                 new Line(
                     1,
-                    new Basic.Commands.Program.Goto(2)));
+                    new Basic.Commands.Program.Goto(new Number(2))));
 
             // if
             underTest.Add(
@@ -122,7 +123,7 @@ namespace Basic.UnitTests
                     2, 
                     new Basic.Commands.Program.If(
                         null,
-                        new Basic.Commands.Program.Goto(10))));
+                        new Basic.Commands.Program.Goto(new Number(10)))));
 
             // nested if
             underTest.Add(
@@ -132,7 +133,7 @@ namespace Basic.UnitTests
                         null,
                         new Basic.Commands.Program.If(
                             null,
-                            new Basic.Commands.Program.Goto(1)))));
+                            new Basic.Commands.Program.Goto(new Number(1))))));
 
             underTest.Renumber();
             underTest.Reset();
@@ -140,17 +141,17 @@ namespace Basic.UnitTests
             // goto
             underTest.Next();
             Assert.That(underTest.Current.Number, Is.EqualTo(10));
-            Assert.That(((Basic.Commands.Program.Goto)underTest.Current.Command).LineNumber, Is.EqualTo(20));
+            Assert.That(((Basic.Commands.Program.Goto)underTest.Current.Command).LineNumber.Value(), Is.EqualTo(20));
 
             // if
             underTest.Next();
             Assert.That(underTest.Current.Number, Is.EqualTo(20));
-            Assert.That(((Basic.Commands.Program.Goto)((Basic.Commands.Program.If)underTest.Current.Command).Command).LineNumber, Is.EqualTo(30));
+            Assert.That(((Basic.Commands.Program.Goto)((Basic.Commands.Program.If)underTest.Current.Command).Command).LineNumber.Value(), Is.EqualTo(30));
 
             // nested if
             underTest.Next();
             Assert.That(underTest.Current.Number, Is.EqualTo(30));
-            Assert.That(((Basic.Commands.Program.Goto)((Basic.Commands.Program.If)((Basic.Commands.Program.If)underTest.Current.Command).Command).Command).LineNumber, Is.EqualTo(30));
+            Assert.That(((Basic.Commands.Program.Goto)((Basic.Commands.Program.If)((Basic.Commands.Program.If)underTest.Current.Command).Command).Command).LineNumber.Value(), Is.EqualTo(30));
         }
 
         [Test]

@@ -1,4 +1,5 @@
 ﻿using Basic.Commands.System;
+using Basic.Types;
 using Moq;
 using NUnit.Framework;
 
@@ -10,7 +11,7 @@ namespace Basic.UnitTests.Commands.System
         [Test]
         public void Load_ConstructedObject_HasCorrectKeyword()
         {
-            string filename = "filename.ext";
+            String filename = new String("filename.ext");
 
             Load underTest = new Load(filename);
 
@@ -20,7 +21,7 @@ namespace Basic.UnitTests.Commands.System
         [Test]
         public void Load_ConstructedObject_HasCorrectIsSystemValue()
         {
-            string filename = "filename.ext";
+            String filename = new String("filename.ext");
 
             Load underTest = new Load(filename);
 
@@ -30,7 +31,7 @@ namespace Basic.UnitTests.Commands.System
         [Test]
         public void Load_ConstructedObject_HasCorrectTextRepresentation()
         {
-            string filename = "filename.ext";
+            String filename = new String("filename.ext");
 
             Load underTest = new Load(filename);
 
@@ -40,14 +41,14 @@ namespace Basic.UnitTests.Commands.System
         [Test]
         public void Load_Execute_CallsCorrectInterfaceMethod()
         {
-            string filename = "filename.ext";
+            String filename = new String("filename.ext");
 
             string text = "a line of text";
 
             Mock<ILineBuffer> bufferMock = new Mock<ILineBuffer>();
 
             Mock<IStorage> storageMock = new Mock<IStorage>();
-            storageMock.Setup(x => x.Load(filename)).Returns(new string[] { text });
+            storageMock.Setup(x => x.Load((string)filename.Value())).Returns(new string[] { text });
 
             Mock<IInterpreter> interpreterMock = new Mock<IInterpreter>();
             interpreterMock.Setup(x => x.Buffer).Returns(bufferMock.Object);
@@ -62,7 +63,7 @@ namespace Basic.UnitTests.Commands.System
 
             interpreterMock.Verify(x => x.Storage, Times.Once);
 
-            storageMock.Verify(x => x.Load(filename), Times.Once);
+            storageMock.Verify(x => x.Load((string)filename.Value()), Times.Once);
 
             interpreterMock.Verify(x => x.ProcessInput(text), Times.Once);
         }

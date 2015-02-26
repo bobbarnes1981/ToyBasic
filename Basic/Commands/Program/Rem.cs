@@ -24,7 +24,7 @@
         /// Executes the 'Rem' command by doing nothing
         /// </summary>
         /// <param name="interpreter"></param>
-        public override void Execute(IInterpreter interpreter)
+        public override void execute(IInterpreter interpreter)
         {
         }
 

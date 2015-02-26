@@ -1,4 +1,6 @@
-﻿namespace Basic.Commands.Program
+﻿using Basic.Types;
+
+namespace Basic.Commands.Program
 {
     /// <summary>
     /// Represents the program command 'Goto'
@@ -8,13 +10,13 @@
         /// <summary>
         /// The line number to go to
         /// </summary>
-        private int m_lineNumber;
+        private Number m_lineNumber;
 
         /// <summary>
         /// Creates a new instance of the <see cref="Goto"/> class.
         /// </summary>
         /// <param name="lineNumber">The line number to go to</param>
-        public Goto(int lineNumber)
+        public Goto(Number lineNumber)
             : base(Keywords.Goto, false)
         {
             m_lineNumber = lineNumber;
@@ -24,15 +26,15 @@
         /// Executes the 'Goto' command by calling jump on the interpreter buffer interface
         /// </summary>
         /// <param name="interpreter">interpreter to provide the buffer interface</param>
-        public override void Execute(IInterpreter interpreter)
+        public override void execute(IInterpreter interpreter)
         {
-            interpreter.Buffer.Jump(m_lineNumber);
+            interpreter.Buffer.Jump((int)m_lineNumber.Value());
         }
 
         /// <summary>
         /// Gets or sets the line number to jump to
         /// </summary>
-        public int LineNumber
+        public Number LineNumber
         {
             get { return m_lineNumber; }
             set { m_lineNumber = value; }
@@ -43,7 +45,7 @@
         /// </summary>
         public override string Text
         {
-            get { return string.Format("{0} {1}", Keywords.Goto, m_lineNumber); }
+            get { return string.Format("{0} {1}", Keywords.Goto, m_lineNumber.Value()); }
         }
     }
 }

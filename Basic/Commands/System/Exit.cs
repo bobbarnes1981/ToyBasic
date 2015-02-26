@@ -17,7 +17,7 @@
         /// Executes the 'Exit'command by calling exit on the interpreter interface
         /// </summary>
         /// <param name="interpreter">interpreter to provide the exit command</param>
-        public override void Execute(IInterpreter interpreter)
+        public override void execute(IInterpreter interpreter)
         {
             interpreter.Exit();
         }

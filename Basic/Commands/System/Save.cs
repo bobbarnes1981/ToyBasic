@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Basic.Types;
+using System.Collections.Generic;
 
 namespace Basic.Commands.System
 {
@@ -7,12 +8,12 @@ namespace Basic.Commands.System
     /// </summary>
     public class Save : Command
     {
-        private readonly string m_filename;
+        private readonly String m_filename;
 
         /// <summary>
         /// Creates a new instance of the <see cref="Save"/> class.
         /// </summary>
-        public Save(string filename)
+        public Save(String filename)
             : base(Keywords.Save, true)
         {
             m_filename = filename;
@@ -22,7 +23,7 @@ namespace Basic.Commands.System
         /// Executes the 'Save' command by creating a list of all the lines and sending them to the storage interface save method
         /// </summary>
         /// <param name="interpreter"></param>
-        public override void Execute(IInterpreter interpreter)
+        public override void execute(IInterpreter interpreter)
         {
             List<string> lines = new List<string>();
             interpreter.Buffer.Reset();
@@ -32,7 +33,7 @@ namespace Basic.Commands.System
                 lines.Add(interpreter.Buffer.Current.ToString());
             }
 
-            interpreter.Storage.Save(m_filename, lines);
+            interpreter.Storage.Save((string)m_filename.Value(), lines);
         }
 
         /// <summary>

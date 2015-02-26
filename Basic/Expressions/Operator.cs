@@ -4,7 +4,7 @@ using Basic.Errors;
 namespace Basic.Expressions
 {
     /// <summary>
-    /// Represents an oeprator expression node
+    /// Represents an operator expression node
     /// </summary>
     public class Operator : Node
     {
@@ -18,7 +18,7 @@ namespace Basic.Expressions
         /// </summary>
         public static readonly List<char> VALID_CHARACTERS = new List<char>
         {
-            '+', '-', '=', '*', '/', '!', '&', '|', '^', ';'
+            '+', '-', '=', '*', '/', '!', '&', '|', '^', ';', '<', '>'
         };
 
         /// <summary>
@@ -27,6 +27,9 @@ namespace Basic.Expressions
         public static readonly Dictionary<Operators, string> Representations = new Dictionary<Operators, string>
         {
             { Operators.Equals, "==" },
+            { Operators.NotEquals, "!=" },
+            { Operators.GreaterThan, ">" },
+            { Operators.LessThan, "<" },
             { Operators.Divide, "/" },
             { Operators.Multiply, "*" },
             { Operators.Add, "+" },
@@ -66,6 +69,12 @@ namespace Basic.Expressions
                     return Or(Left.Result(), Right.Result());
                 case Operators.Equals:
                     return Equality(Left.Result(), Right.Result());
+                case Operators.NotEquals:
+                    return !Equality(Left.Result(), Right.Result());
+                case Operators.LessThan:
+                    return LessThan(Left.Result(), Right.Result());
+                case Operators.GreaterThan:
+                    return GreaterThan(Left.Result(), Right.Result());
                 case Operators.None:
                     throw new ExpressionError("None operator is invalid");
                 default:
@@ -147,6 +156,36 @@ namespace Basic.Expressions
             }
 
             return (int)left - (int)right;
+        }
+
+        private object LessThan(object left, object right)
+        {
+            if (left.GetType().Name != right.GetType().Name)
+            {
+                throw new ExpressionError("LessThan expects both types to be Int32");
+            }
+
+            if (left.GetType().Name != "Int32")
+            {
+                throw new ExpressionError("LessThan expects both types to be Int32");
+            }
+
+            return (int)left < (int)right;
+        }
+
+        private object GreaterThan(object left, object right)
+        {
+            if (left.GetType().Name != right.GetType().Name)
+            {
+                throw new ExpressionError("GreaterThan expects both types to be Int32");
+            }
+
+            if (left.GetType().Name != "Int32")
+            {
+                throw new ExpressionError("GreaterThan expects both types to be Int32");
+            }
+
+            return (int)left > (int)right;
         }
 
         private bool Equality(object left, object right)

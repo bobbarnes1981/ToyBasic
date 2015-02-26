@@ -60,20 +60,20 @@ namespace Basic.Parsers
         /// Read a string; a number of valid characters surrounded by double quotes
         /// </summary>
         /// <returns></returns>
-        protected string readString(ITextStream input)
+        protected Types.String readString(ITextStream input)
         {
             preChecks(input, "string");
             expect(input, '\"');
             string output = readUntil(input, character => character == '\"');
             input.Next();
-            return output;
+            return new Types.String(output);
         }
 
         /// <summary>
         /// Read an integer; a number of valid numbers
         /// </summary>
         /// <returns></returns>
-        protected int readInt(ITextStream input)
+        protected Types.Number readInt(ITextStream input)
         {
             preChecks(input, "int");
             int number;
@@ -83,7 +83,7 @@ namespace Basic.Parsers
                 throw new ParserError(string.Format("'{0}' is not a number", numberString));
             }
 
-            return number;
+            return new Types.Number(number);
         }
 
         /// <summary>
@@ -91,11 +91,11 @@ namespace Basic.Parsers
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        protected string readVariable(ITextStream input)
+        protected Types.Variable readVariable(IInterpreter interpreter, ITextStream input)
         {
             preChecks(input, "variable");
-            expect(input, Variable.PREFIX);
-            return readUntil(input, character => !CHARACTERS.Contains(character));
+            expect(input, Types.Variable.PREFIX);
+            return new Types.Variable(interpreter, readUntil(input, character => !CHARACTERS.Contains(character)));
         }
 
         /// <summary>

@@ -17,7 +17,7 @@
         /// Executes the list command on the provided interpreter by stepping through the line buffer and displaying the line on the console output
         /// </summary>
         /// <param name="interpreter"></param>
-        public override void Execute(IInterpreter interpreter)
+        public override void execute(IInterpreter interpreter)
         {
             interpreter.Buffer.Reset();
             while (!interpreter.Buffer.End)

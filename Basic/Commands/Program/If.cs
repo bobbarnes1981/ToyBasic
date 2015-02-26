@@ -39,7 +39,7 @@ namespace Basic.Commands.Program
         /// Executes the 'If' command by evaluating the expression and executing the command if the expression is true
         /// </summary>
         /// <param name="interpreter">interpreter to execute the command on</param>
-        public override void Execute(IInterpreter interpreter)
+        public override void execute(IInterpreter interpreter)
         {
             object result = m_expression.Result();
             bool output;

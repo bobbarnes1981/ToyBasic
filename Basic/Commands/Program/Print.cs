@@ -26,7 +26,7 @@ namespace Basic.Commands.Program
         /// Executes the 'Print' command by evaluating the epresssion and calling output on the interpreter console interface
         /// </summary>
         /// <param name="interpreter">interpreter to provide the console interface</param>
-        public override void Execute(IInterpreter interpreter)
+        public override void execute(IInterpreter interpreter)
         {
             interpreter.Console.Output(string.Format("{0}\r\n", m_expression.Result()));
         }

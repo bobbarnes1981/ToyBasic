@@ -1,6 +1,6 @@
 ﻿using NUnit.Framework;
 
-namespace Basic.UnitTests.Expressions
+namespace Basic.UnitTests.Types
 {
     //[TestFixture]
     public class VariableTests

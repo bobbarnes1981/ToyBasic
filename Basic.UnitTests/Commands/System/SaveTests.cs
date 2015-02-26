@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Basic.Commands;
 using Basic.Commands.System;
+using Basic.Types;
 using Moq;
 using NUnit.Framework;
 
@@ -12,7 +13,7 @@ namespace Basic.UnitTests.Commands.System
         [Test]
         public void Save_ConstructedObject_HasCorrectKeyword()
         {
-            string filename = "filename.ext";
+            String filename = new String("filename.ext");
 
             Save underTest = new Save(filename);
 
@@ -22,7 +23,7 @@ namespace Basic.UnitTests.Commands.System
         [Test]
         public void Save_ConstructedObject_HasCorrectIsSystemValue()
         {
-            string filename = "filename.ext";
+            String filename = new String("filename.ext");
 
             Save underTest = new Save(filename);
 
@@ -32,7 +33,7 @@ namespace Basic.UnitTests.Commands.System
         [Test]
         public void Save_ConstructedObject_HasCorrectTextRepresentation()
         {
-            string filename = "filename.ext";
+            String filename = new String("filename.ext");
 
             Save underTest = new Save(filename);
 
@@ -42,7 +43,7 @@ namespace Basic.UnitTests.Commands.System
         [Test]
         public void Save_Execute_CallsCorrectInterfaceMethod()
         {
-            string filename = "filename.ext";
+            String filename = new String("filename.ext");
 
             string text = "a line of text";
 
@@ -73,7 +74,7 @@ namespace Basic.UnitTests.Commands.System
 
             interpreterMock.Verify(x => x.Storage, Times.Once);
 
-            storageMock.Verify(x => x.Save(filename, It.IsAny<IEnumerable<string>>()), Times.Once);
+            storageMock.Verify(x => x.Save((string)filename.Value(), It.IsAny<IEnumerable<string>>()), Times.Once);
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Basic.Expressions;
+using Basic.Types;
 
 namespace Basic.Commands.Program
 {
@@ -10,7 +11,7 @@ namespace Basic.Commands.Program
         /// <summary>
         /// The variable to assign to
         /// </summary>
-        private readonly string m_variable;
+        private readonly Variable m_variable;
 
         /// <summary>
         /// The expression to assign to the variable
@@ -22,7 +23,7 @@ namespace Basic.Commands.Program
         /// </summary>
         /// <param name="variable">The variable to assign to</param>
         /// <param name="expression">The expression to assign to the variable</param>
-        public Let(string variable, INode expression)
+        public Let(Variable variable, INode expression)
             : base(Keywords.Let, false)
         {
             m_variable = variable;
@@ -33,9 +34,9 @@ namespace Basic.Commands.Program
         /// Executes the 'Let' command by evaluating the expression and assigning it using the interpreter heap interface
         /// </summary>
         /// <param name="interpreter">interpreter to provide the heap interface</param>
-        public override void Execute(IInterpreter interpreter)
+        public override void execute(IInterpreter interpreter)
         {
-            interpreter.Heap.Set(m_variable, m_expression.Result());
+            interpreter.Heap.Set(m_variable.Text, m_expression.Result());
         }
 
         /// <summary>
@@ -43,7 +44,7 @@ namespace Basic.Commands.Program
         /// </summary>
         public override string Text
         {
-            get { return string.Format("{0} {1} = {2}", Keywords.Let, m_variable, m_expression.Text); }
+            get { return string.Format("{0} {1} = {2}", Keywords.Let, m_variable.Text, m_expression.Text); }
         }
     }
 }

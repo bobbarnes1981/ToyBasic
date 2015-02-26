@@ -5,6 +5,9 @@
     /// </summary>
     public enum Operators
     {
+        GreaterThan,
+        LessThan,
+        NotEquals,
         Equals,
         And,
         Or,
