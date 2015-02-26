@@ -12,7 +12,7 @@ Does interpreter need to pass into parser or should it be passed into expression
 
 Maybe remove variable prefix
 
-Implement logical operators AND,OR,NOT (XOR,NAND?)
+Implement logical operators NOT (XOR,NAND?)
 
 Implement explicit concatenate operator ';' instead of '+'?
 
