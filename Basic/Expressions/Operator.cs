@@ -42,6 +42,10 @@ namespace Basic.Expressions
                     return Add(Left.Result(), Right.Result());
                 case Operators.Subtract:
                     return Subtract(Left.Result(), Right.Result());
+                case Operators.And:
+                    return And(Left.Result(), Right.Result());
+                case Operators.Or:
+                    return Or(Left.Result(), Right.Result());
                 case Operators.Equals:
                     return Equality(Left.Result(), Right.Result());
                 case Operators.None:
@@ -136,6 +140,38 @@ namespace Basic.Expressions
                     return (string)left == (string)right;
                 default:
                     throw new Errors.Expression("Add expects both types to be Int32 or String");
+            }
+        }
+
+        private object And(object left, object right)
+        {
+            if (left.GetType().Name != right.GetType().Name)
+            {
+                throw new Errors.Expression("And expects both types to be Boolean");
+            }
+
+            switch (left.GetType().Name)
+            {
+                case "Boolean":
+                    return (bool)left && (bool)right;
+                default:
+                    throw new Errors.Expression("And expects both types to be Boolean");
+            }
+        }
+
+        private object Or(object left, object right)
+        {
+            if (left.GetType().Name != right.GetType().Name)
+            {
+                throw new Errors.Expression("Or expects both types to be Boolean");
+            }
+
+            switch (left.GetType().Name)
+            {
+                case "Boolean":
+                    return (bool)left || (bool)right;
+                default:
+                    throw new Errors.Expression("Or expects both types to be Boolean");
             }
         }
     }
