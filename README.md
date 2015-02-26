@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/bobbarnes1981/ToyBasic.svg?branch=master)](https://travis-ci.org/bobbarnes1981/ToyBasic)
 
-[[http://bobbarnes1981.github.io/ToyBasic/]]
+http://bobbarnes1981.github.io/ToyBasic/
 
 An attempt to write a simple basic interpreter.
 
