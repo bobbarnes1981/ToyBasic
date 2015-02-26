@@ -1,6 +1,6 @@
 ﻿namespace Basic
 {
-    public interface IBuffer
+    public interface ILineBuffer
     {
         void Add(ILine line);
 

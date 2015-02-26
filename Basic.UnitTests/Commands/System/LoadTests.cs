@@ -44,7 +44,7 @@ namespace Basic.UnitTests.Commands.System
 
             string text = "a line of text";
 
-            Mock<IBuffer> bufferMock = new Mock<IBuffer>();
+            Mock<ILineBuffer> bufferMock = new Mock<ILineBuffer>();
 
             Mock<IStorage> storageMock = new Mock<IStorage>();
             storageMock.Setup(x => x.Load(filename)).Returns(new string[] { text });

@@ -12,7 +12,10 @@ namespace Basic
         {
             Number = number;
             if (command == null)
+            {
                 throw new System.ArgumentNullException("command");
+            }
+
             m_command = command;
         }
 
@@ -26,7 +29,10 @@ namespace Basic
             set
             {
                 if (value < 0)
-                    throw new Errors.Line(string.Format("Invalid line number '{0}'", value));
+                {
+                    throw new Errors.LineError(string.Format("Invalid line number '{0}'", value));
+                }
+
                 m_number = value;
             }
         }

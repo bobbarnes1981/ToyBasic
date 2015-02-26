@@ -16,8 +16,8 @@ namespace Basic.UnitTests.Parsers
 
             Mock<IInterpreter> interpreterMock = new Mock<IInterpreter>();
 
-            Basic.Parsers.Expression underTest = new Basic.Parsers.Expression();
-            IExpression expression = underTest.ReadExpressionNode(interpreterMock.Object, input, null);
+            Basic.Parsers.ExpressionParser underTest = new Basic.Parsers.ExpressionParser();
+            INode expression = underTest.ReadExpressionNode(interpreterMock.Object, input, null);
 
             Assert.That(expression, Is.TypeOf<String>());
             Assert.That(expression.Text, Is.EqualTo(expectedText));
@@ -35,8 +35,8 @@ namespace Basic.UnitTests.Parsers
 
             Mock<IInterpreter> interpreterMock = new Mock<IInterpreter>();
 
-            Basic.Parsers.Expression underTest = new Basic.Parsers.Expression();
-            IExpression expression = underTest.ReadExpressionNode(interpreterMock.Object, input, null);
+            Basic.Parsers.ExpressionParser underTest = new Basic.Parsers.ExpressionParser();
+            INode expression = underTest.ReadExpressionNode(interpreterMock.Object, input, null);
 
             Assert.That(expression, Is.TypeOf<Number>());
             Assert.That(expression.Text, Is.EqualTo(expectedNumber.ToString()));
@@ -60,8 +60,8 @@ namespace Basic.UnitTests.Parsers
             Mock<IInterpreter> interpreterMock = new Mock<IInterpreter>();
             interpreterMock.Setup(x => x.Heap).Returns(heapMock.Object);
 
-            Basic.Parsers.Expression underTest = new Basic.Parsers.Expression();
-            IExpression expression = underTest.ReadExpressionNode(interpreterMock.Object, input, null);
+            Basic.Parsers.ExpressionParser underTest = new Basic.Parsers.ExpressionParser();
+            INode expression = underTest.ReadExpressionNode(interpreterMock.Object, input, null);
 
             Assert.That(expression, Is.TypeOf<Variable>());
             Assert.That(expression.Text, Is.EqualTo(expectedName));
@@ -79,8 +79,8 @@ namespace Basic.UnitTests.Parsers
 
             Mock<IInterpreter> interpreterMock = new Mock<IInterpreter>();
 
-            Basic.Parsers.Expression underTest = new Basic.Parsers.Expression();
-            IExpression expression = underTest.ReadExpressionNode(interpreterMock.Object, input, null);
+            Basic.Parsers.ExpressionParser underTest = new Basic.Parsers.ExpressionParser();
+            INode expression = underTest.ReadExpressionNode(interpreterMock.Object, input, null);
 
             Assert.That(expression, Is.TypeOf<Operator>());
             Assert.That(expression.Text, Is.EqualTo(expectedText));
@@ -104,8 +104,8 @@ namespace Basic.UnitTests.Parsers
 
             Mock<IInterpreter> interpreterMock = new Mock<IInterpreter>();
 
-            Basic.Parsers.Expression underTest = new Basic.Parsers.Expression();
-            IExpression expression = underTest.ReadExpressionNode(interpreterMock.Object, input, null);
+            Basic.Parsers.ExpressionParser underTest = new Basic.Parsers.ExpressionParser();
+            INode expression = underTest.ReadExpressionNode(interpreterMock.Object, input, null);
 
             Assert.That(expression, Is.TypeOf<Operator>());
             Assert.That(expression.Text, Is.EqualTo(expectedText));
@@ -129,8 +129,8 @@ namespace Basic.UnitTests.Parsers
 
             Mock<IInterpreter> interpreterMock = new Mock<IInterpreter>();
 
-            Basic.Parsers.Expression underTest = new Basic.Parsers.Expression();
-            IExpression expression = underTest.ReadExpressionNode(interpreterMock.Object, input, null);
+            Basic.Parsers.ExpressionParser underTest = new Basic.Parsers.ExpressionParser();
+            INode expression = underTest.ReadExpressionNode(interpreterMock.Object, input, null);
 
             Assert.That(expression, Is.TypeOf<Operator>());
             Assert.That(expression.Text, Is.EqualTo(expectedText));
@@ -154,8 +154,8 @@ namespace Basic.UnitTests.Parsers
 
             Mock<IInterpreter> interpreterMock = new Mock<IInterpreter>();
 
-            Basic.Parsers.Expression underTest = new Basic.Parsers.Expression();
-            IExpression expression = underTest.ReadExpressionNode(interpreterMock.Object, input, null);
+            Basic.Parsers.ExpressionParser underTest = new Basic.Parsers.ExpressionParser();
+            INode expression = underTest.ReadExpressionNode(interpreterMock.Object, input, null);
 
             Assert.That(expression, Is.TypeOf<Operator>());
             Assert.That(expression.Text, Is.EqualTo(expectedText));
@@ -179,8 +179,8 @@ namespace Basic.UnitTests.Parsers
 
             Mock<IInterpreter> interpreterMock = new Mock<IInterpreter>();
 
-            Basic.Parsers.Expression underTest = new Basic.Parsers.Expression();
-            IExpression expression = underTest.ReadExpressionNode(interpreterMock.Object, input, null);
+            Basic.Parsers.ExpressionParser underTest = new Basic.Parsers.ExpressionParser();
+            INode expression = underTest.ReadExpressionNode(interpreterMock.Object, input, null);
 
             // 1 top level
             Assert.That(expression, Is.TypeOf<Operator>());
@@ -254,8 +254,8 @@ namespace Basic.UnitTests.Parsers
 
             Mock<IInterpreter> interpreterMock = new Mock<IInterpreter>();
 
-            Basic.Parsers.Expression underTest = new Basic.Parsers.Expression();
-            IExpression expression = underTest.ReadExpressionNode(interpreterMock.Object, input, null);
+            Basic.Parsers.ExpressionParser underTest = new Basic.Parsers.ExpressionParser();
+            INode expression = underTest.ReadExpressionNode(interpreterMock.Object, input, null);
 
             // 1 top level
             Assert.That(expression, Is.TypeOf<Operator>());

@@ -1,9 +1,16 @@
 ﻿using System.Collections.Generic;
+using Basic.Errors;
 
 namespace Basic.Expressions
 {
-    public class Operator : Expression
+    /// <summary>
+    /// Represents an oeprator expression node
+    /// </summary>
+    public class Operator : Node
     {
+        /// <summary>
+        /// Operator to use
+        /// </summary>
         private readonly Operators m_operatorType;
 
         /// <summary>
@@ -14,6 +21,9 @@ namespace Basic.Expressions
             '+', '-', '=', '*', '/', '!', '&', '|', '^', ';'
         };
 
+        /// <summary>
+        /// Dictionary of operator representations
+        /// </summary>
         public static readonly Dictionary<Operators, string> Representations = new Dictionary<Operators, string>
         {
             { Operators.Equals, "==" },
@@ -25,11 +35,19 @@ namespace Basic.Expressions
             { Operators.Or, "|" }
         };
 
+        /// <summary>
+        /// Creates a new instance of the <see cref="Operator"/> class.
+        /// </summary>
+        /// <param name="operatorType"></param>
         public Operator(Operators operatorType)
         {
             m_operatorType = operatorType;
         }
 
+        /// <summary>
+        /// Calculate and return the result of the operation
+        /// </summary>
+        /// <returns></returns>
         public override object Result()
         {
             switch (m_operatorType)
@@ -49,14 +67,20 @@ namespace Basic.Expressions
                 case Operators.Equals:
                     return Equality(Left.Result(), Right.Result());
                 case Operators.None:
-                    throw new Errors.Expression("None operator is invalid");
+                    throw new ExpressionError("None operator is invalid");
                 default:
-                    throw new Errors.Expression(string.Format("Unhandled operator '{0}'", m_operatorType));
+                    throw new ExpressionError(string.Format("Unhandled operator '{0}'", m_operatorType));
             }
         }
 
+        /// <summary>
+        /// Operator to use
+        /// </summary>
         public Operators OperatorType { get { return m_operatorType; } }
 
+        /// <summary>
+        /// Gets the text representation of the operation
+        /// </summary>
         public override string Text
         {
             get { return string.Format("{0} {1} {2}", Left.Text, Representations[m_operatorType], Right.Text); }
@@ -66,12 +90,12 @@ namespace Basic.Expressions
         {
             if (left.GetType().Name != right.GetType().Name)
             {
-                throw new Errors.Expression("Divide expects both types to be Int32");
+                throw new ExpressionError("Divide expects both types to be Int32");
             }
 
             if (left.GetType().Name != "Int32")
             {
-                throw new Errors.Expression("Divide expects both types to be Int32");
+                throw new ExpressionError("Divide expects both types to be Int32");
             }
 
             return (int)left / (int)right;
@@ -81,12 +105,12 @@ namespace Basic.Expressions
         {
             if (left.GetType().Name != right.GetType().Name)
             {
-                throw new Errors.Expression("Multiply expects both types to be Int32");
+                throw new ExpressionError("Multiply expects both types to be Int32");
             }
 
             if (left.GetType().Name != "Int32")
             {
-                throw new Errors.Expression("Multiply expects both types to be Int32");
+                throw new ExpressionError("Multiply expects both types to be Int32");
             }
 
             return (int)left * (int)right;
@@ -96,7 +120,7 @@ namespace Basic.Expressions
         {
             if (left.GetType().Name != right.GetType().Name)
             {
-                throw new Errors.Expression("Add expects both types to be Int32 or String");
+                throw new ExpressionError("Add expects both types to be Int32 or String");
             }
 
             switch (left.GetType().Name)
@@ -106,7 +130,7 @@ namespace Basic.Expressions
                 case "String":
                     return (string)left + (string)right;
                 default:
-                    throw new Errors.Expression("Add expects both types to be Int32 or String");
+                    throw new ExpressionError("Add expects both types to be Int32 or String");
             }
         }
 
@@ -114,22 +138,22 @@ namespace Basic.Expressions
         {
             if (left.GetType().Name != right.GetType().Name)
             {
-                throw new Errors.Expression("Subtract expects both types to be Int32");
+                throw new ExpressionError("Subtract expects both types to be Int32");
             }
 
             if (left.GetType().Name != "Int32")
             {
-                throw new Errors.Expression("Subtract expects both types to be Int32");
+                throw new ExpressionError("Subtract expects both types to be Int32");
             }
 
             return (int)left - (int)right;
         }
 
-        private object Equality(object left, object right)
+        private bool Equality(object left, object right)
         {
             if (left.GetType().Name != right.GetType().Name)
             {
-                throw new Errors.Expression("Add expects both types to be Int32 or String");
+                throw new ExpressionError("Add expects both types to be Int32 or String");
             }
 
             switch (left.GetType().Name)
@@ -139,15 +163,15 @@ namespace Basic.Expressions
                 case "String":
                     return (string)left == (string)right;
                 default:
-                    throw new Errors.Expression("Add expects both types to be Int32 or String");
+                    throw new ExpressionError("Add expects both types to be Int32 or String");
             }
         }
 
-        private object And(object left, object right)
+        private bool And(object left, object right)
         {
             if (left.GetType().Name != right.GetType().Name)
             {
-                throw new Errors.Expression("And expects both types to be Boolean");
+                throw new ExpressionError("And expects both types to be Boolean");
             }
 
             switch (left.GetType().Name)
@@ -155,15 +179,15 @@ namespace Basic.Expressions
                 case "Boolean":
                     return (bool)left && (bool)right;
                 default:
-                    throw new Errors.Expression("And expects both types to be Boolean");
+                    throw new ExpressionError("And expects both types to be Boolean");
             }
         }
 
-        private object Or(object left, object right)
+        private bool Or(object left, object right)
         {
             if (left.GetType().Name != right.GetType().Name)
             {
-                throw new Errors.Expression("Or expects both types to be Boolean");
+                throw new ExpressionError("Or expects both types to be Boolean");
             }
 
             switch (left.GetType().Name)
@@ -171,7 +195,7 @@ namespace Basic.Expressions
                 case "Boolean":
                     return (bool)left || (bool)right;
                 default:
-                    throw new Errors.Expression("Or expects both types to be Boolean");
+                    throw new ExpressionError("Or expects both types to be Boolean");
             }
         }
     }

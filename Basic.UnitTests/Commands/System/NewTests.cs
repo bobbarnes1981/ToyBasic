@@ -36,7 +36,7 @@ namespace Basic.UnitTests.Commands.System
         {
             Mock<IHeap> heapMock = new Mock<IHeap>();
 
-            Mock<IBuffer> bufferMock = new Mock<IBuffer>();
+            Mock<ILineBuffer> bufferMock = new Mock<ILineBuffer>();
 
             Mock<IInterpreter> interpreterMock = new Mock<IInterpreter>();
             interpreterMock.Setup(x => x.Buffer).Returns(bufferMock.Object);

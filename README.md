@@ -6,11 +6,11 @@ An attempt to write a simple basic interpreter.
 
 ##Todo:
 
-THINK ABOUT DESIGN OF PARSER/EXPRESSION-VARIABLE
+THINK ABOUT DESIGN OF PARSER/EXPRESSION-VARIABLE: Does interpreter need to pass into parser or should it be passed into expression.Result(), should we just pass in the IHeap?
 
-Does interpreter need to pass into parser or should it be passed into expression.Result(), should we just pass in the IHeap?
+Maybe remove variable prefix - is it needed?
 
-Maybe remove variable prefix
+Maybe parser.readVariable returns Variable object, parser.readInt returns Number object and parser.readString returns String object?
 
 Implement logical operators NOT (XOR,NAND?)
 
@@ -22,21 +22,45 @@ Implement brackets in Expressions
 
 Implement Help
 
-Gosub/Return?
+Gosub/Return - using stack to store return?
 
-Allow extensions? Graphics for example...
+Make Extensible? Create Basic.Graphics and move standard commands to Basic.Standard ?
 
-##Examples
+##Examples - Program commands
 
-###print hello world forever
+###Print - hello world
 
 10 Print "Hello World"
+
+Run
+
+###If - comparison
+
+10 Let $var = 8
+
+20 If 8 == $var THEN Print "are equal"
+
+Run
+
+###Goto - 
+
+10 Print "forever"
 
 20 Goto 10
 
 Run
 
-###two ways to print the sum of 8 and 9
+###For - 1 to 10
+
+10 For $x = 1 To 10 Step 1
+
+20 Print $x
+
+30 Next $x
+
+Run
+
+###Expressions - addition
 
 10 Let $a = 8
 
@@ -48,28 +72,16 @@ Run
 
 Run
 
-###list the code
+##Examples - System commands
+
+###Renumber - make line numbers start at ten and increment in 10s
+
+Renumber
+
+###List - show the code in the line buffer
 
 List
 
-###exit the interpreter
+###Exit - exit the interpreter
 
 Exit
-
-###if statement
-
-10 Let $var = 8
-
-20 If 8 == $var THEN Print "are equal"
-
-Run
-
-###for statement (1 to 10)
-
-10 For $x = 1 To 10 Step 1
-
-20 Print $x
-
-30 Next $x
-
-Run

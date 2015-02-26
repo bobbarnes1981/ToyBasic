@@ -1,6 +1,9 @@
 ﻿namespace Basic.Expressions
 {
-    public class Number : Expression
+    /// <summary>
+    /// Represents a number expression node
+    /// </summary>
+    public class Number : Node
     {
         private readonly int m_number;
         

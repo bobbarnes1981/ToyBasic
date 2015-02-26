@@ -1,4 +1,6 @@
-﻿namespace Basic.Commands.Program
+﻿using Basic.Expressions;
+
+namespace Basic.Commands.Program
 {
     /// <summary>
     /// Represents the program command 'For'
@@ -52,10 +54,10 @@
                 || interpreter.Stack.Peek().Get<string>("for_var") != m_variable)
             {
                 IFrame frame = new Frame();
-                frame.Set<int>("for_end", m_end);
-                frame.Set<int>("for_step", m_step);
-                frame.Set<int>("for_line", interpreter.Buffer.Current.Number);
-                frame.Set<string>("for_var", m_variable);
+                frame.Set("for_end", m_end);
+                frame.Set("for_step", m_step);
+                frame.Set("for_line", interpreter.Buffer.Current.Number);
+                frame.Set("for_var", m_variable);
                 interpreter.Heap.Set(m_variable, m_start);
                 interpreter.Stack.Push(frame);
             }
@@ -66,7 +68,7 @@
         /// </summary>
         public override string Text
         {
-            get { return string.Format("{0} {1}{2} = {3} {4} {5} {6} {7}", Keywords.For, Basic.Expressions.Variable.PREFIX, m_variable, m_start, Keywords.To, m_end, Keywords.Step, m_step); }
+            get { return string.Format("{0} {1}{2} = {3} {4} {5} {6} {7}", Keywords.For, Variable.PREFIX, m_variable, m_start, Keywords.To, m_end, Keywords.Step, m_step); }
         }
     }
 }

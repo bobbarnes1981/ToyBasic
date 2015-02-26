@@ -12,7 +12,7 @@ namespace Basic.UnitTests.Commands.Program
         [Test]
         public void If_ConstructedObject_HasCorrectKeyword()
         {
-            Mock<IExpression> expressionMock = new Mock<IExpression>();
+            Mock<INode> expressionMock = new Mock<INode>();
 
             Mock<ICommand> commandMock = new Mock<ICommand>();
 
@@ -24,7 +24,7 @@ namespace Basic.UnitTests.Commands.Program
         [Test]
         public void If_ConstructedObject_HasCorrectIsSystemValue()
         {
-            Mock<IExpression> expressionMock = new Mock<IExpression>();
+            Mock<INode> expressionMock = new Mock<INode>();
 
             Mock<ICommand> commandMock = new Mock<ICommand>();
 
@@ -37,7 +37,7 @@ namespace Basic.UnitTests.Commands.Program
         public void If_ConstructedObject_HasCorrectTextRepresentation()
         {
             string expressionText = "my expression text";
-            Mock<IExpression> expressionMock = new Mock<IExpression>();
+            Mock<INode> expressionMock = new Mock<INode>();
             expressionMock.Setup(x => x.Text).Returns(expressionText);
 
             string commandText = "my command text";
@@ -52,7 +52,7 @@ namespace Basic.UnitTests.Commands.Program
         [Test]
         public void If_Execute_CallsCorrectInterfaceMethodWhenTrue()
         {
-            Mock<IExpression> expressionMock = new Mock<IExpression>();
+            Mock<INode> expressionMock = new Mock<INode>();
             expressionMock.Setup(x => x.Result()).Returns(true);
 
             Mock<ICommand> commandMock = new Mock<ICommand>();
@@ -70,7 +70,7 @@ namespace Basic.UnitTests.Commands.Program
         [Test]
         public void If_Execute_CallsCorrectInterfaceMethodWhenFalse()
         {
-            Mock<IExpression> expressionMock = new Mock<IExpression>();
+            Mock<INode> expressionMock = new Mock<INode>();
             expressionMock.Setup(x => x.Result()).Returns(false);
 
             Mock<ICommand> commandMock = new Mock<ICommand>();

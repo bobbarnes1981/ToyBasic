@@ -1,49 +1,49 @@
 ﻿using System;
-using System.Collections.Generic;
 using Basic.Commands;
+using Basic.Errors;
 using Moq;
 using NUnit.Framework;
 
 namespace Basic.UnitTests
 {
     [TestFixture]
-    public class BufferTests
+    public class LineBufferTests
     {
         [Test]
-        public void Buffer_Add_Null()
+        public void LineBuffer_Add_Null()
         {
-            Buffer underTest = new Buffer();
+            LineBuffer underTest = new LineBuffer();
 
             Assert.Throws<ArgumentNullException>(() => underTest.Add(null));
         }
 
         [Test]
-        public void Buffer_Add_LineInvalidNumber()
+        public void LineBuffer_Add_LineInvalidNumber()
         {
-            Buffer underTest = new Buffer();
+            LineBuffer underTest = new LineBuffer();
 
             Mock<ILine> lineMock = new Mock<ILine>();
             lineMock.Setup(x => x.Number).Returns(0);
 
-            Assert.Throws<Errors.Buffer>(() => underTest.Add(lineMock.Object), "Invalid line number '0'");
+            Assert.Throws<LineBufferError>(() => underTest.Add(lineMock.Object), "Invalid line number '0'");
         }
 
         [Test]
-        public void Buffer_Add_LineNullCommand()
+        public void LineBuffer_Add_LineNullCommand()
         {
-            Buffer underTest = new Buffer();
+            LineBuffer underTest = new LineBuffer();
 
             Mock<ILine> lineMock = new Mock<ILine>();
             lineMock.Setup(x => x.Number).Returns(10);
             lineMock.Setup(x => x.Command).Returns<ICommand>(null);
 
-            Assert.Throws<Errors.Buffer>(() => underTest.Add(lineMock.Object), "Invalid line command 'null'");
+            Assert.Throws<LineBufferError>(() => underTest.Add(lineMock.Object), "Invalid line command 'null'");
         }
 
         [Test]
-        public void Buffer_Add_LineSystemCommand()
+        public void LineBuffer_Add_LineSystemCommand()
         {
-            Buffer underTest = new Buffer();
+            LineBuffer underTest = new LineBuffer();
 
             Mock<ICommand> commandMock = new Mock<ICommand>();
             commandMock.Setup(x => x.IsSystem).Returns(true);
@@ -53,13 +53,13 @@ namespace Basic.UnitTests
             lineMock.Setup(x => x.Number).Returns(10);
             lineMock.Setup(x => x.Command).Returns(commandMock.Object);
 
-            Assert.Throws<Errors.Buffer>(() => underTest.Add(lineMock.Object), string.Format("System command '{0}' cannot be added to buffer", Keywords.Clear));
+            Assert.Throws<LineBufferError>(() => underTest.Add(lineMock.Object), string.Format("System command '{0}' cannot be added to buffer", Keywords.Clear));
         }
 
         [Test]
-        public void Buffer_Add_Line()
+        public void LineBuffer_Add_Line()
         {
-            Buffer underTest = new Buffer();
+            LineBuffer underTest = new LineBuffer();
 
             Mock<ICommand> commandMock = new Mock<ICommand>();
 
@@ -71,17 +71,17 @@ namespace Basic.UnitTests
         }
 
         [Test]
-        public void Buffer_Renumber_Empty()
+        public void LineBuffer_Renumber_Empty()
         {
-            Buffer underTest = new Buffer();
+            LineBuffer underTest = new LineBuffer();
 
             underTest.Renumber();
         }
 
         [Test]
-        public void Buffer_Renumber_LinesNumbers()
+        public void LineBuffer_Renumber_LinesNumbers()
         {
-            Buffer underTest = new Buffer();
+            LineBuffer underTest = new LineBuffer();
 
             for (int i = 1; i < 5; i++)
             {
@@ -103,11 +103,11 @@ namespace Basic.UnitTests
         }
 
         [Test]
-        public void Buffer_Renumber_LinesData()
+        public void LineBuffer_Renumber_LinesData()
         {
-            Buffer underTest = new Buffer();
+            LineBuffer underTest = new LineBuffer();
 
-            Mock<Basic.Expressions.IExpression> expressionMock = new Mock<Basic.Expressions.IExpression>();
+            Mock<Basic.Expressions.INode> expressionMock = new Mock<Basic.Expressions.INode>();
             expressionMock.Setup(x => x.Result()).Returns(true);
 
             // goto
@@ -154,9 +154,9 @@ namespace Basic.UnitTests
         }
 
         [Test]
-        public void Buffer_Jump_ValidLineNumber()
+        public void LineBuffer_Jump_ValidLineNumber()
         {
-            Buffer underTest = new Buffer();
+            LineBuffer underTest = new LineBuffer();
 
             for (int i = 10; i < 50; i += 10)
             {
@@ -178,9 +178,9 @@ namespace Basic.UnitTests
         }
 
         [Test]
-        public void Buffer_Jump_InvalidLineNumber()
+        public void LineBuffer_Jump_InvalidLineNumber()
         {
-            Buffer underTest = new Buffer();
+            LineBuffer underTest = new LineBuffer();
 
             for (int i = 10; i < 50; i += 10)
             {
@@ -195,7 +195,7 @@ namespace Basic.UnitTests
             underTest.Next();
             Assert.That(underTest.Current.Number, Is.EqualTo(10));
 
-            Assert.Throws<Errors.Buffer>(() => underTest.Jump(80));
+            Assert.Throws<LineBufferError>(() => underTest.Jump(80));
         }
     }
 }

@@ -4,8 +4,10 @@
     {
         bool Exists(string name);
 
+        void Set(string name, object value);
+
         T Get<T>(string name);
 
-        void Set<T>(string name, T value);
+        object Get(string name);
     }
 }

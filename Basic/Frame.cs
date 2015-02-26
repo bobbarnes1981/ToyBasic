@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Basic.Errors;
 
 namespace Basic
 {
@@ -10,7 +11,7 @@ namespace Basic
         /// <summary>
         /// The stack frame
         /// </summary>
-        private Dictionary<string, object> m_frame;
+        private readonly Dictionary<string, object> m_frame;
 
         /// <summary>
         /// Create a new instance of the <see cref="Frame"/> class.
@@ -38,16 +39,30 @@ namespace Basic
         /// <returns></returns>
         public T Get<T>(string name)
         {
-            return (T)m_frame[name];
+            if (Get(name).GetType() != typeof (T))
+            {
+                throw new FrameError(string.Format("Frame variable '{0}' is of type '{1}' not '{2}'", name, Get(name).GetType(), typeof(T)));
+            }
+
+            return (T)Get(name);
+        }
+
+        public object Get(string name)
+        {
+            if (!m_frame.ContainsKey(name))
+            {
+                throw new FrameError(string.Format("Frame variable '{0}' does not exist", name));
+            }
+
+            return m_frame[name];
         }
 
         /// <summary>
         /// Set a value in the frame
         /// </summary>
-        /// <typeparam name="T"></typeparam>
         /// <param name="name"></param>
         /// <param name="value"></param>
-        public void Set<T>(string name, T value)
+        public void Set(string name, object value)
         {
             if (!m_frame.ContainsKey(name))
             {

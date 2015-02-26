@@ -1,6 +1,9 @@
 ﻿namespace Basic.Expressions
 {
-    public class Variable : Expression
+    /// <summary>
+    /// Represents a variable expression node
+    /// </summary>
+    public class Variable : Node
     {
         private readonly IInterpreter m_interpreter;
 

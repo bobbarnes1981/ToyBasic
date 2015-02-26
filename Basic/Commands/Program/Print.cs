@@ -10,13 +10,13 @@ namespace Basic.Commands.Program
         /// <summary>
         /// The expression to evaluate
         /// </summary>
-        private readonly IExpression m_expression;
+        private readonly INode m_expression;
 
         /// <summary>
         /// Creates a new instance of the <see cref="Print"/> class.
         /// </summary>
         /// <param name="expression">The expression to evaluate</param>
-        public Print(IExpression expression)
+        public Print(INode expression)
             : base(Keywords.Print, false)
         {
             m_expression = expression;

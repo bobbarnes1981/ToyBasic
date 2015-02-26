@@ -13,7 +13,7 @@ namespace Basic.UnitTests.Commands.Program
         {
             string variable = "variable";
 
-            Mock<IExpression> expressionMock = new Mock<IExpression>();
+            Mock<INode> expressionMock = new Mock<INode>();
 
             Let underTest = new Let(variable, expressionMock.Object);
 
@@ -25,7 +25,7 @@ namespace Basic.UnitTests.Commands.Program
         {
             string variable = "variable";
 
-            Mock<IExpression> expressionMock = new Mock<IExpression>();
+            Mock<INode> expressionMock = new Mock<INode>();
 
             Let underTest = new Let(variable, expressionMock.Object);
 
@@ -38,7 +38,7 @@ namespace Basic.UnitTests.Commands.Program
             string variable = "variable";
             string expressionText = "my expresison text";
 
-            Mock<IExpression> expressionMock = new Mock<IExpression>();
+            Mock<INode> expressionMock = new Mock<INode>();
             expressionMock.Setup(x => x.Text).Returns(expressionText);
 
             Let underTest = new Let(variable, expressionMock.Object);
@@ -57,7 +57,7 @@ namespace Basic.UnitTests.Commands.Program
             Mock<IInterpreter> interpreterMock = new Mock<IInterpreter>();
             interpreterMock.Setup(x => x.Heap).Returns(heapMock.Object);
 
-            Mock<IExpression> expressionMock = new Mock<IExpression>();
+            Mock<INode> expressionMock = new Mock<INode>();
             expressionMock.Setup(x => x.Result()).Returns(value);
 
             Let underTest = new Let(variable, expressionMock.Object);

@@ -1,6 +1,9 @@
 ﻿namespace Basic.Expressions
 {
-    public class String : Expression
+    /// <summary>
+    /// Represents a string expression node
+    /// </summary>
+    public class String : Node
     {
         private readonly string m_text;
 

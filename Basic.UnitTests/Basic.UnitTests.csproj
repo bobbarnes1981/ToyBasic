@@ -79,7 +79,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="BufferTests.cs" />
+    <Compile Include="LineBufferTests.cs" />
     <Compile Include="Commands\Program\ClearTests.cs" />
     <Compile Include="Commands\Program\LetTests.cs" />
     <Compile Include="Commands\Program\InputTests.cs" />
@@ -93,6 +93,8 @@
     <Compile Include="Commands\System\ExitTests.cs" />
     <Compile Include="Commands\System\ClearTests.cs" />
     <Compile Include="Commands\System\RenumberTests.cs" />
+    <Compile Include="Expressions\OperatorTests.cs" />
+    <Compile Include="Expressions\VariableTests.cs" />
     <Compile Include="HeapTests.cs" />
     <Compile Include="Parsers\ExpressionTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -126,13 +128,6 @@
   </Choose>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="..\packages\StyleCop.MSBuild.4.7.49.1\build\StyleCop.MSBuild.Targets" Condition="Exists('..\packages\StyleCop.MSBuild.4.7.49.1\build\StyleCop.MSBuild.Targets')" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\packages\StyleCop.MSBuild.4.7.49.1\build\StyleCop.MSBuild.Targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\StyleCop.MSBuild.4.7.49.1\build\StyleCop.MSBuild.Targets'))" />
-  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

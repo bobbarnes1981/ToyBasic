@@ -8,7 +8,7 @@
         /// <summary>
         /// Line buffer
         /// </summary>
-        IBuffer Buffer { get; }
+        ILineBuffer Buffer { get; }
 
         /// <summary>
         /// Console input/output

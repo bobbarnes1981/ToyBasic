@@ -1,5 +1,4 @@
 ﻿using Basic.Commands;
-using Basic.Commands.System;
 using Moq;
 using NUnit.Framework;
 
@@ -45,7 +44,7 @@ namespace Basic.UnitTests.Commands.System
 
             Mock<IConsole> consoleMock = new Mock<IConsole>();
 
-            Mock<IBuffer> bufferMock = new Mock<IBuffer>();
+            Mock<ILineBuffer> bufferMock = new Mock<ILineBuffer>();
             bufferMock.SetupSequence(x => x.End).Returns(false).Returns(true);
             bufferMock.Setup(x => x.Current).Returns(expectedLine);
 

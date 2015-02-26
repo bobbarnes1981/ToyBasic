@@ -1,4 +1,6 @@
 ﻿using System;
+using Basic.Commands;
+using Basic.Errors;
 using Basic.Expressions;
 
 namespace Basic.Parsers
@@ -6,17 +8,17 @@ namespace Basic.Parsers
     /// <summary>
     /// Represents a line parser
     /// </summary>
-    public class Line : Parser<ILine>
+    public class LineParser : Parser<ILine>
     {
-        private IParser<IExpression> m_expressionParser;
+        private IParser<INode> m_expressionParser;
 
-        public Line(IParser<IExpression> expressionParser)
+        public LineParser(IParser<INode> expressionParser)
         {
             m_expressionParser = expressionParser;
         }
 
         /// <summary>
-        /// Creates a new instance of the <see cref="Line"/> class.
+        /// Creates a new instance of the <see cref="LineParser"/> class.
         /// </summary>
         /// <param name="interpreter"></param>
         /// <param name="input">The input string to parse</param>
@@ -32,19 +34,21 @@ namespace Basic.Parsers
                 input.Reset();
             }
 
-            Commands.ICommand command = readCommand(interpreter, input, number == 0);
+            ICommand command = readCommand(interpreter, input, number == 0);
 
-            return new Basic.Line(number, command);
+            return new Line(number, command);
         }
 
         /// <summary>
         /// Reas a command from the input string
         /// </summary>
+        /// <param name="interpreter"></param>
+        /// <param name="input"></param>
         /// <param name="isSystem">True if a system command is expected</param>
         /// <returns>A parsed ICommand object</returns>
-        private Commands.ICommand readCommand(IInterpreter interpreter, ITextStream input, bool isSystem)
+        private ICommand readCommand(IInterpreter interpreter, ITextStream input, bool isSystem)
         {
-            Commands.ICommand command;
+            ICommand command;
 
             Keywords keyword = readKeyword(input);
 
@@ -71,7 +75,7 @@ namespace Basic.Parsers
             Keywords keyword;
             if (!Enum.TryParse(keywordString, out keyword))
             {
-                throw new Errors.Parser(string.Format("Could not parse keyword {0}", keywordString));
+                throw new ParserError(string.Format("Could not parse keyword {0}", keywordString));
             }
 
             return keyword;
@@ -82,9 +86,9 @@ namespace Basic.Parsers
         /// </summary>
         /// <param name="keyword">Keyword of the expected command</param>
         /// <returns>A parsed ICommand object</returns>
-        private Commands.ICommand readSystemCommand(ITextStream input, Keywords keyword)
+        private ICommand readSystemCommand(ITextStream input, Keywords keyword)
         {
-            Commands.ICommand command;
+            ICommand command;
             switch (keyword)
             {
                 case Keywords.Clear:
@@ -120,7 +124,7 @@ namespace Basic.Parsers
                     expectEnd(input);
                     break;
                 default:
-                    throw new Errors.Parser(string.Format("System keyword not implemented in line parser: {0}", keyword));
+                    throw new ParserError(string.Format("System keyword not implemented in line parser: {0}", keyword));
             }
 
             return command;
@@ -131,9 +135,9 @@ namespace Basic.Parsers
         /// </summary>
         /// <param name="keyword">Keyword of the expected command</param>
         /// <returns>A parsed ICommand object</returns>
-        private Commands.ICommand readProgramCommand(IInterpreter interpreter, ITextStream input, Keywords keyword)
+        private ICommand readProgramCommand(IInterpreter interpreter, ITextStream input, Keywords keyword)
         {
-            Commands.ICommand command;
+            ICommand command;
             switch (keyword)
             {
                 case Keywords.Clear:
@@ -147,7 +151,6 @@ namespace Basic.Parsers
                     break;
                 case Keywords.For:
                     string forVariable = readVariable(input);
-                    input.DiscardSpaces();
                     expect(input, '=');
                     int start = readInt(input);
                     expect(input, Keywords.To);
@@ -162,7 +165,7 @@ namespace Basic.Parsers
                     expectEnd(input);
                     break;
                 case Keywords.If:
-                    IExpression comparison = m_expressionParser.Parse(interpreter, input);
+                    INode comparison = m_expressionParser.Parse(interpreter, input);
                     expect(input, Keywords.Then);
                     command = new Commands.Program.If(comparison, readCommand(interpreter, input, false));
                     expectEnd(input);
@@ -173,7 +176,6 @@ namespace Basic.Parsers
                     break;
                 case Keywords.Let:
                     string letVariable = readVariable(input);
-                    input.DiscardSpaces();
                     expect(input, '=');
                     command = new Commands.Program.Let(letVariable, m_expressionParser.Parse(interpreter, input));
                     expectEnd(input);
@@ -191,7 +193,7 @@ namespace Basic.Parsers
                     expectEnd(input);
                     break;
                 default:
-                    throw new Errors.Parser(string.Format("Program command not implemented in line parser: {0}", keyword));
+                    throw new ParserError(string.Format("Program command not implemented in line parser: {0}", keyword));
             }
 
             return command;
@@ -200,6 +202,7 @@ namespace Basic.Parsers
         /// <summary>
         /// Expect the spcified keyword in the input string
         /// </summary>
+        /// <param name="input"></param>
         /// <param name="keyword">Expected keyword</param>
         private void expect(ITextStream input, Keywords keyword)
         {
@@ -213,7 +216,7 @@ namespace Basic.Parsers
         {
             if (!input.End)
             {
-                throw new Errors.Parser(string.Format("Expecting end of line but found '{0}'", input.Peek()));
+                throw new ParserError(string.Format("Expecting end of line but found '{0}'", input.Peek()));
             }
         }
     }

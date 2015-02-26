@@ -1,4 +1,7 @@
-﻿namespace Basic.Commands.Program
+﻿using Basic.Errors;
+using Basic.Expressions;
+
+namespace Basic.Commands.Program
 {
     /// <summary>
     /// Represents the program command 'Next'
@@ -26,7 +29,7 @@
                 || !interpreter.Stack.Peek().Exists("for_var")
                 || interpreter.Stack.Peek().Get<string>("for_var") != m_variable)
             {
-                throw new Errors.Command("Invalid for_var in current stack frame");
+                throw new CommandError("Invalid for_var in current stack frame");
             }
 
             IFrame frame = interpreter.Stack.Pop();
@@ -42,7 +45,7 @@
 
         public override string Text
         {
-            get { return string.Format("{0} {1}{2}", Keywords.Next, Basic.Expressions.Variable.PREFIX, m_variable); }
+            get { return string.Format("{0} {1}{2}", Keywords.Next, Variable.PREFIX, m_variable); }
         }
     }
 }

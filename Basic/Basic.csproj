@@ -44,7 +44,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Buffer.cs" />
+    <Compile Include="Errors\FrameError.cs" />
+    <Compile Include="Errors\StackError.cs" />
+    <Compile Include="LineBuffer.cs" />
     <Compile Include="Commands\Command.cs" />
     <Compile Include="Commands\Program\Clear.cs" />
     <Compile Include="Commands\Program\Dim.cs" />
@@ -57,16 +59,17 @@
     <Compile Include="Commands\Program\Input.cs" />
     <Compile Include="Commands\Program\Rem.cs" />
     <Compile Include="Commands\System\Save.cs" />
-    <Compile Include="Errors\Buffer.cs" />
-    <Compile Include="Errors\Expression.cs" />
-    <Compile Include="Errors\Heap.cs" />
-    <Compile Include="Expressions\Expression.cs" />
+    <Compile Include="Errors\LineBufferError.cs" />
+    <Compile Include="Errors\ExpressionError.cs" />
+    <Compile Include="Errors\HeapError.cs" />
+    <Compile Include="Expressions\Boolean.cs" />
+    <Compile Include="Expressions\Node.cs" />
     <Compile Include="Expressions\Number.cs" />
     <Compile Include="Expressions\Operator.cs" />
     <Compile Include="FileStorage.cs" />
     <Compile Include="Frame.cs" />
     <Compile Include="Heap.cs" />
-    <Compile Include="Expressions\IExpression.cs" />
+    <Compile Include="Expressions\INode.cs" />
     <Compile Include="IFrame.cs" />
     <Compile Include="IHeap.cs" />
     <Compile Include="ILine.cs" />
@@ -75,7 +78,7 @@
     <Compile Include="IStorage.cs" />
     <Compile Include="ITextStream.cs" />
     <Compile Include="Keywords.cs" />
-    <Compile Include="Errors\Command.cs" />
+    <Compile Include="Errors\CommandError.cs" />
     <Compile Include="Commands\System\Clear.cs" />
     <Compile Include="Commands\System\Exit.cs" />
     <Compile Include="Commands\Program\Goto.cs" />
@@ -85,19 +88,19 @@
     <Compile Include="Commands\System\Run.cs" />
     <Compile Include="Console.cs" />
     <Compile Include="Errors\Error.cs" />
-    <Compile Include="IBuffer.cs" />
+    <Compile Include="ILineBuffer.cs" />
     <Compile Include="Commands\ICommand.cs" />
     <Compile Include="IConsole.cs" />
     <Compile Include="IInterpreter.cs" />
     <Compile Include="Interpreter.cs" />
-    <Compile Include="Errors\Interpreter.cs" />
-    <Compile Include="Parsers\Expression.cs" />
+    <Compile Include="Errors\InterpreterError.cs" />
+    <Compile Include="Parsers\ExpressionParser.cs" />
     <Compile Include="Parsers\IParser.cs" />
     <Compile Include="Line.cs" />
-    <Compile Include="Errors\Line.cs" />
+    <Compile Include="Errors\LineError.cs" />
     <Compile Include="Operators.cs" />
-    <Compile Include="Parsers\Line.cs" />
-    <Compile Include="Errors\Parser.cs" />
+    <Compile Include="Parsers\LineParser.cs" />
+    <Compile Include="Errors\ParserError.cs" />
     <Compile Include="Parsers\Parser.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -112,13 +115,6 @@
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="..\packages\StyleCop.MSBuild.4.7.49.1\build\StyleCop.MSBuild.Targets" Condition="Exists('..\packages\StyleCop.MSBuild.4.7.49.1\build\StyleCop.MSBuild.Targets')" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\packages\StyleCop.MSBuild.4.7.49.1\build\StyleCop.MSBuild.Targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\StyleCop.MSBuild.4.7.49.1\build\StyleCop.MSBuild.Targets'))" />
-  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

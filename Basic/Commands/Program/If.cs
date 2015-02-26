@@ -1,4 +1,5 @@
-﻿using Basic.Expressions;
+﻿using Basic.Errors;
+using Basic.Expressions;
 
 namespace Basic.Commands.Program
 {
@@ -10,7 +11,7 @@ namespace Basic.Commands.Program
         /// <summary>
         /// The expression to evaluate
         /// </summary>
-        private readonly IExpression m_expression;
+        private readonly INode m_expression;
 
         /// <summary>
         /// The command to execute if the expression is true
@@ -22,7 +23,7 @@ namespace Basic.Commands.Program
         /// </summary>
         /// <param name="expression">The expression to evaluate</param>
         /// <param name="command">The command to execute if the expression is true</param>
-        public If(IExpression expression, ICommand command)
+        public If(INode expression, ICommand command)
             : base(Keywords.If, false)
         {
             m_expression = expression;
@@ -54,7 +55,7 @@ namespace Basic.Commands.Program
                     output = !string.IsNullOrEmpty((string)result);
                     break;
                 default:
-                    throw new Errors.Expression(string.Format("Unhandled type '{0}'", result.GetType().Name));
+                    throw new CommandError(string.Format("Unhandled type '{0}'", result.GetType().Name));
             }
 
             if (output)

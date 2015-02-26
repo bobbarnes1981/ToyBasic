@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Basic
 {
     public class Stack : IStack
     {
-        private Stack<IFrame> m_stack;
+        private readonly Stack<IFrame> m_stack;
 
         public Stack()
         {

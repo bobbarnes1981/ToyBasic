@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using Basic.Commands;
 using Basic.Commands.Program;
+using Basic.Errors;
 
 namespace Basic
 {
-    public class Buffer : IBuffer
+    public class LineBuffer : ILineBuffer
     {
         private const int START_LINE = 10;
         private const int DEFAULT_STEP = 10;
@@ -17,7 +18,7 @@ namespace Basic
         private int m_currentLine;
         private int m_nextLine;
 
-        public Buffer()
+        public LineBuffer()
         {
             m_buffer = new SortedDictionary<int, ILine>();
             Reset();
@@ -28,11 +29,11 @@ namespace Basic
             if (line == null)
                 throw new ArgumentNullException("line");
             if (line.Number < 1)
-                throw new Errors.Buffer(string.Format("Invalid line number '{0}'", line.Number));
+                throw new LineBufferError(string.Format("Invalid line number '{0}'", line.Number));
             if (line.Command == null)
-                throw new Errors.Buffer(string.Format("Invalid line command 'null'"));
+                throw new LineBufferError(string.Format("Invalid line command 'null'"));
             if (line.Command.IsSystem)
-                throw new Errors.Buffer(string.Format("System command '{0}' cannot be added to buffer", line.Command.Keyword));
+                throw new LineBufferError(string.Format("System command '{0}' cannot be added to buffer", line.Command.Keyword));
             if (!m_buffer.ContainsKey(line.Number))
             {
                 m_buffer.Add(line.Number, null);
@@ -69,6 +70,11 @@ namespace Basic
             m_buffer = buffer;
         }
 
+        /// <summary>
+        /// Loop through the current buffer and convert any occurrences (within commands) of oldLineNumber to newLineNumber
+        /// </summary>
+        /// <param name="oldLineNumber"></param>
+        /// <param name="newLineNumber"></param>
         private void renumber(int oldLineNumber, int newLineNumber)
         {
             // for all line in buffer
@@ -106,7 +112,7 @@ namespace Basic
                     else
                     {
                         // we should not have system commands in the buffer
-                        throw new Errors.Buffer(string.Format("System command '{0}' should not be in buffer", command.Keyword));
+                        throw new LineBufferError(string.Format("System command '{0}' should not be in buffer", command.Keyword));
                     }
                 } while (command != null);
             }
@@ -142,7 +148,7 @@ namespace Basic
         {
             if (!m_buffer.Keys.Contains(lineNumber))
             {
-                throw new Errors.Buffer(string.Format("Invalid line number '{0}'", lineNumber));
+                throw new LineBufferError(string.Format("Invalid line number '{0}'", lineNumber));
             }
 
             m_nextLine = lineNumber;

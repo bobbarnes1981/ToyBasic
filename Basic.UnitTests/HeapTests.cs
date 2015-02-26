@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using Basic.Errors;
+using NUnit.Framework;
 
 namespace Basic.UnitTests
 {
@@ -23,7 +24,7 @@ namespace Basic.UnitTests
         {
             Heap underTest = new Heap();
 
-            Assert.Throws<Errors.Heap>(() => underTest.Get("variable"));
+            Assert.Throws<HeapError>(() => underTest.Get("variable"));
         }
     }
 }

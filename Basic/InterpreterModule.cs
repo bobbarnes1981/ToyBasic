@@ -8,14 +8,14 @@ namespace Basic
     {
         public override void Load()
         {
-            Bind<IBuffer>().To<Buffer>();
+            Bind<ILineBuffer>().To<LineBuffer>();
             Bind<IConsole>().To<Console>();
             Bind<IHeap>().To<Heap>();
             Bind<IStack>().To<Stack>();
             Bind<IStorage>().To<FileStorage>();
 
-            Bind<IParser<ILine>>().To<Parsers.Line>();
-            Bind<IParser<IExpression>>().To<Parsers.Expression>();
+            Bind<IParser<ILine>>().To<LineParser>();
+            Bind<IParser<INode>>().To<ExpressionParser>();
         }
     }
 }

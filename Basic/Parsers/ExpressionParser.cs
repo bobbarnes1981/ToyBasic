@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using Basic.Errors;
 using Basic.Expressions;
 
 namespace Basic.Parsers
@@ -6,9 +7,9 @@ namespace Basic.Parsers
     /// <summary>
     /// Represents an expression parser
     /// </summary>
-    public class Expression : Parser<IExpression>
+    public class ExpressionParser : Parser<INode>
     {
-        public override IExpression Parse(IInterpreter interpreter, ITextStream input)
+        public override INode Parse(IInterpreter interpreter, ITextStream input)
         {
             return ReadExpressionNode(interpreter, input, null);
         }
@@ -22,13 +23,13 @@ namespace Basic.Parsers
         /// <param name="input"></param>
         /// <param name="parentNode">The current previous parent node</param>
         /// <returns></returns>
-        public IExpression ReadExpressionNode(IInterpreter interpreter, ITextStream input, IExpression parentNode)
+        public INode ReadExpressionNode(IInterpreter interpreter, ITextStream input, INode parentNode)
         {
             // current result node
-            IExpression result = null;
+            INode result = null;
 
             // read the current expression 
-            IExpression child = ReadExpressionLeaf(interpreter, input);
+            INode child = ReadExpressionLeaf(interpreter, input);
 
             // check for an operator
             Operators op = Operators.None;
@@ -69,13 +70,13 @@ namespace Basic.Parsers
                         else
                         {
                             // parent already has a right node - shouldn't happen?
-                            throw new Errors.Parser("Parent expression already has a right node");
+                            throw new ParserError("Parent expression already has a right node");
                         }
                     }
                     else
                     {
                         // parent is leaf - shouldn't happen?
-                        throw new Errors.Parser("Parent expression is a leaf node");
+                        throw new ParserError("Parent expression is a leaf node");
                     }
                 }
             }
@@ -126,13 +127,13 @@ namespace Basic.Parsers
                         else
                         {
                             // parent already has a right node - shouldn't happen?
-                            throw new Errors.Parser("Parent expression already has a right node");
+                            throw new ParserError("Parent expression already has a right node");
                         }
                     }
                     else
                     {
                         // parent is leaf - shouldn't happen?
-                        throw new Errors.Parser("Parent expression is a leaf node");
+                        throw new ParserError("Parent expression is a leaf node");
                     }
                 }
             }
@@ -146,11 +147,11 @@ namespace Basic.Parsers
         /// <param name="interpreter"></param>
         /// <param name="input"></param>
         /// <returns></returns>
-        public IExpression ReadExpressionLeaf(IInterpreter interpreter, ITextStream input)
+        public INode ReadExpressionLeaf(IInterpreter interpreter, ITextStream input)
         {
             preChecks(input, "expression");
             char character = input.Peek();
-            IExpression leafNode;
+            INode leafNode;
             switch (character)
             {
                 case '"':
@@ -172,7 +173,7 @@ namespace Basic.Parsers
                     leafNode = new Number(readInt(input));
                     break;
                 default:
-                    throw new Errors.Parser(string.Format("'{0}' is not recognised as the start of a valid expression leaf node", character));
+                    throw new ParserError(string.Format("'{0}' is not recognised as the start of a valid expression leaf node", character));
             }
 
             return leafNode;
@@ -189,7 +190,7 @@ namespace Basic.Parsers
             string operatorString = readUntil(input, character => !Operator.VALID_CHARACTERS.Contains(character));
             if (!Operator.Representations.ContainsValue(operatorString))
             {
-                throw new Errors.Parser(string.Format("'{0}' is not a valid operator", operatorString));
+                throw new ParserError(string.Format("'{0}' is not a valid operator", operatorString));
             }
 
             return Operator.Representations.First(x => x.Value == operatorString).Key;

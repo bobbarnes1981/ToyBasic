@@ -52,7 +52,7 @@ namespace Basic.UnitTests.Commands.System
             Mock<ILine> lineMock = new Mock<ILine>();
             lineMock.Setup(x => x.Command).Returns(commandMock.Object);
 
-            Mock<IBuffer> bufferMock = new Mock<IBuffer>();
+            Mock<ILineBuffer> bufferMock = new Mock<ILineBuffer>();
             bufferMock.SetupSequence(x => x.End).Returns(false).Returns(true);
             bufferMock.Setup(x => x.Current).Returns(lineMock.Object);
 

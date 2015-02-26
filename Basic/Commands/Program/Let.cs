@@ -15,14 +15,14 @@ namespace Basic.Commands.Program
         /// <summary>
         /// The expression to assign to the variable
         /// </summary>
-        private readonly IExpression m_expression;
+        private readonly INode m_expression;
 
         /// <summary>
         /// Creates a new instance of the <see cref="Let"/> class.
         /// </summary>
         /// <param name="variable">The variable to assign to</param>
         /// <param name="expression">The expression to assign to the variable</param>
-        public Let(string variable, IExpression expression)
+        public Let(string variable, INode expression)
             : base(Keywords.Let, false)
         {
             m_variable = variable;

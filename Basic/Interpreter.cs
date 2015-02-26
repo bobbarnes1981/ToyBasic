@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reflection;
+using Basic.Errors;
 using Basic.Parsers;
 
 namespace Basic
@@ -17,7 +18,7 @@ namespace Basic
 
         private IParser<ILine> m_parser;
 
-        private IBuffer m_buffer;
+        private ILineBuffer m_buffer;
 
         private IConsole m_console;
 
@@ -36,7 +37,7 @@ namespace Basic
         /// <param name="stack"></param>
         /// <param name="storage"></param>
         /// <param name="parser"></param>
-        public Interpreter(IBuffer buffer, IConsole console, IHeap heap, IStack stack, IStorage storage, IParser<ILine> parser)
+        public Interpreter(ILineBuffer buffer, IConsole console, IHeap heap, IStack stack, IStorage storage, IParser<ILine> parser)
         {
             if (buffer == null)
                 throw new ArgumentNullException("buffer");
@@ -59,7 +60,7 @@ namespace Basic
             m_parser = parser;
         }
 
-        public IBuffer Buffer
+        public ILineBuffer Buffer
         {
             get { return m_buffer; }
         }
@@ -110,7 +111,7 @@ namespace Basic
             {
                 line = m_parser.Parse(this, new TextStream(input));
             }
-            catch (Errors.Error error)
+            catch (Error error)
             {
                 line = null;
                 displayError(error);
@@ -123,7 +124,7 @@ namespace Basic
                     {
                         line.Command.Execute(this);
                     }
-                    catch (Errors.Error error)
+                    catch (Error error)
                     {
                         displayError(error);
                     }
@@ -151,7 +152,7 @@ namespace Basic
         /// Display an error message
         /// </summary>
         /// <param name="error"></param>
-        private void displayError(Errors.Error error)
+        private void displayError(Error error)
         {
             // TODO: colours
             m_console.Output(string.Format("{0}: {1}\r\n", error.GetType(), error.Message));

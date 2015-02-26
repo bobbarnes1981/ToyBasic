@@ -2,16 +2,26 @@
 
 namespace Basic.Commands.System
 {
+    /// <summary>
+    /// Represents the system command 'Save'
+    /// </summary>
     public class Save : Command
     {
         private readonly string m_filename;
 
+        /// <summary>
+        /// Creates a new instance of the <see cref="Save"/> class.
+        /// </summary>
         public Save(string filename)
             : base(Keywords.Save, true)
         {
             m_filename = filename;
         }
 
+        /// <summary>
+        /// Executes the 'Save' command by creating a list of all the lines and sending them to the storage interface save method
+        /// </summary>
+        /// <param name="interpreter"></param>
         public override void Execute(IInterpreter interpreter)
         {
             List<string> lines = new List<string>();
@@ -25,6 +35,9 @@ namespace Basic.Commands.System
             interpreter.Storage.Save(m_filename, lines);
         }
 
+        /// <summary>
+        /// Gets the text representation of the command
+        /// </summary>
         public override string Text
         {
             get { return string.Format("{0} {1}", Keywords.Save, m_filename); }

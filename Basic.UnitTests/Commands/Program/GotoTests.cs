@@ -39,7 +39,7 @@ namespace Basic.UnitTests.Commands.Program
         {
             int line = 0;
 
-            Mock<IBuffer> bufferMock = new Mock<IBuffer>();
+            Mock<ILineBuffer> bufferMock = new Mock<ILineBuffer>();
 
             Mock<IInterpreter> interpreterMock = new Mock<IInterpreter>();
             interpreterMock.Setup(x => x.Buffer).Returns(bufferMock.Object);

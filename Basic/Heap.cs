@@ -1,14 +1,20 @@
 ﻿using System.Collections.Generic;
+using Basic.Errors;
 
 namespace Basic
 {
     public class Heap : IHeap
     {
-        private Dictionary<string, object> m_heap;
+        private readonly Dictionary<string, object> m_heap;
 
         public Heap()
         {
             m_heap = new Dictionary<string, object>();
+        }
+
+        public bool Exists(string name)
+        {
+            return m_heap.ContainsKey(name);
         }
 
         public void Set(string variable, object value)
@@ -21,11 +27,21 @@ namespace Basic
             m_heap[variable] = value;
         }
 
+        public T Get<T>(string variable)
+        {
+            if (Get(variable).GetType() != typeof(T))
+            {
+                throw new HeapError(string.Format("Heap variable '{0}' is of type '{1}' not '{2}'", variable, Get(variable).GetType(), typeof(T)));
+            }
+
+            return (T)Get(variable);
+        }
+
         public object Get(string variable)
         {
             if (!m_heap.ContainsKey(variable))
             {
-                throw new Errors.Heap(string.Format("variable '{0}' does not exist", variable));
+                throw new HeapError(string.Format("Heap variable '{0}' does not exist", variable));
             }
 
             return m_heap[variable];
