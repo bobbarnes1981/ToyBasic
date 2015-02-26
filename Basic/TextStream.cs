@@ -11,7 +11,10 @@ namespace Basic
         public TextStream(string text)
         {
             if (text == null)
+            {
                 throw new ArgumentNullException("text");
+            }
+
             m_text = text;
             Reset();
         }
@@ -29,7 +32,9 @@ namespace Basic
         public char Next()
         {
             if (End)
+            {
                 throw new IndexOutOfRangeException();
+            }
             return m_text[m_offset++];
         }
 

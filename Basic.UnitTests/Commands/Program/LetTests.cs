@@ -37,7 +37,6 @@ namespace Basic.UnitTests.Commands.Program
         {
             string variable = "variable";
             string expressionText = "my expresison text";
-            int expressionValue = 10;
 
             Mock<IExpression> expressionMock = new Mock<IExpression>();
             expressionMock.Setup(x => x.Text).Returns(expressionText);

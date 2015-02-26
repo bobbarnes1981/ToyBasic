@@ -26,5 +26,13 @@ namespace Basic
         {
             return m_stack.Peek();
         }
+
+        public int Count
+        {
+            get
+            {
+                return m_stack.Count;
+            }
+        }
     }
 }

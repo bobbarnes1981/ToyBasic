@@ -17,6 +17,7 @@ namespace Basic
             {
                 m_heap.Add(variable, null);
             }
+
             m_heap[variable] = value;
         }
 
@@ -26,6 +27,7 @@ namespace Basic
             {
                 throw new Errors.Heap(string.Format("variable '{0}' does not exist", variable));
             }
+
             return m_heap[variable];
         }
 

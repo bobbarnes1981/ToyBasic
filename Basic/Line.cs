@@ -18,7 +18,11 @@ namespace Basic
 
         public int Number
         {
-            get { return m_number; }
+            get 
+            {
+                return m_number;
+            }
+
             set
             {
                 if (value < 0)

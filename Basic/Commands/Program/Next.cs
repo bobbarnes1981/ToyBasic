@@ -22,11 +22,14 @@
 
         public override void Execute(IInterpreter interpreter)
         {
-            IFrame frame = interpreter.Stack.Pop();
-            if (frame.Get<string>("for_var") != m_variable)
+            if (interpreter.Stack.Count == 0
+                || !interpreter.Stack.Peek().Exists("for_var")
+                || interpreter.Stack.Peek().Get<string>("for_var") != m_variable)
             {
                 throw new Errors.Command("Invalid for_var in current stack frame");
             }
+
+            IFrame frame = interpreter.Stack.Pop();
             int value = (int)interpreter.Heap.Get(m_variable);
             if (value < frame.Get<int>("for_end"))
             {

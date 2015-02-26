@@ -47,13 +47,18 @@
         /// <param name="interpreter"></param>
         public override void Execute(IInterpreter interpreter)
         {
-            IFrame frame = new Frame();
-            frame.Set<int>("for_end", m_end);
-            frame.Set<int>("for_step", m_step);
-            frame.Set<int>("for_line", interpreter.Buffer.Current);
-            frame.Set<string>("for_var", m_variable);
-            interpreter.Heap.Set(m_variable, m_start);
-            interpreter.Stack.Push(frame);
+            if (interpreter.Stack.Count == 0
+                || !interpreter.Stack.Peek().Exists("for_var")
+                || interpreter.Stack.Peek().Get<string>("for_var") != m_variable)
+            {
+                IFrame frame = new Frame();
+                frame.Set<int>("for_end", m_end);
+                frame.Set<int>("for_step", m_step);
+                frame.Set<int>("for_line", interpreter.Buffer.Current.Number);
+                frame.Set<string>("for_var", m_variable);
+                interpreter.Heap.Set(m_variable, m_start);
+                interpreter.Stack.Push(frame);
+            }
         }
 
         /// <summary>

@@ -9,7 +9,9 @@ namespace Basic
     public interface IHeap
     {
         void Set(string variable, object value);
+
         object Get(string variable);
+        
         void Clear();
     }
 }

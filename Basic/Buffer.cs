@@ -15,6 +15,7 @@ namespace Basic
         private SortedDictionary<int, ILine> m_buffer;
 
         private int m_currentLine;
+        private int m_nextLine;
 
         public Buffer()
         {
@@ -36,6 +37,7 @@ namespace Basic
             {
                 m_buffer.Add(line.Number, null);
             }
+
             m_buffer[line.Number] = line;
         }
 
@@ -43,68 +45,87 @@ namespace Basic
         {
             int newLineNumber = START_LINE;
             SortedDictionary<int, ILine> buffer = new SortedDictionary<int, ILine>();
+
             // for each line in buffer
             foreach (int oldLineNumber in m_buffer.Keys)
             {
                 // get the current line
                 ILine line = m_buffer[oldLineNumber];
+                
                 // set the new line number
                 line.Number = newLineNumber;
-                // for all line in buffer
-                foreach (int lineNumber in m_buffer.Keys)
-                {
-                    // get the current line
-                    ICommand command = m_buffer[lineNumber].Command;
-                    do
-                    {
-                        // if not system command
-                        if (command.IsSystem == false)
-                        {
-                            switch (command.Keyword)
-                            {
-                                case Keywords.Goto:
-                                    // renumber goto command
-                                    Goto cmd = ((Goto) command);
-                                    if (cmd.LineNumber == oldLineNumber)
-                                    {
-                                        cmd.LineNumber = newLineNumber;
-                                    }
-                                    command = null;
-                                    break;
-                                case Keywords.If:
-                                    // recurse on if statement to check sub-command
-                                    command = ((If) command).Command;
-                                    break;
-                                default:
-                                    // no renumber needed
-                                    command = null;
-                                    break;
-                            }
-                        }
-                        else
-                        {
-                            // we should not have system commands in the buffer
-                            throw new Errors.Buffer(string.Format("System command '{0}' should not be in buffer", command.Keyword));
-                        }
-                    } while (command != null);
-                }
+
+                // renumber all existing lines
+                renumber(oldLineNumber, newLineNumber);
+
+                // add to new buffer
                 buffer.Add(newLineNumber, line);
 
+                // increment default step
                 newLineNumber += DEFAULT_STEP;
             }
 
+            // assign new buffer
             m_buffer = buffer;
+        }
+
+        private void renumber(int oldLineNumber, int newLineNumber)
+        {
+            // for all line in buffer
+            foreach (int lineNumber in m_buffer.Keys)
+            {
+                // get the current line
+                ICommand command = m_buffer[lineNumber].Command;
+                do
+                {
+                    // if not system command
+                    if (command.IsSystem == false)
+                    {
+                        switch (command.Keyword)
+                        {
+                            case Keywords.Goto:
+                                // renumber goto command
+                                Goto cmd = (Goto)command;
+                                if (cmd.LineNumber == oldLineNumber)
+                                {
+                                    cmd.LineNumber = newLineNumber;
+                                }
+
+                                command = null;
+                                break;
+                            case Keywords.If:
+                                // recurse on if statement to check sub-command
+                                command = ((If)command).Command;
+                                break;
+                            default:
+                                // no renumber needed
+                                command = null;
+                                break;
+                        }
+                    }
+                    else
+                    {
+                        // we should not have system commands in the buffer
+                        throw new Errors.Buffer(string.Format("System command '{0}' should not be in buffer", command.Keyword));
+                    }
+                } while (command != null);
+            }
         }
 
         public void Reset()
         {
-            m_currentLine = m_buffer.Keys.FirstOrDefault(x => x > DEFAULT_LINE);
+            m_currentLine = DEFAULT_LINE;
+            m_nextLine = m_buffer.Keys.FirstOrDefault(x => x > DEFAULT_LINE);
         }
 
-        /// <summary>
-        /// Fetch the next line and increment the current line number
-        /// </summary>
-        public ILine Fetch
+        public bool Next()
+        {
+            m_currentLine = m_nextLine;
+            m_nextLine = m_buffer.Keys.FirstOrDefault(x => x > m_nextLine);
+            return m_currentLine != DEFAULT_LINE;
+        }
+
+        public ILine Current
         {
             get
             {
@@ -112,15 +133,9 @@ namespace Basic
                 {
                     return null;
                 }
-                int lastLine = m_currentLine;
-                m_currentLine = m_buffer.Keys.FirstOrDefault(x => x > m_currentLine);
-                return m_buffer[lastLine];
-            }
-        }
 
-        public int Current
-        {
-            get { return m_currentLine; }
+                return m_buffer[m_currentLine];
+            }
         }
 
         public void Jump(int lineNumber)
@@ -129,14 +144,15 @@ namespace Basic
             {
                 throw new Errors.Buffer(string.Format("Invalid line number '{0}'", lineNumber));
             }
-            m_currentLine = lineNumber;
+
+            m_nextLine = lineNumber;
         }
 
         public bool End
         {
             get
             {
-                return m_currentLine == DEFAULT_LINE;
+                return m_nextLine == DEFAULT_LINE;
             }
         }
 

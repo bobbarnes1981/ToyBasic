@@ -11,7 +11,7 @@ namespace Basic.Expressions
         /// </summary>
         public static readonly List<char> VALID_CHARACTERS = new List<char>
         {
-            '+', '-', '=', '*', '/', '!'
+            '+', '-', '=', '*', '/', '!', '&', '|', '^', ';'
         };
 
         public static readonly Dictionary<Operators, string> Representations = new Dictionary<Operators, string>
@@ -21,6 +21,8 @@ namespace Basic.Expressions
             { Operators.Multiply, "*" },
             { Operators.Add, "+" },
             { Operators.Subtract, "-" },
+            { Operators.And, "&" },
+            { Operators.Or, "|" }
         };
 
         public Operator(Operators operatorType)
@@ -41,7 +43,7 @@ namespace Basic.Expressions
                 case Operators.Subtract:
                     return Subtract(Left.Result(), Right.Result());
                 case Operators.Equals:
-                    return Equals(Left.Result(), Right.Result());
+                    return Equality(Left.Result(), Right.Result());
                 case Operators.None:
                     throw new Errors.Expression("None operator is invalid");
                 default:
@@ -49,11 +51,11 @@ namespace Basic.Expressions
             }
         }
 
-        public Operators OperatorType { get { return m_operatorType; }}
+        public Operators OperatorType { get { return m_operatorType; } }
 
         public override string Text
         {
-            get { return string.Format("{0} {1} {2}", Left.Text, Representations[m_operatorType], Right.Text ); }
+            get { return string.Format("{0} {1} {2}", Left.Text, Representations[m_operatorType], Right.Text); }
         }
 
         private object Divide(object left, object right)
@@ -62,10 +64,12 @@ namespace Basic.Expressions
             {
                 throw new Errors.Expression("Divide expects both types to be Int32");
             }
+
             if (left.GetType().Name != "Int32")
             {
                 throw new Errors.Expression("Divide expects both types to be Int32");
             }
+
             return (int)left / (int)right;
         }
 
@@ -75,10 +79,12 @@ namespace Basic.Expressions
             {
                 throw new Errors.Expression("Multiply expects both types to be Int32");
             }
+
             if (left.GetType().Name != "Int32")
             {
                 throw new Errors.Expression("Multiply expects both types to be Int32");
             }
+
             return (int)left * (int)right;
         }
 
@@ -88,12 +94,13 @@ namespace Basic.Expressions
             {
                 throw new Errors.Expression("Add expects both types to be Int32 or String");
             }
+
             switch (left.GetType().Name)
             {
                 case "Int32":
-                    return (int) left + (int) right;
+                    return (int)left + (int)right;
                 case "String":
-                    return (string) left + (string) right;
+                    return (string)left + (string)right;
                 default:
                     throw new Errors.Expression("Add expects both types to be Int32 or String");
             }
@@ -105,19 +112,22 @@ namespace Basic.Expressions
             {
                 throw new Errors.Expression("Subtract expects both types to be Int32");
             }
+
             if (left.GetType().Name != "Int32")
             {
                 throw new Errors.Expression("Subtract expects both types to be Int32");
             }
+
             return (int)left - (int)right;
         }
 
-        private object Equals(object left, object right)
+        private object Equality(object left, object right)
         {
             if (left.GetType().Name != right.GetType().Name)
             {
                 throw new Errors.Expression("Add expects both types to be Int32 or String");
             }
+
             switch (left.GetType().Name)
             {
                 case "Int32":

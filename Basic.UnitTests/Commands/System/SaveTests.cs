@@ -54,7 +54,7 @@ namespace Basic.UnitTests.Commands.System
 
             Mock<IBuffer> bufferMock = new Mock<IBuffer>();
             bufferMock.SetupSequence(x => x.End).Returns(false).Returns(true);
-            bufferMock.Setup((x => x.Fetch)).Returns(lineMock.Object);
+            bufferMock.Setup(x => x.Current).Returns(lineMock.Object);
 
             Mock<IStorage> storageMock = new Mock<IStorage>();
 
@@ -67,7 +67,7 @@ namespace Basic.UnitTests.Commands.System
             
             bufferMock.Verify(x => x.Reset(), Times.Once);
 
-            interpreterMock.Verify(x => x.Buffer, Times.Exactly(4));
+            interpreterMock.Verify(x => x.Buffer, Times.Exactly(5));
 
             bufferMock.Verify(x => x.End, Times.Exactly(2));
 

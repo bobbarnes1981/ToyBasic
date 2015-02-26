@@ -11,7 +11,8 @@ namespace Basic.UnitTests.Parsers
         public void Expression_ReadExpressionNode_ParsesString()
         {
             string expectedString = "this is a string";
-            ITextStream input = new TextStream(string.Format("\"{0}\"", expectedString));
+            string expectedText = string.Format("\"{0}\"", expectedString);
+            ITextStream input = new TextStream(expectedText);
 
             Mock<IInterpreter> interpreterMock = new Mock<IInterpreter>();
 
@@ -19,7 +20,7 @@ namespace Basic.UnitTests.Parsers
             IExpression expression = underTest.ReadExpressionNode(interpreterMock.Object, input, null);
 
             Assert.That(expression, Is.TypeOf<String>());
-            Assert.That(expression.Text, Is.EqualTo(expectedString));
+            Assert.That(expression.Text, Is.EqualTo(expectedText));
             Assert.That(expression.Result(), Is.EqualTo(expectedString));
 
             Assert.That(expression.Left, Is.Null);
@@ -243,7 +244,6 @@ namespace Basic.UnitTests.Parsers
             Assert.That(expression.Right.Right.Right.Right.Result(), Is.EqualTo(2));
             Assert.That(expression.Right.Right.Right.Right.Left, Is.Null);
             Assert.That(expression.Right.Right.Right.Right.Right, Is.Null);
-
         }
 
         [Test]
@@ -319,8 +319,6 @@ namespace Basic.UnitTests.Parsers
             Assert.That(expression.Right.Right.Right.Result(), Is.EqualTo(2));
             Assert.That(expression.Right.Right.Right.Left, Is.Null);
             Assert.That(expression.Right.Right.Right.Right, Is.Null);
-
-
         }
     }
 }

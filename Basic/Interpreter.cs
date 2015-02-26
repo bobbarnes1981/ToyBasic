@@ -110,7 +110,7 @@ namespace Basic
             {
                 line = m_parser.Parse(this, new TextStream(input));
             }
-            catch(Errors.Error error)
+            catch (Errors.Error error)
             {
                 line = null;
                 displayError(error);
@@ -166,8 +166,10 @@ namespace Basic
             m_executing = true;
             while (!m_buffer.End && m_executing)
             {
-                m_buffer.Fetch.Command.Execute(this);
+                m_buffer.Next();
+                m_buffer.Current.Command.Execute(this);
             }
+
             m_console.Output("Done\r\n");
         }
 

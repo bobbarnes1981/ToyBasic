@@ -3,6 +3,8 @@
     public enum Operators
     {
         Equals,
+        And,
+        Or,
         Divide,
         Multiply,
         Add,

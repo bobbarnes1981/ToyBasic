@@ -56,6 +56,7 @@ namespace Basic.Commands.Program
                 default:
                     throw new Errors.Expression(string.Format("Unhandled type '{0}'", result.GetType().Name));
             }
+
             if (output)
             {
                 m_command.Execute(interpreter);

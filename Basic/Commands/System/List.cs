@@ -10,9 +10,10 @@
         public override void Execute(IInterpreter interpreter)
         {
             interpreter.Buffer.Reset();
-            while(!interpreter.Buffer.End)
+            while (!interpreter.Buffer.End)
             {
-                interpreter.Console.Output(string.Format("{0}\r\n", interpreter.Buffer.Fetch));
+                interpreter.Buffer.Next();
+                interpreter.Console.Output(string.Format("{0}\r\n", interpreter.Buffer.Current));
             }
         }
 

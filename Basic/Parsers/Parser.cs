@@ -49,6 +49,7 @@ namespace Basic.Parsers
             {
                 throw new Errors.Parser(string.Format("Expecting '{0}' but found '{1}'", expectedChar, input.Peek()));
             }
+
             input.Next();
         }
 
@@ -78,6 +79,7 @@ namespace Basic.Parsers
             {
                 throw new Errors.Parser(string.Format("'{0}' is not a number", numberString));
             }
+
             return number;
         }
 
@@ -109,12 +111,14 @@ namespace Basic.Parsers
                 {
                     throw new Errors.Parser(string.Format("Unexpected end of line"));
                 }
+
                 input.Next();
                 if (input.End || untilFunc(input.Peek()))
                 {
                     break;
                 }
             }
+
             return output;
         }
 
@@ -128,6 +132,7 @@ namespace Basic.Parsers
             {
                 throw new Errors.Parser(string.Format("Expecting {0} but reached end of line", expecting));
             }
+
             input.DiscardSpaces();
         }
     }

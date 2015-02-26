@@ -16,10 +16,12 @@ namespace Basic.Commands.System
         {
             List<string> lines = new List<string>();
             interpreter.Buffer.Reset();
-            while(!interpreter.Buffer.End)
+            while (!interpreter.Buffer.End)
             {
-                lines.Add(interpreter.Buffer.Fetch.ToString());
+                interpreter.Buffer.Next();
+                lines.Add(interpreter.Buffer.Current.ToString());
             }
+
             interpreter.Storage.Save(m_filename, lines);
         }
 

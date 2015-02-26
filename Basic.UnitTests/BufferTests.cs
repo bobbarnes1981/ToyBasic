@@ -96,8 +96,8 @@ namespace Basic.UnitTests
             int counter = 10;
             while (!underTest.End)
             {
-                Assert.That(underTest.Current, Is.EqualTo(counter));
-                Assert.That(underTest.Fetch.Number, Is.EqualTo(counter));
+                underTest.Next();
+                Assert.That(underTest.Current.Number, Is.EqualTo(counter));
                 counter += 10;
             }
         }
@@ -113,49 +113,44 @@ namespace Basic.UnitTests
             // goto
             underTest.Add(
                 new Line(
-                    1, new Basic.Commands.Program.Goto(2)
-                )
-            );
+                    1,
+                    new Basic.Commands.Program.Goto(2)));
 
             // if
             underTest.Add(
                 new Line(
-                    2, new Basic.Commands.Program.If(
-                        null, new Basic.Commands.Program.Goto(10)
-                    )
-                )
-            );
+                    2, 
+                    new Basic.Commands.Program.If(
+                        null,
+                        new Basic.Commands.Program.Goto(10))));
 
             // nested if
             underTest.Add(
                 new Line(
-                    10, new Basic.Commands.Program.If(
-                        null, new Basic.Commands.Program.If(
-                            null, new Basic.Commands.Program.Goto(1)
-                        )
-                    )
-                )
-            );
+                    10,
+                    new Basic.Commands.Program.If(
+                        null,
+                        new Basic.Commands.Program.If(
+                            null,
+                            new Basic.Commands.Program.Goto(1)))));
 
             underTest.Renumber();
             underTest.Reset();
 
             // goto
-            Assert.That(underTest.Current, Is.EqualTo(10));
-            ILine l10 = underTest.Fetch;
-            Assert.That(l10.Number, Is.EqualTo(10));
-            Assert.That(((Basic.Commands.Program.Goto)l10.Command).LineNumber, Is.EqualTo(20));
+            underTest.Next();
+            Assert.That(underTest.Current.Number, Is.EqualTo(10));
+            Assert.That(((Basic.Commands.Program.Goto)underTest.Current.Command).LineNumber, Is.EqualTo(20));
 
             // if
-            Assert.That(underTest.Current, Is.EqualTo(20));
-            ILine l20 = underTest.Fetch;
-            Assert.That(l20.Number, Is.EqualTo(20));
-            Assert.That(((Basic.Commands.Program.Goto)l10.Command).LineNumber, Is.EqualTo(20));
+            underTest.Next();
+            Assert.That(underTest.Current.Number, Is.EqualTo(20));
+            Assert.That(((Basic.Commands.Program.Goto)((Basic.Commands.Program.If)underTest.Current.Command).Command).LineNumber, Is.EqualTo(30));
 
             // nested if
-            Assert.That(underTest.Current, Is.EqualTo(30));
-            ILine l30 = underTest.Fetch;
-            Assert.That(l30.Number, Is.EqualTo(30));
+            underTest.Next();
+            Assert.That(underTest.Current.Number, Is.EqualTo(30));
+            Assert.That(((Basic.Commands.Program.Goto)((Basic.Commands.Program.If)((Basic.Commands.Program.If)underTest.Current.Command).Command).Command).LineNumber, Is.EqualTo(30));
         }
 
         [Test]
@@ -173,13 +168,13 @@ namespace Basic.UnitTests
             underTest.Renumber();
             underTest.Reset();
 
-            Assert.That(underTest.Current, Is.EqualTo(10));
-            Assert.That(underTest.Fetch.Number, Is.EqualTo(10));
+            underTest.Next();
+            Assert.That(underTest.Current.Number, Is.EqualTo(10));
 
             underTest.Jump(40);
+            underTest.Next();
 
-            Assert.That(underTest.Current, Is.EqualTo(40));
-            Assert.That(underTest.Fetch.Number, Is.EqualTo(40));
+            Assert.That(underTest.Current.Number, Is.EqualTo(40));
         }
 
         [Test]
@@ -197,8 +192,8 @@ namespace Basic.UnitTests
             underTest.Renumber();
             underTest.Reset();
 
-            Assert.That(underTest.Current, Is.EqualTo(10));
-            Assert.That(underTest.Fetch.Number, Is.EqualTo(10));
+            underTest.Next();
+            Assert.That(underTest.Current.Number, Is.EqualTo(10));
 
             Assert.Throws<Errors.Buffer>(() => underTest.Jump(80));
         }

@@ -16,7 +16,7 @@
 
         public override string Text
         {
-            get { return m_text; }
+            get { return string.Format("\"{0}\"", m_text); }
         }
     }
 }

@@ -37,6 +37,7 @@ namespace Basic.Parsers
             {
                 op = ReadOperator(input);
             }
+
             if (op == Operators.None)
             {
                 // no operator found - end of expression
@@ -173,6 +174,7 @@ namespace Basic.Parsers
                 default:
                     throw new Errors.Parser(string.Format("'{0}' is not recognised as the start of a valid expression leaf node", character));
             }
+
             return leafNode;
         }
 
@@ -189,6 +191,7 @@ namespace Basic.Parsers
             {
                 throw new Errors.Parser(string.Format("'{0}' is not a valid operator", operatorString));
             }
+
             return Operator.Representations.First(x => x.Value == operatorString).Key;
         }
     }

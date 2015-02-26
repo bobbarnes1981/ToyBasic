@@ -21,6 +21,16 @@ namespace Basic
         }
 
         /// <summary>
+        /// Returns true if the specifie value exists
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public bool Exists(string name)
+        {
+            return m_frame.ContainsKey(name);
+        }
+
+        /// <summary>
         /// Geta a value from the frame
         /// </summary>
         /// <typeparam name="T"></typeparam>
@@ -43,6 +53,7 @@ namespace Basic
             {
                 m_frame.Add(name, null);
             }
+
             m_frame[name] = value;
         }
     }

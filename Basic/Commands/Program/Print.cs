@@ -36,7 +36,7 @@ namespace Basic.Commands.Program
         /// </summary>
         public override string Text
         {
-            get { return string.Format("{0} \"{1}\"", Keywords.Print, m_expression.Text); }
+            get { return string.Format("{0} {1}", Keywords.Print, m_expression.Text); }
         }
     }
 }

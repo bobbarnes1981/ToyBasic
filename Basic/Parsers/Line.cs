@@ -73,6 +73,7 @@ namespace Basic.Parsers
             {
                 throw new Errors.Parser(string.Format("Could not parse keyword {0}", keywordString));
             }
+
             return keyword;
         }
 
@@ -121,6 +122,7 @@ namespace Basic.Parsers
                 default:
                     throw new Errors.Parser(string.Format("System keyword not implemented in line parser: {0}", keyword));
             }
+
             return command;
         }
 
@@ -191,6 +193,7 @@ namespace Basic.Parsers
                 default:
                     throw new Errors.Parser(string.Format("Program command not implemented in line parser: {0}", keyword));
             }
+
             return command;
         }
 
