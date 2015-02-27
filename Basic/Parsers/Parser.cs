@@ -73,9 +73,9 @@ namespace Basic.Parsers
         /// Read an integer; a number of valid numbers
         /// </summary>
         /// <returns></returns>
-        protected Types.Number readInt(ITextStream input)
+        protected Types.Number readNumber(ITextStream input)
         {
-            preChecks(input, "int");
+            preChecks(input, "number");
             int number;
             string numberString = readUntil(input, character => !NUMBERS.Contains(character));
             if (!int.TryParse(numberString, out number))

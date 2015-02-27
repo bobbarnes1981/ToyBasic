@@ -170,11 +170,15 @@ namespace Basic.Parsers
                 case '7':
                 case '8':
                 case '9':
-                    leafNode = new Value(readInt(input));
+                    leafNode = new Value(readNumber(input));
                     break;
                 case '(':
                     expect(input, '(');
                     leafNode = new Brackets(ReadExpressionNode(interpreter, input, null));
+                    break;
+                case '!':
+                    expect(input, "!");
+                    leafNode = new Not(ReadExpressionNode(interpreter, input, null));
                     break;
                 default:
                     throw new ParserError(string.Format("'{0}' is not recognised as the start of a valid expression leaf node", character));

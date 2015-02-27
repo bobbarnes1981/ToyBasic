@@ -5,36 +5,21 @@
     /// </summary>
     public class Brackets : Operator
     {
-        private readonly INode m_expression;
-
         public Brackets(INode expression)
             : base(Operators.BracketLeft)
         {
-            m_expression = expression;
-        }
-
-        public override INode Left
-        {
-            get { return m_expression.Left; }
-
-            set { m_expression.Left = value; }
-        }
-
-        public override INode Right
-        {
-            get { return m_expression.Right; }
-
-            set { m_expression.Right = value; }
+            Left = expression;
         }
 
         public override object Result()
         {
-            return m_expression.Result();
+            // maybe store expression and return it here (instead of using Left)?
+            return Left.Result();
         }
 
         public override string Text
         {
-            get { return string.Format("({0})", m_expression.Text); }
+            get { return string.Format("({0})", Left.Text); }
         }
     }
 }

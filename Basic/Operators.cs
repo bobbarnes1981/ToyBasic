@@ -18,5 +18,6 @@
         BracketLeft,
         LessThan,
         GreaterThan,
+        Not
     }
 }

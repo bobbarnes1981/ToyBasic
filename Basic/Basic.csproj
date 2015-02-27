@@ -47,6 +47,7 @@
     <Compile Include="Errors\FrameError.cs" />
     <Compile Include="Errors\StackError.cs" />
     <Compile Include="Expressions\Brackets.cs" />
+    <Compile Include="Expressions\Not.cs" />
     <Compile Include="Expressions\Value.cs" />
     <Compile Include="LineBuffer.cs" />
     <Compile Include="Commands\Command.cs" />

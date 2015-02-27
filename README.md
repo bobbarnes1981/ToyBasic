@@ -8,11 +8,13 @@ An attempt to write a simple basic interpreter.
 
 ##Todo:
 
+Reconsider Brackets/Not classes - similar to Value class?
+
 THINK ABOUT DESIGN OF PARSER/EXPRESSION-VARIABLE: Does interpreter need to pass into parser or should it be passed into expression.Result(), should we just pass in the IHeap?
 
 Maybe remove variable prefix - is it needed?
 
-Implement logical operators NOT (XOR,NAND?)
+Implement logical operators XOR,NAND?
 
 Implement explicit concatenate operator ';' instead of '+'?
 

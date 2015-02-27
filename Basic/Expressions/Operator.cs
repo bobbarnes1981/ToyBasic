@@ -37,7 +37,8 @@ namespace Basic.Expressions
             { Operators.Add, "+" },
             { Operators.Subtract, "-" },
             { Operators.And, "&" },
-            { Operators.Or, "|" }
+            { Operators.Or, "|" },
+            { Operators.Not, "!" }
         };
 
         /// <summary>

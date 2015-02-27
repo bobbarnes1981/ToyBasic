@@ -1,5 +1,6 @@
 ﻿using System;
 using Basic.Commands;
+using Basic.Commands.Program;
 using Basic.Errors;
 using Basic.Expressions;
 
@@ -142,12 +143,14 @@ namespace Basic.Parsers
             {
                 case Keywords.Clear:
                     expectEnd(input);
-                    command = new Commands.Program.Clear();
+                    command = new Clear();
                     break;
                 case Keywords.Dim:
                     Types.Variable variable = readVariable(interpreter, input);
-                    // TODO: expect [<number>]
-                    throw new NotImplementedException();
+                    expect(input, '[');
+                    INode size = m_expressionParser.Parse(interpreter, input);
+                    expect(input, ']');
+                    command = new Dim(variable, size);
                     break;
                 case Keywords.For:
                     Types.Variable forVariable = readVariable(interpreter, input);
@@ -158,38 +161,38 @@ namespace Basic.Parsers
                     expect(input, Keywords.Step);
                     INode step = m_expressionParser.Parse(interpreter, input);
                     expectEnd(input);
-                    command = new Commands.Program.For(forVariable, start, end, step);
+                    command = new For(forVariable, start, end, step);
                     break;
                 case Keywords.Goto:
-                    command = new Commands.Program.Goto(readInt(input));
+                    command = new Goto(readNumber(input));
                     expectEnd(input);
                     break;
                 case Keywords.If:
                     INode comparison = m_expressionParser.Parse(interpreter, input);
                     expect(input, Keywords.Then);
-                    command = new Commands.Program.If(comparison, readCommand(interpreter, input, false));
+                    command = new If(comparison, readCommand(interpreter, input, false));
                     expectEnd(input);
                     break;
                 case Keywords.Input:
-                    command = new Commands.Program.Input(readVariable(interpreter, input));
+                    command = new Input(readVariable(interpreter, input));
                     expectEnd(input);
                     break;
                 case Keywords.Let:
                     Types.Variable letVariable = readVariable(interpreter, input);
                     expect(input, '=');
-                    command = new Commands.Program.Let(letVariable, m_expressionParser.Parse(interpreter, input));
+                    command = new Let(letVariable, m_expressionParser.Parse(interpreter, input));
                     expectEnd(input);
                     break;
                 case Keywords.Next:
-                    command = new Commands.Program.Next(readVariable(interpreter, input));
+                    command = new Next(readVariable(interpreter, input));
                     expectEnd(input);
                     break;
                 case Keywords.Print:
-                    command = new Commands.Program.Print(m_expressionParser.Parse(interpreter, input));
+                    command = new Print(m_expressionParser.Parse(interpreter, input));
                     expectEnd(input);
                     break;
                 case Keywords.Rem:
-                    command = new Commands.Program.Rem(readUntil(input, character => false));
+                    command = new Rem(readUntil(input, character => false));
                     expectEnd(input);
                     break;
                 default:
