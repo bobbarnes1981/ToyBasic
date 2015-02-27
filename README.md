@@ -20,8 +20,6 @@ Implement Print operators ',; ?
 
 Implement Dim
 
-Implement brackets in Expressions
-
 Implement Help
 
 Gosub/Return - using stack to store return?
