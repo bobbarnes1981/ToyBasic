@@ -18,7 +18,7 @@ namespace Basic.Expressions
         /// </summary>
         public static readonly List<char> VALID_CHARACTERS = new List<char>
         {
-            '+', '-', '=', '*', '/', '!', '&', '|', '^', ';', '<', '>'
+            '+', '-', '=', '*', '/', '!', '&', '|', '^', ';', '<', '>', '(', ')'
         };
 
         /// <summary>

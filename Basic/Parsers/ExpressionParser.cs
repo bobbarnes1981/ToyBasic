@@ -39,7 +39,7 @@ namespace Basic.Parsers
                 op = ReadOperator(input);
             }
 
-            if (op == Operators.None)
+            if (op == Operators.None || op == Operators.BracketRight)
             {
                 // no operator found - end of expression
                 if (parentNode == null)
@@ -80,11 +80,6 @@ namespace Basic.Parsers
                     }
                 }
             }
-            else if (op == Operators.BracketRight)
-            {
-                // should return ? as above?
-                throw new System.NotImplementedException();
-            }
             else
             {
                 // operator found - expression continues
@@ -106,7 +101,7 @@ namespace Basic.Parsers
                         if (parentNode.Right == null)
                         {
                             // parent has no right node
-                            if ((int)((Operator)parentNode).OperatorType < (int)opNode.OperatorType)
+                            if ((int)((Operator)parentNode).OperatorType > (int)opNode.OperatorType)
                             {
                                 // place above
                                 parentNode.Right = child;
@@ -179,7 +174,7 @@ namespace Basic.Parsers
                     break;
                 case '(':
                     expect(input, '(');
-                    leafNode = ReadExpressionNode(interpreter, input, null);
+                    leafNode = new Brackets(ReadExpressionNode(interpreter, input, null));
                     break;
                 default:
                     throw new ParserError(string.Format("'{0}' is not recognised as the start of a valid expression leaf node", character));
@@ -196,7 +191,16 @@ namespace Basic.Parsers
         public Operators ReadOperator(ITextStream input)
         {
             preChecks(input, "operator");
-            string operatorString = readUntil(input, character => !Operator.VALID_CHARACTERS.Contains(character));
+            string operatorString = string.Empty;
+            operatorString += input.Next();
+            
+            // check next char to see if it is a valid operator
+            while (Operator.Representations.ContainsValue(operatorString + input.Peek()))
+            {
+                operatorString += input.Next();
+            }
+
+            // if first char was not an operator
             if (!Operator.Representations.ContainsValue(operatorString))
             {
                 throw new ParserError(string.Format("'{0}' is not a valid operator", operatorString));

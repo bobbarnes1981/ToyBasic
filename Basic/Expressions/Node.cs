@@ -4,9 +4,9 @@
     {
         public INode Parent { get; set; }
 
-        public INode Left { get; set; }
+        public virtual INode Left { get; set; }
 
-        public INode Right { get; set; }
+        public virtual INode Right { get; set; }
 
         public abstract string Text { get; }
 

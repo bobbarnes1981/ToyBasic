@@ -5,18 +5,18 @@
     /// </summary>
     public enum Operators
     {
-        GreaterThan,
-        LessThan,
-        BracketLeft,
-        BracketRight,
-        NotEquals,
-        Equals,
-        And,
-        Or,
-        Divide,
-        Multiply,
-        Add,
+        None,
         Subtract,
-        None
+        Add,
+        Multiply,
+        Divide,
+        Or,
+        And,
+        Equals,
+        NotEquals,
+        BracketRight,
+        BracketLeft,
+        LessThan,
+        GreaterThan,
     }
 }
