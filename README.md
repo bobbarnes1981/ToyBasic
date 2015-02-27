@@ -6,28 +6,6 @@ http://bobbarnes1981.github.io/ToyBasic/
 
 An attempt to write a simple basic interpreter.
 
-##Todo:
-
-Reconsider Brackets/Not classes - similar to Value class?
-
-THINK ABOUT DESIGN OF PARSER/EXPRESSION-VARIABLE: Does interpreter need to pass into parser or should it be passed into expression.Result(), should we just pass in the IHeap?
-
-Maybe remove variable prefix - is it needed?
-
-Implement logical operators XOR,NAND?
-
-Implement explicit concatenate operator ';' instead of '+'?
-
-Implement Print operators ',; ?
-
-Implement Dim
-
-Implement Help
-
-Gosub/Return - using stack to store return?
-
-Make Extensible? Create Basic.Graphics and move standard commands to Basic.Standard ?
-
 ##Examples - Program commands
 
 ###Print - hello world
