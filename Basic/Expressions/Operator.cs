@@ -30,6 +30,8 @@ namespace Basic.Expressions
             { Operators.NotEquals, "!=" },
             { Operators.GreaterThan, ">" },
             { Operators.LessThan, "<" },
+            { Operators.BracketLeft, "(" },
+            { Operators.BracketRight, ")" },
             { Operators.Divide, "/" },
             { Operators.Multiply, "*" },
             { Operators.Add, "+" },

@@ -5,7 +5,7 @@ using NUnit.Framework;
 namespace Basic.UnitTests.Parsers
 {
     [TestFixture]
-    public class ExpressionTests
+    public class ExpressionParserTests
     {
         [Test]
         public void Expression_ReadExpressionNode_ParsesString()

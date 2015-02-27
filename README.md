@@ -12,11 +12,11 @@ THINK ABOUT DESIGN OF PARSER/EXPRESSION-VARIABLE: Does interpreter need to pass 
 
 Maybe remove variable prefix - is it needed?
 
-Maybe parser.readVariable returns Variable object, parser.readInt returns Number object and parser.readString returns String object?
-
 Implement logical operators NOT (XOR,NAND?)
 
 Implement explicit concatenate operator ';' instead of '+'?
+
+Implement Print operators ',; ?
 
 Implement Dim
 

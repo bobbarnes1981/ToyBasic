@@ -30,7 +30,7 @@ namespace Basic.Parsers
         /// Expect the specified string in the input string
         /// </summary>
         /// <param name="input"></param>
-        /// <param name="expectedString">Expected string</param>
+        /// <param name="string">Expected string</param>
         protected void expect(ITextStream input, string expectedString)
         {
             preChecks(input, expectedString);

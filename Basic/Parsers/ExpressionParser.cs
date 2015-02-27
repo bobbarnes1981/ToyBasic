@@ -80,6 +80,11 @@ namespace Basic.Parsers
                     }
                 }
             }
+            else if (op == Operators.BracketRight)
+            {
+                // should return ? as above?
+                throw new System.NotImplementedException();
+            }
             else
             {
                 // operator found - expression continues
@@ -151,7 +156,7 @@ namespace Basic.Parsers
         {
             preChecks(input, "expression");
             char character = input.Peek();
-            Value leafNode;
+            INode leafNode;
             switch (character)
             {
                 case '"':
@@ -171,6 +176,10 @@ namespace Basic.Parsers
                 case '8':
                 case '9':
                     leafNode = new Value(readInt(input));
+                    break;
+                case '(':
+                    expect(input, '(');
+                    leafNode = ReadExpressionNode(interpreter, input, null);
                     break;
                 default:
                     throw new ParserError(string.Format("'{0}' is not recognised as the start of a valid expression leaf node", character));

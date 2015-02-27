@@ -96,7 +96,7 @@
     <Compile Include="Expressions\OperatorTests.cs" />
     <Compile Include="Types\VariableTests.cs" />
     <Compile Include="HeapTests.cs" />
-    <Compile Include="Parsers\ExpressionTests.cs" />
+    <Compile Include="Parsers\ExpressionParserTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

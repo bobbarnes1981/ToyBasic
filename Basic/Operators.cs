@@ -7,6 +7,8 @@
     {
         GreaterThan,
         LessThan,
+        BracketLeft,
+        BracketRight,
         NotEquals,
         Equals,
         And,
