@@ -15,7 +15,6 @@ namespace Basic
             Bind<IStorage>().To<FileStorage>();
 
             Bind<IParser<ILine>>().To<LineParser>();
-            Bind<IParser<INode>>().To<ExpressionParser>();
         }
     }
 }

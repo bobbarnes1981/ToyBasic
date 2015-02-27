@@ -37,7 +37,7 @@ namespace Basic.UnitTests.Commands.System
 
             Save underTest = new Save(filename);
 
-            Assert.That(underTest.Text, Is.EqualTo(string.Format("{0} {1}", Keywords.Save, filename)));
+            Assert.That(underTest.Text, Is.EqualTo(string.Format("{0} {1}", Keywords.Save, filename.Text)));
         }
 
         [Test]

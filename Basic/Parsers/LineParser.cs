@@ -1,8 +1,8 @@
-﻿using System;
-using Basic.Commands;
+﻿using Basic.Commands;
 using Basic.Commands.Program;
 using Basic.Errors;
 using Basic.Expressions;
+using Basic.Types;
 
 namespace Basic.Parsers
 {
@@ -11,13 +11,6 @@ namespace Basic.Parsers
     /// </summary>
     public class LineParser : Parser<ILine>
     {
-        private IParser<INode> m_expressionParser;
-
-        public LineParser(IParser<INode> expressionParser)
-        {
-            m_expressionParser = expressionParser;
-        }
-
         /// <summary>
         /// Creates a new instance of the <see cref="LineParser"/> class.
         /// </summary>
@@ -55,7 +48,7 @@ namespace Basic.Parsers
 
             if (isSystem)
             {
-                command = readSystemCommand(input, keyword);
+                command = readSystemCommand(interpreter, input, keyword);
             }
             else
             {
@@ -74,7 +67,7 @@ namespace Basic.Parsers
             preChecks(input, "keyword");
             string keywordString = readUntil(input, character => character == ' ');
             Keywords keyword;
-            if (!Enum.TryParse(keywordString, out keyword))
+            if (!System.Enum.TryParse(keywordString, out keyword))
             {
                 throw new ParserError(string.Format("Could not parse keyword {0}", keywordString));
             }
@@ -87,7 +80,7 @@ namespace Basic.Parsers
         /// </summary>
         /// <param name="keyword">Keyword of the expected command</param>
         /// <returns>A parsed ICommand object</returns>
-        private ICommand readSystemCommand(ITextStream input, Keywords keyword)
+        private ICommand readSystemCommand(IInterpreter interpreter, ITextStream input, Keywords keyword)
         {
             ICommand command;
             switch (keyword)
@@ -105,7 +98,7 @@ namespace Basic.Parsers
                     command = new Commands.System.List();
                     break;
                 case Keywords.Load:
-                    command = new Commands.System.Load(readString(input));
+                    command = new Commands.System.Load(ReadString(interpreter, input));
                     expectEnd(input);
                     break;
                 case Keywords.New:
@@ -121,7 +114,7 @@ namespace Basic.Parsers
                     command = new Commands.System.Renumber();
                     break;
                 case Keywords.Save:
-                    command = new Commands.System.Save(readString(input));
+                    command = new Commands.System.Save(ReadString(interpreter, input));
                     expectEnd(input);
                     break;
                 default:
@@ -146,49 +139,46 @@ namespace Basic.Parsers
                     command = new Clear();
                     break;
                 case Keywords.Dim:
-                    Types.Variable variable = readVariable(interpreter, input);
-                    expect(input, '[');
-                    INode size = m_expressionParser.Parse(interpreter, input);
-                    expect(input, ']');
-                    command = new Dim(variable, size);
+                    Types.Variable variable = ReadVariable(interpreter, input);
+                    command = new Dim(variable);
                     break;
                 case Keywords.For:
-                    Types.Variable forVariable = readVariable(interpreter, input);
+                    Types.Variable forVariable = ReadVariable(interpreter, input);
                     expect(input, '=');
-                    INode start = m_expressionParser.Parse(interpreter, input);
+                    INode start = ReadExpressionNode(interpreter, input, null);
                     expect(input, Keywords.To);
-                    INode end = m_expressionParser.Parse(interpreter, input);
+                    INode end = ReadExpressionNode(interpreter, input, null);
                     expect(input, Keywords.Step);
-                    INode step = m_expressionParser.Parse(interpreter, input);
+                    INode step = ReadExpressionNode(interpreter, input, null);
                     expectEnd(input);
                     command = new For(forVariable, start, end, step);
                     break;
                 case Keywords.Goto:
-                    command = new Goto(readNumber(input));
+                    command = new Goto(ReadNumber(interpreter, input));
                     expectEnd(input);
                     break;
                 case Keywords.If:
-                    INode comparison = m_expressionParser.Parse(interpreter, input);
+                    INode comparison = ReadExpressionNode(interpreter, input, null);
                     expect(input, Keywords.Then);
                     command = new If(comparison, readCommand(interpreter, input, false));
                     expectEnd(input);
                     break;
                 case Keywords.Input:
-                    command = new Input(readVariable(interpreter, input));
+                    command = new Input(ReadVariable(interpreter, input));
                     expectEnd(input);
                     break;
                 case Keywords.Let:
-                    Types.Variable letVariable = readVariable(interpreter, input);
+                    Types.Variable letVariable = ReadVariable(interpreter, input);
                     expect(input, '=');
-                    command = new Let(letVariable, m_expressionParser.Parse(interpreter, input));
+                    command = new Let(letVariable, ReadExpressionNode(interpreter, input, null));
                     expectEnd(input);
                     break;
                 case Keywords.Next:
-                    command = new Next(readVariable(interpreter, input));
+                    command = new Next(ReadVariable(interpreter, input));
                     expectEnd(input);
                     break;
                 case Keywords.Print:
-                    command = new Print(m_expressionParser.Parse(interpreter, input));
+                    command = new Print(ReadExpressionNode(interpreter, input, null));
                     expectEnd(input);
                     break;
                 case Keywords.Rem:

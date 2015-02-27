@@ -6,10 +6,10 @@ using NUnit.Framework;
 namespace Basic.UnitTests.Parsers
 {
     [TestFixture]
-    public class ExpressionParserTests
+    public class LineParserTests
     {
         [Test]
-        public void ExpressionParser_ReadExpressionNode_ParsesString()
+        public void LineParser_ReadExpressionNode_ParsesString()
         {
             string expectedString = "this is a string";
             string expectedText = string.Format("\"{0}\"", expectedString);
@@ -17,7 +17,7 @@ namespace Basic.UnitTests.Parsers
 
             Mock<IInterpreter> interpreterMock = new Mock<IInterpreter>();
 
-            ExpressionParser underTest = new ExpressionParser();
+            LineParser underTest = new LineParser();
             INode expression = underTest.ReadExpressionNode(interpreterMock.Object, input, null);
 
             Assert.That(expression, Is.TypeOf<Value>());
@@ -29,14 +29,14 @@ namespace Basic.UnitTests.Parsers
         }
         
         [Test]
-        public void ExpressionParser_ReadExpressionNode_ParsesNumber()
+        public void LineParser_ReadExpressionNode_ParsesNumber()
         {
             int expectedNumber = 123;
             ITextStream input = new TextStream(expectedNumber.ToString());
 
             Mock<IInterpreter> interpreterMock = new Mock<IInterpreter>();
 
-            ExpressionParser underTest = new ExpressionParser();
+            LineParser underTest = new LineParser();
             INode expression = underTest.ReadExpressionNode(interpreterMock.Object, input, null);
 
             Assert.That(expression, Is.TypeOf<Value>());
@@ -48,7 +48,7 @@ namespace Basic.UnitTests.Parsers
         }
         
         [Test]
-        public void ExpressionParser_ReadExpressionNode_ParsesVariable()
+        public void LineParser_ReadExpressionNode_ParsesVariable()
         {
             string expectedName = "variable";
             string expectedVariable = string.Format("${0}", expectedName);
@@ -56,12 +56,12 @@ namespace Basic.UnitTests.Parsers
             ITextStream input = new TextStream(expectedVariable);
 
             Mock<IHeap> heapMock = new Mock<IHeap>();
-            heapMock.Setup(x => x.Get(expectedVariable)).Returns(expectedValue);
+            heapMock.Setup(x => x.Get(expectedName)).Returns(expectedValue);
 
             Mock<IInterpreter> interpreterMock = new Mock<IInterpreter>();
             interpreterMock.Setup(x => x.Heap).Returns(heapMock.Object);
 
-            ExpressionParser underTest = new ExpressionParser();
+            LineParser underTest = new LineParser();
             INode expression = underTest.ReadExpressionNode(interpreterMock.Object, input, null);
 
             Assert.That(expression, Is.TypeOf<Value>());
@@ -73,14 +73,14 @@ namespace Basic.UnitTests.Parsers
         }
         
         [Test]
-        public void ExpressionParser_ReadExpressionNode_ParsesDevision()
+        public void LineParser_ReadExpressionNode_ParsesDevision()
         {
             string expectedText = "6 / 2";
             ITextStream input = new TextStream(expectedText);
 
             Mock<IInterpreter> interpreterMock = new Mock<IInterpreter>();
 
-            ExpressionParser underTest = new ExpressionParser();
+            LineParser underTest = new LineParser();
             INode expression = underTest.ReadExpressionNode(interpreterMock.Object, input, null);
 
             Assert.That(expression, Is.TypeOf<Operator>());
@@ -98,14 +98,14 @@ namespace Basic.UnitTests.Parsers
         }
         
         [Test]
-        public void ExpressionParser_ReadExpressionNode_ParsesMultiplication()
+        public void LineParser_ReadExpressionNode_ParsesMultiplication()
         {
             string expectedText = "4 * 2";
             ITextStream input = new TextStream(expectedText);
 
             Mock<IInterpreter> interpreterMock = new Mock<IInterpreter>();
 
-            ExpressionParser underTest = new ExpressionParser();
+            LineParser underTest = new LineParser();
             INode expression = underTest.ReadExpressionNode(interpreterMock.Object, input, null);
 
             Assert.That(expression, Is.TypeOf<Operator>());
@@ -125,14 +125,14 @@ namespace Basic.UnitTests.Parsers
         }
         
         [Test]
-        public void ExpressionParser_ReadExpressionNode_Addition()
+        public void LineParser_ReadExpressionNode_Addition()
         {
             string expectedText = "3 + 2";
             ITextStream input = new TextStream(expectedText);
 
             Mock<IInterpreter> interpreterMock = new Mock<IInterpreter>();
 
-            ExpressionParser underTest = new ExpressionParser();
+            LineParser underTest = new LineParser();
             INode expression = underTest.ReadExpressionNode(interpreterMock.Object, input, null);
 
             Assert.That(expression, Is.TypeOf<Operator>());
@@ -150,14 +150,14 @@ namespace Basic.UnitTests.Parsers
         }
 
         [Test]
-        public void ExpressionParser_ReadExpressionNode_Subtraction()
+        public void LineParser_ReadExpressionNode_Subtraction()
         {
             string expectedText = "3 - 2";
             ITextStream input = new TextStream(expectedText);
 
             Mock<IInterpreter> interpreterMock = new Mock<IInterpreter>();
 
-            ExpressionParser underTest = new ExpressionParser();
+            LineParser underTest = new LineParser();
             INode expression = underTest.ReadExpressionNode(interpreterMock.Object, input, null);
 
             Assert.That(expression, Is.TypeOf<Operator>());
@@ -177,14 +177,14 @@ namespace Basic.UnitTests.Parsers
         }
 
         [Test]
-        public void ExpressionParser_ReadExpressionNode_PrecedenceEquality()
+        public void LineParser_ReadExpressionNode_PrecedenceEquality()
         {
             string expectedText = "8 == 3 + 5";
             ITextStream input = new TextStream(expectedText);
 
             Mock<IInterpreter> interpreterMock = new Mock<IInterpreter>();
 
-            ExpressionParser underTest = new ExpressionParser();
+            LineParser underTest = new LineParser();
             INode expression = underTest.ReadExpressionNode(interpreterMock.Object, input, null);
 
             Assert.That(expression, Is.TypeOf<Operator>());
@@ -194,14 +194,14 @@ namespace Basic.UnitTests.Parsers
         }
         
         [Test]
-        public void ExpressionParser_ReadExpressionNode_BODMAS_Reversed()
+        public void LineParser_ReadExpressionNode_BODMAS_Reversed()
         {
             string expectedText = "11 - 2 + 4 * 4 / 2";
             ITextStream input = new TextStream(expectedText);
 
             Mock<IInterpreter> interpreterMock = new Mock<IInterpreter>();
 
-            ExpressionParser underTest = new ExpressionParser();
+            LineParser underTest = new LineParser();
             INode expression = underTest.ReadExpressionNode(interpreterMock.Object, input, null);
 
             // 1 top level
@@ -269,14 +269,14 @@ namespace Basic.UnitTests.Parsers
         }
 
         [Test]
-        public void ExpressionParser_ReadExpressionNode_BODMAS_Combined()
+        public void LineParser_ReadExpressionNode_BODMAS_Combined()
         {
             string expectedText = "10 / 2 + 4 * 4 / 2";
             ITextStream input = new TextStream(expectedText);
 
             Mock<IInterpreter> interpreterMock = new Mock<IInterpreter>();
 
-            ExpressionParser underTest = new ExpressionParser();
+            LineParser underTest = new LineParser();
             INode expression = underTest.ReadExpressionNode(interpreterMock.Object, input, null);
 
             // 1 top level
@@ -344,14 +344,14 @@ namespace Basic.UnitTests.Parsers
         }
 
         [Test]
-        public void ExpressionParser_ReadExpressionNode_NoBrackets()
+        public void LineParser_ReadExpressionNode_NoBrackets()
         {
             string expectedText = "5 + 5 / 2";
             ITextStream input = new TextStream(expectedText);
 
             Mock<IInterpreter> interpreterMock = new Mock<IInterpreter>();
 
-            ExpressionParser underTest = new ExpressionParser();
+            LineParser underTest = new LineParser();
             INode expression = underTest.ReadExpressionNode(interpreterMock.Object, input, null);
 
             // 1 top level
@@ -391,14 +391,14 @@ namespace Basic.UnitTests.Parsers
         }
 
         [Test]
-        public void ExpressionParser_ReadExpressionNode_Brackets()
+        public void LineParser_ReadExpressionNode_Brackets()
         {
             string expectedText = "(5 + 5) / 2";
             ITextStream input = new TextStream(expectedText);
 
             Mock<IInterpreter> interpreterMock = new Mock<IInterpreter>();
 
-            ExpressionParser underTest = new ExpressionParser();
+            LineParser underTest = new LineParser();
             INode expression = underTest.ReadExpressionNode(interpreterMock.Object, input, null);
 
             // 1 top level
@@ -445,14 +445,14 @@ namespace Basic.UnitTests.Parsers
         }
 
         [Test]
-        public void ExpressionParser_ReadExpressionNode_OperatorParsing()
+        public void LineParser_ReadExpressionNode_OperatorParsing()
         {
             string expectedText = "(5+5)/2";
             ITextStream input = new TextStream(expectedText);
 
             Mock<IInterpreter> interpreterMock = new Mock<IInterpreter>();
 
-            ExpressionParser underTest = new ExpressionParser();
+            LineParser underTest = new LineParser();
             INode expression = underTest.ReadExpressionNode(interpreterMock.Object, input, null);
 
             // 1 top level
@@ -499,14 +499,14 @@ namespace Basic.UnitTests.Parsers
         }
 
         [Test]
-        public void ExpressionParser_ReadExpressionNode_PointlessBrackets()
+        public void LineParser_ReadExpressionNode_PointlessBrackets()
         {
             string expectedText = "(5) + 2";
             ITextStream input = new TextStream(expectedText);
 
             Mock<IInterpreter> interpreterMock = new Mock<IInterpreter>();
 
-            ExpressionParser underTest = new ExpressionParser();
+            LineParser underTest = new LineParser();
             INode expression = underTest.ReadExpressionNode(interpreterMock.Object, input, null);
 
             // 1 top level
@@ -538,14 +538,14 @@ namespace Basic.UnitTests.Parsers
             Assert.That(expression.Left.Left.Right, Is.Null);
         }
         [Test]
-        public void ExpressionParser_ReadExpressionNode_TrailingBrackets()
+        public void LineParser_ReadExpressionNode_TrailingBrackets()
         {
             string expectedText = "(5 + 2)";
             ITextStream input = new TextStream(expectedText);
 
             Mock<IInterpreter> interpreterMock = new Mock<IInterpreter>();
 
-            ExpressionParser underTest = new ExpressionParser();
+            LineParser underTest = new LineParser();
             INode expression = underTest.ReadExpressionNode(interpreterMock.Object, input, null);
 
             // 1 top level
@@ -578,14 +578,14 @@ namespace Basic.UnitTests.Parsers
         }
 
         [Test]
-        public void ExpressionParser_ReadExpressionNode_Not()
+        public void LineParser_ReadExpressionNode_Not()
         {
             string expectedText = "!8 == 8";
             ITextStream input = new TextStream(expectedText);
 
             Mock<IInterpreter> interpreterMock = new Mock<IInterpreter>();
 
-            ExpressionParser underTest = new ExpressionParser();
+            LineParser underTest = new LineParser();
             INode expression = underTest.ReadExpressionNode(interpreterMock.Object, input, null);
 
             // 1 top level

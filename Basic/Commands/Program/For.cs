@@ -52,14 +52,14 @@ namespace Basic.Commands.Program
         {
             if (interpreter.Stack.Count == 0
                 || !interpreter.Stack.Peek().Exists("for_var")
-                || interpreter.Stack.Peek().Get<string>("for_var") != m_variable.Text)
+                || interpreter.Stack.Peek().Get<string>("for_var") != m_variable.Name)
             {
                 IFrame frame = new Frame();
                 frame.Set("for_end", m_end.Result());
                 frame.Set("for_step", m_step.Result());
                 frame.Set("for_line", interpreter.Buffer.Current.Number);
-                frame.Set("for_var", m_variable.Text);
-                interpreter.Heap.Set(m_variable.Text, m_start.Result());
+                frame.Set("for_var", m_variable.Name);
+                m_variable.Set(m_start.Result());
                 interpreter.Stack.Push(frame);
             }
         }

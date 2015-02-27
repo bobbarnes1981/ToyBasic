@@ -28,17 +28,17 @@ namespace Basic.Commands.Program
         {
             if (interpreter.Stack.Count == 0
                 || !interpreter.Stack.Peek().Exists("for_var")
-                || interpreter.Stack.Peek().Get<string>("for_var") != m_variable.Text)
+                || interpreter.Stack.Peek().Get<string>("for_var") != m_variable.Name)
             {
                 throw new CommandError("Invalid for_var in current stack frame");
             }
 
             IFrame frame = interpreter.Stack.Pop();
-            int value = (int)interpreter.Heap.Get(m_variable.Text);
+            int value = (int)interpreter.Heap.Get(m_variable.Name);
             if (value < frame.Get<int>("for_end"))
             {
                 value += frame.Get<int>("for_step");
-                interpreter.Heap.Set(m_variable.Text, value);
+                m_variable.Set(value);
                 interpreter.Stack.Push(frame);
                 interpreter.Buffer.Jump(frame.Get<int>("for_line"));
             }

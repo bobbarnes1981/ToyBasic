@@ -15,7 +15,6 @@ namespace Basic.Expressions
 
         public override object Result()
         {
-            // maybe store expression and return it here (instead of using Left)?
             object value = Left.Result();
             if (value.GetType() != typeof (bool))
             {

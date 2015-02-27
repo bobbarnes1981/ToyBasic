@@ -14,6 +14,11 @@
 140 Print $x
 150 If $x == 0 Then Goto 130
 160 Rem This is a test
-170 Print "Enter a word"
-180 Input $y
-190 Print $y
+170 Dim $a[10]
+180 Let $a[0] = "bob"
+190 Let $a[1] = 808
+200 Print $a[0] + "text"
+210 Print $a[1] + 1
+220 Print "Enter a word"
+230 Input $y
+240 Print $y

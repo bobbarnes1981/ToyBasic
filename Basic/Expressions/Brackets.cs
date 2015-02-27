@@ -13,7 +13,6 @@
 
         public override object Result()
         {
-            // maybe store expression and return it here (instead of using Left)?
             return Left.Result();
         }
 

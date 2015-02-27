@@ -2,6 +2,7 @@
 using Basic.Types;
 using Moq;
 using NUnit.Framework;
+using Basic.Expressions;
 
 namespace Basic.UnitTests.Commands.Program
 {
@@ -11,7 +12,7 @@ namespace Basic.UnitTests.Commands.Program
         [Test]
         public void Input_ConstructedObject_HasCorrectKeyword()
         {
-            Variable variable = new Variable(null, "variable");
+            Variable variable = new Variable(null, "variable", new Value(new Number(-1)));
 
             Input underTest = new Input(variable);
 
@@ -21,7 +22,7 @@ namespace Basic.UnitTests.Commands.Program
         [Test]
         public void Input_ConstructedObject_HasCorrectIsSystemValue()
         {
-            Variable variable = new Variable(null, "variable");
+            Variable variable = new Variable(null, "variable", new Value(new Number(-1)));
 
             Input underTest = new Input(variable);
 
@@ -31,7 +32,7 @@ namespace Basic.UnitTests.Commands.Program
         [Test]
         public void Input_ConstructedObject_HasCorrectTextRepresentation()
         {
-            Variable variable = new Variable(null, "variable");
+            Variable variable = new Variable(null, "variable", new Value(new Number(-1)));
 
             Input underTest = new Input(variable);
 
@@ -52,7 +53,7 @@ namespace Basic.UnitTests.Commands.Program
             interpreterMock.Setup(x => x.Heap).Returns(heapMock.Object);
             interpreterMock.Setup(x => x.Console).Returns(consoleMock.Object);
 
-            Variable variable = new Variable(interpreterMock.Object, "variable");
+            Variable variable = new Variable(interpreterMock.Object, "variable", new Value(new Number(-1)));
 
             Input underTest = new Input(variable);
 
@@ -64,7 +65,7 @@ namespace Basic.UnitTests.Commands.Program
 
             interpreterMock.Verify(x => x.Console, Times.Exactly(2));
 
-            heapMock.Verify(x => x.Set(variable.Text, value), Times.Once);
+            heapMock.Verify(x => x.Set(variable.Name, value), Times.Once);
 
             consoleMock.Verify(x => x.Input(), Times.Once);
         }

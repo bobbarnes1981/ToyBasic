@@ -12,7 +12,7 @@ namespace Basic.UnitTests.Commands.Program
         [Test]
         public void Let_ConstructedObject_HasCorrectKeyword()
         {
-            Variable variable = new Variable(null, "variable");
+            Variable variable = new Variable(null, "variable", new Value(new Number(-1)));
 
             Mock<INode> expressionMock = new Mock<INode>();
 
@@ -24,7 +24,7 @@ namespace Basic.UnitTests.Commands.Program
         [Test]
         public void Let_ConstructedObject_HasCorrectIsSystemValue()
         {
-            Variable variable = new Variable(null, "variable");
+            Variable variable = new Variable(null, "variable", new Value(new Number(-1)));
 
             Mock<INode> expressionMock = new Mock<INode>();
 
@@ -36,7 +36,7 @@ namespace Basic.UnitTests.Commands.Program
         [Test]
         public void Let_ConstructedObject_HasCorrectTextRepresentation()
         {
-            Variable variable = new Variable(null, "variable");
+            Variable variable = new Variable(null, "variable", new Value(new Number(-1)));
             string expressionText = "my expresison text";
 
             Mock<INode> expressionMock = new Mock<INode>();
@@ -60,7 +60,7 @@ namespace Basic.UnitTests.Commands.Program
             Mock<INode> expressionMock = new Mock<INode>();
             expressionMock.Setup(x => x.Result()).Returns(value);
 
-            Variable variable = new Variable(interpreterMock.Object, "variable");
+            Variable variable = new Variable(interpreterMock.Object, "variable", new Value(new Number(-1)));
 
             Let underTest = new Let(variable, expressionMock.Object);
 
@@ -68,7 +68,7 @@ namespace Basic.UnitTests.Commands.Program
 
             interpreterMock.Verify(x => x.Heap, Times.Once);
 
-            heapMock.Verify(x => x.Set(variable.Text, value), Times.Once);
+            heapMock.Verify(x => x.Set(variable.Name, value), Times.Once);
         }
     }
 }

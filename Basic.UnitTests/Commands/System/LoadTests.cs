@@ -35,7 +35,7 @@ namespace Basic.UnitTests.Commands.System
 
             Load underTest = new Load(filename);
 
-            Assert.That(underTest.Text, Is.EqualTo(string.Format("{0} {1}", Keywords.Load, filename)));
+            Assert.That(underTest.Text, Is.EqualTo(string.Format("{0} {1}", Keywords.Load, filename.Text)));
         }
 
         [Test]
