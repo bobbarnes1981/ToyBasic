@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using Basic.Errors;
 
 namespace Basic
 {
@@ -7,14 +9,26 @@ namespace Basic
     {
         public void Save(string filename, IEnumerable<string> lines)
         {
-            // TODO: handle errors
-            File.WriteAllLines(filename, lines);
+            try
+            {
+                File.WriteAllLines(filename, lines);
+            }
+            catch(Exception exception)
+            {
+                throw new StorageError(exception.Message);
+            }
         }
 
         public string[] Load(string filename)
         {
-            // TODO: handle errors
-            return File.ReadAllLines(filename);
+            try
+            {
+                return File.ReadAllLines(filename);
+            }
+            catch (Exception exception)
+            {
+                throw new StorageError(exception.Message);
+            }
         }
     }
 }

@@ -41,7 +41,7 @@ namespace Basic.Commands.System
         /// </summary>
         public override string Text
         {
-            get { return string.Format("{0} {1}", Keywords.Save, m_filename); }
+            get { return string.Format("{0} {1}", Keywords.Save, m_filename.Text); }
         }
     }
 }
