@@ -199,7 +199,7 @@ namespace Basic.Parsers
             operatorString += input.Next();
             
             // check next char to see if it is a valid operator
-            while (Operator.Representations.ContainsValue(operatorString + input.Peek()))
+            while (!input.End && Operator.Representations.ContainsValue(operatorString + input.Peek()))
             {
                 operatorString += input.Next();
             }

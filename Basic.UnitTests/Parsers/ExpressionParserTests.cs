@@ -148,7 +148,7 @@ namespace Basic.UnitTests.Parsers
 
             Assert.That(expression.Result(), Is.EqualTo(5));
         }
-        
+
         [Test]
         public void ExpressionParser_ReadExpressionNode_Subtraction()
         {
@@ -174,6 +174,23 @@ namespace Basic.UnitTests.Parsers
             Assert.That(expression.Right.Text, Is.EqualTo("2"));
 
             Assert.That(expression.Result(), Is.EqualTo(1));
+        }
+
+        [Test]
+        public void ExpressionParser_ReadExpressionNode_PrecedenceEquality()
+        {
+            string expectedText = "8 == 3 + 5";
+            ITextStream input = new TextStream(expectedText);
+
+            Mock<IInterpreter> interpreterMock = new Mock<IInterpreter>();
+
+            ExpressionParser underTest = new ExpressionParser();
+            INode expression = underTest.ReadExpressionNode(interpreterMock.Object, input, null);
+
+            Assert.That(expression, Is.TypeOf<Operator>());
+            Assert.That(expression.Text, Is.EqualTo("8 == 3 + 5"));
+
+            Assert.That(expression.Result(), Is.EqualTo(true));
         }
         
         [Test]
@@ -482,7 +499,7 @@ namespace Basic.UnitTests.Parsers
         }
 
         [Test]
-        public void ExpressionParser_readExpressionNode_PointlessBrackets()
+        public void ExpressionParser_ReadExpressionNode_PointlessBrackets()
         {
             string expectedText = "(5) + 2";
             ITextStream input = new TextStream(expectedText);
@@ -522,7 +539,7 @@ namespace Basic.UnitTests.Parsers
         }
 
         [Test]
-        public void ExpressionParser_readExpressionNode_Not()
+        public void ExpressionParser_ReadExpressionNode_Not()
         {
             string expectedText = "!8 == 8";
             ITextStream input = new TextStream(expectedText);
