@@ -42,12 +42,12 @@ namespace Basic.UnitTests.Commands.Program
         [Test]
         public void Input_Execute_CallsCorrectInterfaceMethodNumber()
         {
-            string value = "10";
+            int value = 10;
 
             Mock<IHeap> heapMock = new Mock<IHeap>();
 
             Mock<IConsole> consoleMock = new Mock<IConsole>();
-            consoleMock.Setup(x => x.ParseInput()).Returns(10);
+            consoleMock.Setup(x => x.ParseInput()).Returns(value);
 
             Mock<IInterpreter> interpreterMock = new Mock<IInterpreter>();
             interpreterMock.Setup(x => x.Heap).Returns(heapMock.Object);
@@ -65,7 +65,7 @@ namespace Basic.UnitTests.Commands.Program
 
             interpreterMock.Verify(x => x.Console, Times.Exactly(2));
 
-            heapMock.Verify(x => x.Set(variable.Name, 10), Times.Once);
+            heapMock.Verify(x => x.Set(variable.Name, value), Times.Once);
 
             consoleMock.Verify(x => x.ParseInput(), Times.Once);
         }
