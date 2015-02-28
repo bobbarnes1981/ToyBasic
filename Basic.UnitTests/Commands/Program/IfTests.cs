@@ -53,7 +53,7 @@ namespace Basic.UnitTests.Commands.Program
         public void If_Execute_CallsCorrectInterfaceMethodWhenTrue()
         {
             Mock<INode> expressionMock = new Mock<INode>();
-            expressionMock.Setup(x => x.Result()).Returns(true);
+            expressionMock.Setup(x => x.Result(It.IsAny<IInterpreter>())).Returns(true);
 
             Mock<ICommand> commandMock = new Mock<ICommand>();
 
@@ -62,7 +62,7 @@ namespace Basic.UnitTests.Commands.Program
             If underTest = new If(expressionMock.Object, commandMock.Object);
             underTest.Execute(interpreterMock.Object);
 
-            expressionMock.Verify(x => x.Result(), Times.Once);
+            expressionMock.Verify(x => x.Result(interpreterMock.Object), Times.Once);
 
             commandMock.Verify(x => x.Execute(It.IsAny<IInterpreter>()), Times.Once);
         }
@@ -71,7 +71,7 @@ namespace Basic.UnitTests.Commands.Program
         public void If_Execute_CallsCorrectInterfaceMethodWhenFalse()
         {
             Mock<INode> expressionMock = new Mock<INode>();
-            expressionMock.Setup(x => x.Result()).Returns(false);
+            expressionMock.Setup(x => x.Result(It.IsAny<IInterpreter>())).Returns(false);
 
             Mock<ICommand> commandMock = new Mock<ICommand>();
 
@@ -80,7 +80,7 @@ namespace Basic.UnitTests.Commands.Program
             If underTest = new If(expressionMock.Object, commandMock.Object);
             underTest.Execute(interpreterMock.Object);
 
-            expressionMock.Verify(x => x.Result(), Times.Once);
+            expressionMock.Verify(x => x.Result(interpreterMock.Object), Times.Once);
 
             commandMock.Verify(x => x.Execute(It.IsAny<IInterpreter>()), Times.Never);
         }

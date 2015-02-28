@@ -54,30 +54,30 @@ namespace Basic.Expressions
         /// Calculate and return the result of the operation
         /// </summary>
         /// <returns></returns>
-        public override object Result()
+        public override object Result(IInterpreter interpreter)
         {
             switch (m_operatorType)
             {
                 case Operators.Divide:
-                    return Divide(Left.Result(), Right.Result());
+                    return Divide(Left.Result(interpreter), Right.Result(interpreter));
                 case Operators.Multiply:
-                    return Multiply(Left.Result(), Right.Result());
+                    return Multiply(Left.Result(interpreter), Right.Result(interpreter));
                 case Operators.Add:
-                    return Add(Left.Result(), Right.Result());
+                    return Add(Left.Result(interpreter), Right.Result(interpreter));
                 case Operators.Subtract:
-                    return Subtract(Left.Result(), Right.Result());
+                    return Subtract(Left.Result(interpreter), Right.Result(interpreter));
                 case Operators.And:
-                    return And(Left.Result(), Right.Result());
+                    return And(Left.Result(interpreter), Right.Result(interpreter));
                 case Operators.Or:
-                    return Or(Left.Result(), Right.Result());
+                    return Or(Left.Result(interpreter), Right.Result(interpreter));
                 case Operators.Equals:
-                    return Equality(Left.Result(), Right.Result());
+                    return Equality(Left.Result(interpreter), Right.Result(interpreter));
                 case Operators.NotEquals:
-                    return !Equality(Left.Result(), Right.Result());
+                    return !Equality(Left.Result(interpreter), Right.Result(interpreter));
                 case Operators.LessThan:
-                    return LessThan(Left.Result(), Right.Result());
+                    return LessThan(Left.Result(interpreter), Right.Result(interpreter));
                 case Operators.GreaterThan:
-                    return GreaterThan(Left.Result(), Right.Result());
+                    return GreaterThan(Left.Result(interpreter), Right.Result(interpreter));
                 case Operators.None:
                     throw new ExpressionError("None operator is invalid");
                 default:

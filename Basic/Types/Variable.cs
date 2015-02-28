@@ -8,16 +8,13 @@ namespace Basic.Types
     /// </summary>
     public class Variable : Type
     {
-        private readonly IInterpreter m_interpreter;
-
         public static readonly char PREFIX = '$';
 
         private readonly INode m_index;
 
-        public Variable(IInterpreter interpreter, string variable, INode index)
-            : base(variable)
+        public Variable(string name, INode index)
+            : base(name)
         {
-            m_interpreter = interpreter;
             m_index = index;
         }
 
@@ -28,51 +25,56 @@ namespace Basic.Types
 
         public string Name { get { return (string)m_value; } }
 
-        public override object Value()
+        public override object Value(IInterpreter interpreter)
         {
-            if ((int)m_index.Result() >= 0)
+            return Get(interpreter);
+        }
+
+        public object Get(IInterpreter interpreter)
+        {
+            if (m_index != null)
             {
-                object value = m_interpreter.Heap.Get(Name);
+                object value = interpreter.Heap.Get(Name);
                 if (!value.GetType().IsArray)
                 {
                     throw new TypeError(string.Format("variable '{0}' is not an array", Name));
                 }
 
                 object[] array = (object[])value;
-                if (array.Length <= (int)m_index.Result())
+                if (array.Length <= (int)m_index.Result(interpreter))
                 {
                     throw new TypeError(string.Format("variable '{0}' has '{1}' elements, invalid index '{2}'", Name, m_index));
                 }
 
-                return ((object[])value)[(int)m_index.Result()];
+                return ((object[])value)[(int)m_index.Result(interpreter)];
             }
             else
             {
-                return m_interpreter.Heap.Get(Name);
+                return interpreter.Heap.Get(Name);
             }
         }
 
-        public void Set(object input)
+        public void Set(IInterpreter interpreter, object input)
         {
-            if ((int)m_index.Result() >= 0)
+            if (m_index != null)
             {
-                object value = m_interpreter.Heap.Get(Name);
+                object value = interpreter.Heap.Get(Name);
                 if (!value.GetType().IsArray)
                 {
                     throw new TypeError(string.Format("variable '{0}' is not an array", Name));
                 }
 
                 object[] array = (object[])value;
-                if (array.Length <= (int)m_index.Result())
+                if (array.Length <= (int)m_index.Result(interpreter))
                 {
                     throw new TypeError(string.Format("variable '{0}' has '{1}' elements, invalid index '{2}'", Name, m_index));
                 }
 
-                array[(int)m_index.Result()] = input;
+                array[(int)m_index.Result(interpreter)] = input;
             }
             else
             {
-                m_interpreter.Heap.Set(Name, input);
+                interpreter.Heap.Set(Name, input);
             }
         }
 
@@ -80,7 +82,7 @@ namespace Basic.Types
         {
             get
             {
-                if ((int)m_index.Result() >= 0)
+                if (m_index != null)
                 {
                     return string.Format("{0}{1}[{2}]", PREFIX, m_value, m_index.Text);
                 }

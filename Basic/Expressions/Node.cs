@@ -10,6 +10,6 @@
 
         public abstract string Text { get; }
 
-        public abstract object Result();
+        public abstract object Result(IInterpreter interpreter);
     }
 }

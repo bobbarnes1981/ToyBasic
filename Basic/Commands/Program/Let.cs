@@ -36,7 +36,7 @@ namespace Basic.Commands.Program
         /// <param name="interpreter">interpreter to provide the heap interface</param>
         public override void execute(IInterpreter interpreter)
         {
-            m_variable.Set(m_expression.Result());
+            m_variable.Set(interpreter, m_expression.Result(interpreter));
         }
 
         /// <summary>

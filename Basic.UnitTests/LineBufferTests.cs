@@ -74,14 +74,18 @@ namespace Basic.UnitTests
         [Test]
         public void LineBuffer_Renumber_Empty()
         {
+            Mock<IInterpreter> interpreterMock = new Mock<IInterpreter>();
+
             LineBuffer underTest = new LineBuffer();
 
-            underTest.Renumber();
+            underTest.Renumber(interpreterMock.Object);
         }
 
         [Test]
         public void LineBuffer_Renumber_LinesNumbers()
         {
+            Mock<IInterpreter> interpreterMock = new Mock<IInterpreter>();
+
             LineBuffer underTest = new LineBuffer();
 
             for (int i = 1; i < 5; i++)
@@ -91,7 +95,7 @@ namespace Basic.UnitTests
                 underTest.Add(new Line(i, commandMock.Object));
             }
 
-            underTest.Renumber();
+            underTest.Renumber(interpreterMock.Object);
             underTest.Reset();
 
             int counter = 10;
@@ -106,10 +110,12 @@ namespace Basic.UnitTests
         [Test]
         public void LineBuffer_Renumber_LinesData()
         {
+            Mock<IInterpreter> interpreterMock = new Mock<IInterpreter>();
+
             LineBuffer underTest = new LineBuffer();
 
             Mock<Basic.Expressions.INode> expressionMock = new Mock<Basic.Expressions.INode>();
-            expressionMock.Setup(x => x.Result()).Returns(true);
+            expressionMock.Setup(x => x.Result(It.IsAny<IInterpreter>())).Returns(true);
 
             // goto
             underTest.Add(
@@ -135,28 +141,30 @@ namespace Basic.UnitTests
                             null,
                             new Basic.Commands.Program.Goto(new Number(1))))));
 
-            underTest.Renumber();
+            underTest.Renumber(interpreterMock.Object);
             underTest.Reset();
 
             // goto
             underTest.Next();
             Assert.That(underTest.Current.Number, Is.EqualTo(10));
-            Assert.That(((Basic.Commands.Program.Goto)underTest.Current.Command).LineNumber.Value(), Is.EqualTo(20));
+            Assert.That(((Basic.Commands.Program.Goto)underTest.Current.Command).LineNumber.Value(It.IsAny<IInterpreter>()), Is.EqualTo(20));
 
             // if
             underTest.Next();
             Assert.That(underTest.Current.Number, Is.EqualTo(20));
-            Assert.That(((Basic.Commands.Program.Goto)((Basic.Commands.Program.If)underTest.Current.Command).Command).LineNumber.Value(), Is.EqualTo(30));
+            Assert.That(((Basic.Commands.Program.Goto)((Basic.Commands.Program.If)underTest.Current.Command).Command).LineNumber.Value(It.IsAny<IInterpreter>()), Is.EqualTo(30));
 
             // nested if
             underTest.Next();
             Assert.That(underTest.Current.Number, Is.EqualTo(30));
-            Assert.That(((Basic.Commands.Program.Goto)((Basic.Commands.Program.If)((Basic.Commands.Program.If)underTest.Current.Command).Command).Command).LineNumber.Value(), Is.EqualTo(30));
+            Assert.That(((Basic.Commands.Program.Goto)((Basic.Commands.Program.If)((Basic.Commands.Program.If)underTest.Current.Command).Command).Command).LineNumber.Value(It.IsAny<IInterpreter>()), Is.EqualTo(30));
         }
 
         [Test]
         public void LineBuffer_Jump_ValidLineNumber()
         {
+            Mock<IInterpreter> interpreterMock = new Mock<IInterpreter>();
+
             LineBuffer underTest = new LineBuffer();
 
             for (int i = 10; i < 50; i += 10)
@@ -166,7 +174,7 @@ namespace Basic.UnitTests
                 underTest.Add(new Line(i, commandMock.Object));
             }
 
-            underTest.Renumber();
+            underTest.Renumber(interpreterMock.Object);
             underTest.Reset();
 
             underTest.Next();
@@ -181,6 +189,8 @@ namespace Basic.UnitTests
         [Test]
         public void LineBuffer_Jump_InvalidLineNumber()
         {
+            Mock<IInterpreter> interpreterMock = new Mock<IInterpreter>();
+
             LineBuffer underTest = new LineBuffer();
 
             for (int i = 10; i < 50; i += 10)
@@ -190,7 +200,7 @@ namespace Basic.UnitTests
                 underTest.Add(new Line(i, commandMock.Object));
             }
 
-            underTest.Renumber();
+            underTest.Renumber(interpreterMock.Object);
             underTest.Reset();
 
             underTest.Next();

@@ -241,7 +241,7 @@ namespace Basic.Parsers
             switch (character)
             {
                 case '"':
-                    leafNode = new Value(ReadString(interpreter, input));
+                    leafNode = new Value(ReadString(input));
                     break;
                 case '$':
                     leafNode = new Value(ReadVariable(interpreter, input));
@@ -256,7 +256,7 @@ namespace Basic.Parsers
                 case '7':
                 case '8':
                 case '9':
-                    leafNode = new Value(ReadNumber(interpreter, input));
+                    leafNode = new Value(ReadNumber(input));
                     break;
                 case '(':
                     expect(input, '(');
@@ -309,7 +309,7 @@ namespace Basic.Parsers
             preChecks(input, "variable");
             expect(input, Types.Variable.PREFIX);
             string name = readUntil(input, character => !CHARACTERS.Contains(character));
-            INode index = new Value(new Types.Number(-1));
+            INode index = null;
             if (!input.End && input.Peek() == '[')
             {
                 expect(input, '[');
@@ -317,14 +317,14 @@ namespace Basic.Parsers
                 expect(input, ']');
             }
 
-            return new Types.Variable(interpreter, name, index);
+            return new Types.Variable(name, index);
         }
 
         /// <summary>
         /// Read an integer; a number of valid numbers
         /// </summary>
         /// <returns></returns>
-        public Types.Number ReadNumber(IInterpreter interpreter, ITextStream input)
+        public Types.Number ReadNumber(ITextStream input)
         {
             preChecks(input, "number");
             int number;
@@ -341,7 +341,7 @@ namespace Basic.Parsers
         /// Read a string; a number of valid characters surrounded by double quotes
         /// </summary>
         /// <returns></returns>
-        public Types.String ReadString(IInterpreter interpreter, ITextStream input)
+        public Types.String ReadString(ITextStream input)
         {
             preChecks(input, "string");
             expect(input, '\"');

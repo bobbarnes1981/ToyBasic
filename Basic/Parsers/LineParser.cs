@@ -98,7 +98,7 @@ namespace Basic.Parsers
                     command = new Commands.System.List();
                     break;
                 case Keywords.Load:
-                    command = new Commands.System.Load(ReadString(interpreter, input));
+                    command = new Commands.System.Load(ReadString(input));
                     expectEnd(input);
                     break;
                 case Keywords.New:
@@ -114,7 +114,7 @@ namespace Basic.Parsers
                     command = new Commands.System.Renumber();
                     break;
                 case Keywords.Save:
-                    command = new Commands.System.Save(ReadString(interpreter, input));
+                    command = new Commands.System.Save(ReadString(input));
                     expectEnd(input);
                     break;
                 default:
@@ -154,7 +154,7 @@ namespace Basic.Parsers
                     command = new For(forVariable, start, end, step);
                     break;
                 case Keywords.Goto:
-                    command = new Goto(ReadNumber(interpreter, input));
+                    command = new Goto(ReadNumber(input));
                     expectEnd(input);
                     break;
                 case Keywords.If:

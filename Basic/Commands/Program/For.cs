@@ -55,11 +55,11 @@ namespace Basic.Commands.Program
                 || interpreter.Stack.Peek().Get<string>("for_var") != m_variable.Name)
             {
                 IFrame frame = new Frame();
-                frame.Set("for_end", m_end.Result());
-                frame.Set("for_step", m_step.Result());
+                frame.Set("for_end", m_end.Result(interpreter));
+                frame.Set("for_step", m_step.Result(interpreter));
                 frame.Set("for_line", interpreter.Buffer.Current.Number);
                 frame.Set("for_var", m_variable.Name);
-                m_variable.Set(m_start.Result());
+                m_variable.Set(interpreter, m_start.Result(interpreter));
                 interpreter.Stack.Push(frame);
             }
         }

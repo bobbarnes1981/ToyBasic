@@ -19,7 +19,7 @@
         /// <param name="interpreter"></param>
         public override void execute(IInterpreter interpreter)
         {
-            interpreter.Buffer.Renumber();
+            interpreter.Buffer.Renumber(interpreter);
         }
 
         /// <summary>

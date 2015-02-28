@@ -42,7 +42,7 @@ namespace Basic
             m_buffer[line.Number] = line;
         }
 
-        public void Renumber()
+        public void Renumber(IInterpreter interpreter)
         {
             int newLineNumber = START_LINE;
             SortedDictionary<int, ILine> buffer = new SortedDictionary<int, ILine>();
@@ -57,7 +57,7 @@ namespace Basic
                 line.Number = newLineNumber;
 
                 // renumber all existing lines
-                renumber(oldLineNumber, newLineNumber);
+                renumber(interpreter, oldLineNumber, newLineNumber);
 
                 // add to new buffer
                 buffer.Add(newLineNumber, line);
@@ -75,7 +75,7 @@ namespace Basic
         /// </summary>
         /// <param name="oldLineNumber"></param>
         /// <param name="newLineNumber"></param>
-        private void renumber(int oldLineNumber, int newLineNumber)
+        private void renumber(IInterpreter interpreter, int oldLineNumber, int newLineNumber)
         {
             // for all line in buffer
             foreach (int lineNumber in m_buffer.Keys)
@@ -92,7 +92,7 @@ namespace Basic
                             case Keywords.Goto:
                                 // renumber goto command
                                 Goto cmd = (Goto)command;
-                                if ((int)cmd.LineNumber.Value() == oldLineNumber)
+                                if ((int)cmd.LineNumber.Value(interpreter) == oldLineNumber)
                                 {
                                     cmd.LineNumber = new Types.Number(newLineNumber);
                                 }

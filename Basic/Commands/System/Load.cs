@@ -25,7 +25,7 @@ namespace Basic.Commands.System
         public override void execute(IInterpreter interpreter)
         {
             interpreter.Buffer.Clear();
-            string[] lines = interpreter.Storage.Load((string)m_filename.Value());
+            string[] lines = interpreter.Storage.Load((string)m_filename.Value(interpreter));
             foreach (string line in lines)
             {
                 interpreter.ProcessInput(line);

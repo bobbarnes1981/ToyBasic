@@ -14,9 +14,9 @@ namespace Basic.Expressions
             m_type = type;
         }
 
-        public override object Result()
+        public override object Result(IInterpreter interpreter)
         {
-            return m_type.Value();
+            return m_type.Value(interpreter);
         }
 
         public override string Text

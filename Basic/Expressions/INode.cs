@@ -8,7 +8,7 @@
 
         INode Right { get; set; }
 
-        object Result();
+        object Result(IInterpreter interpreter);
 
         string Text { get; }
     }

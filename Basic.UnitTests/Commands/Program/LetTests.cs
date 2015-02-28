@@ -12,7 +12,7 @@ namespace Basic.UnitTests.Commands.Program
         [Test]
         public void Let_ConstructedObject_HasCorrectKeyword()
         {
-            Variable variable = new Variable(null, "variable", new Value(new Number(-1)));
+            Variable variable = new Variable("variable", null);
 
             Mock<INode> expressionMock = new Mock<INode>();
 
@@ -24,7 +24,7 @@ namespace Basic.UnitTests.Commands.Program
         [Test]
         public void Let_ConstructedObject_HasCorrectIsSystemValue()
         {
-            Variable variable = new Variable(null, "variable", new Value(new Number(-1)));
+            Variable variable = new Variable("variable", null);
 
             Mock<INode> expressionMock = new Mock<INode>();
 
@@ -36,7 +36,7 @@ namespace Basic.UnitTests.Commands.Program
         [Test]
         public void Let_ConstructedObject_HasCorrectTextRepresentation()
         {
-            Variable variable = new Variable(null, "variable", new Value(new Number(-1)));
+            Variable variable = new Variable("variable", null);
             string expressionText = "my expresison text";
 
             Mock<INode> expressionMock = new Mock<INode>();
@@ -58,9 +58,9 @@ namespace Basic.UnitTests.Commands.Program
             interpreterMock.Setup(x => x.Heap).Returns(heapMock.Object);
 
             Mock<INode> expressionMock = new Mock<INode>();
-            expressionMock.Setup(x => x.Result()).Returns(value);
+            expressionMock.Setup(x => x.Result(It.IsAny<IInterpreter>())).Returns(value);
 
-            Variable variable = new Variable(interpreterMock.Object, "variable", new Value(new Number(-1)));
+            Variable variable = new Variable("variable", null);
 
             Let underTest = new Let(variable, expressionMock.Object);
 

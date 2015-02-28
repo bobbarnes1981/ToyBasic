@@ -41,7 +41,7 @@ namespace Basic.Commands.Program
         /// <param name="interpreter">interpreter to execute the command on</param>
         public override void execute(IInterpreter interpreter)
         {
-            object result = m_expression.Result();
+            object result = m_expression.Result(interpreter);
             bool output;
             switch (result.GetType().Name)
             {

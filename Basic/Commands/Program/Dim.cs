@@ -16,7 +16,7 @@ namespace Basic.Commands.Program
 
         public override void execute(IInterpreter interpreter)
         {
-            object value = m_variable.Index.Result();
+            object value = m_variable.Index.Result(interpreter);
             if (value.GetType() != typeof (int))
             {
                 throw new CommandError("Dim expects type to be Number");

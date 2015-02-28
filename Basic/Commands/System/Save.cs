@@ -33,7 +33,7 @@ namespace Basic.Commands.System
                 lines.Add(interpreter.Buffer.Current.ToString());
             }
 
-            interpreter.Storage.Save((string)m_filename.Value(), lines);
+            interpreter.Storage.Save((string)m_filename.Value(interpreter), lines);
         }
 
         /// <summary>

@@ -44,7 +44,7 @@ namespace Basic.UnitTests.Commands.System
 
             interpreterMock.Verify(x => x.Buffer, Times.Once);
 
-            bufferMock.Verify(x => x.Renumber(), Times.Once);
+            bufferMock.Verify(x => x.Renumber(It.IsAny<IInterpreter>()), Times.Once);
         }
     }
 }

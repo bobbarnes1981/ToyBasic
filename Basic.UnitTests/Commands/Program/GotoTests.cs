@@ -32,7 +32,7 @@ namespace Basic.UnitTests.Commands.Program
 
             Goto underTest = new Goto(line);
 
-            Assert.That(underTest.Text, Is.EqualTo(string.Format("{0} {1}", Keywords.Goto, line.Value())));
+            Assert.That(underTest.Text, Is.EqualTo(string.Format("{0} {1}", Keywords.Goto, 0)));
         }
 
         [Test]
@@ -51,7 +51,7 @@ namespace Basic.UnitTests.Commands.Program
 
             interpreterMock.Verify(x => x.Buffer, Times.Once);
 
-            bufferMock.Verify(x => x.Jump((int)line.Value()), Times.Once);
+            bufferMock.Verify(x => x.Jump(0), Times.Once);
         }
     }
 }

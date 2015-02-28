@@ -4,7 +4,7 @@
     {
         void Add(ILine line);
 
-        void Renumber();
+        void Renumber(IInterpreter interpreter);
 
         void Reset();
 

@@ -10,7 +10,7 @@
         {
         }
 
-        public override object Value()
+        public override object Value(IInterpreter interpreter)
         {
             return (int)m_value;
         }

@@ -38,7 +38,7 @@ namespace Basic.Commands.Program
             if (value < frame.Get<int>("for_end"))
             {
                 value += frame.Get<int>("for_step");
-                m_variable.Set(value);
+                m_variable.Set(interpreter, value);
                 interpreter.Stack.Push(frame);
                 interpreter.Buffer.Jump(frame.Get<int>("for_line"));
             }

@@ -13,9 +13,9 @@ namespace Basic.Expressions
             Left = expression;
         }
 
-        public override object Result()
+        public override object Result(IInterpreter interpreter)
         {
-            object value = Left.Result();
+            object value = Left.Result(interpreter);
             if (value.GetType() != typeof (bool))
             {
                 throw new ExpressionError("Not expects type to be Boolean");

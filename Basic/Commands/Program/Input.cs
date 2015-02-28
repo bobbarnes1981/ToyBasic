@@ -31,7 +31,7 @@ namespace Basic.Commands.Program
         public override void execute(IInterpreter interpreter)
         {
             interpreter.Console.Output(PROMPT);
-            m_variable.Set(interpreter.Console.Input());
+            m_variable.Set(interpreter, interpreter.Console.Input());
         }
 
         /// <summary>

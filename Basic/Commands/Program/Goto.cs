@@ -28,7 +28,7 @@ namespace Basic.Commands.Program
         /// <param name="interpreter">interpreter to provide the buffer interface</param>
         public override void execute(IInterpreter interpreter)
         {
-            interpreter.Buffer.Jump((int)m_lineNumber.Value());
+            interpreter.Buffer.Jump((int)m_lineNumber.Value(interpreter));
         }
 
         /// <summary>
@@ -45,7 +45,7 @@ namespace Basic.Commands.Program
         /// </summary>
         public override string Text
         {
-            get { return string.Format("{0} {1}", Keywords.Goto, m_lineNumber.Value()); }
+            get { return string.Format("{0} {1}", Keywords.Goto, m_lineNumber.Text); }
         }
     }
 }

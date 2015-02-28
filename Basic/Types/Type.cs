@@ -9,7 +9,7 @@
             m_value = value;
         }
 
-        public abstract object Value();
+        public abstract object Value(IInterpreter interpreter);
 
         public abstract string Text { get; }
     }

@@ -41,14 +41,15 @@ namespace Basic.UnitTests.Commands.System
         [Test]
         public void Load_Execute_CallsCorrectInterfaceMethod()
         {
-            String filename = new String("filename.ext");
+            string filenameString = "filename";
+            String filename = new String(filenameString);
 
             string text = "a line of text";
 
             Mock<ILineBuffer> bufferMock = new Mock<ILineBuffer>();
 
             Mock<IStorage> storageMock = new Mock<IStorage>();
-            storageMock.Setup(x => x.Load((string)filename.Value())).Returns(new string[] { text });
+            storageMock.Setup(x => x.Load(filenameString)).Returns(new string[] { text });
 
             Mock<IInterpreter> interpreterMock = new Mock<IInterpreter>();
             interpreterMock.Setup(x => x.Buffer).Returns(bufferMock.Object);
@@ -63,7 +64,7 @@ namespace Basic.UnitTests.Commands.System
 
             interpreterMock.Verify(x => x.Storage, Times.Once);
 
-            storageMock.Verify(x => x.Load((string)filename.Value()), Times.Once);
+            storageMock.Verify(x => x.Load((string)filename.Value(interpreterMock.Object)), Times.Once);
 
             interpreterMock.Verify(x => x.ProcessInput(text), Times.Once);
         }

@@ -28,7 +28,7 @@ namespace Basic.Commands.Program
         /// <param name="interpreter">interpreter to provide the console interface</param>
         public override void execute(IInterpreter interpreter)
         {
-            interpreter.Console.Output(string.Format("{0}\r\n", m_expression.Result()));
+            interpreter.Console.Output(string.Format("{0}\r\n", m_expression.Result(interpreter)));
         }
 
         /// <summary>

@@ -11,9 +11,9 @@
             Left = expression;
         }
 
-        public override object Result()
+        public override object Result(IInterpreter interpreter)
         {
-            return Left.Result();
+            return Left.Result(interpreter);
         }
 
         public override string Text

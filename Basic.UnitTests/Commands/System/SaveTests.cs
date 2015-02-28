@@ -74,7 +74,7 @@ namespace Basic.UnitTests.Commands.System
 
             interpreterMock.Verify(x => x.Storage, Times.Once);
 
-            storageMock.Verify(x => x.Save((string)filename.Value(), It.IsAny<IEnumerable<string>>()), Times.Once);
+            storageMock.Verify(x => x.Save((string)filename.Value(interpreterMock.Object), It.IsAny<IEnumerable<string>>()), Times.Once);
         }
     }
 }
