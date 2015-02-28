@@ -7,9 +7,12 @@ namespace Basic
     {
         private readonly Dictionary<string, object> m_heap;
 
-        public Heap()
+        private readonly IRandom m_random;
+
+        public Heap(IRandom random)
         {
             m_heap = new Dictionary<string, object>();
+            m_random = random;
         }
 
         public bool Exists(string name)
@@ -46,7 +49,7 @@ namespace Basic
         {
             if (variable == "Random")
             {
-                return new System.Random().Next();
+                return m_random.Next();
             }
 
             if (!m_heap.ContainsKey(variable))

@@ -14,6 +14,8 @@ namespace Basic
             Bind<IStack>().To<Stack>();
             Bind<IStorage>().To<FileStorage>();
 
+            Bind<IRandom>().To<Random>();
+
             Bind<IParser<ILine>>().To<LineParser>();
         }
     }
