@@ -2,6 +2,6 @@
 {
     public interface IParser<T>
     {
-        T Parse(IInterpreter interpreter, ITextStream input);
+        T Parse(ITextStream input);
     }
 }

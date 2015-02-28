@@ -68,6 +68,7 @@
     <Compile Include="Errors\LineBufferError.cs" />
     <Compile Include="Errors\ExpressionError.cs" />
     <Compile Include="Errors\HeapError.cs" />
+    <Compile Include="Parsers\InputParser.cs" />
     <Compile Include="Random.cs" />
     <Compile Include="Types\Boolean.cs" />
     <Compile Include="Expressions\Node.cs" />

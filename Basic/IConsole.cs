@@ -6,6 +6,8 @@
 
         string Input();
 
+        object ParseInput();
+
         void Clear();
     }
 }

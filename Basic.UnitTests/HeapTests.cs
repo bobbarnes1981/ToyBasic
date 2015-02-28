@@ -12,7 +12,7 @@ namespace Basic.UnitTests
             string variableName = "variable";
             int variableValue = 10;
 
-            Heap underTest = new Heap();
+            Heap underTest = new Heap(null);
 
             underTest.Set(variableName, variableValue);
 
@@ -22,7 +22,7 @@ namespace Basic.UnitTests
         [Test]
         public void Heap_Get_InvalidName()
         {
-            Heap underTest = new Heap();
+            Heap underTest = new Heap(null);
 
             Assert.Throws<HeapError>(() => underTest.Get("variable"));
         }

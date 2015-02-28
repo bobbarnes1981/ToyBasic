@@ -1,6 +1,6 @@
 10 Rem Guess the Number
 20 Print "Guess the Number"
-30 Let $number = $Random
+30 Let $number = $Random % 10
 40 Print "Enter your guess"
 50 Input $guess
 60 If $guess < $number Then Goto 90

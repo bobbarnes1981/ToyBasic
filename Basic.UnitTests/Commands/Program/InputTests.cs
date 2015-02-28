@@ -40,14 +40,45 @@ namespace Basic.UnitTests.Commands.Program
         }
 
         [Test]
-        public void Input_Execute_CallsCorrectInterfaceMethod()
+        public void Input_Execute_CallsCorrectInterfaceMethodNumber()
         {
             string value = "10";
 
             Mock<IHeap> heapMock = new Mock<IHeap>();
 
             Mock<IConsole> consoleMock = new Mock<IConsole>();
-            consoleMock.Setup(x => x.Input()).Returns(value);
+            consoleMock.Setup(x => x.ParseInput()).Returns(10);
+
+            Mock<IInterpreter> interpreterMock = new Mock<IInterpreter>();
+            interpreterMock.Setup(x => x.Heap).Returns(heapMock.Object);
+            interpreterMock.Setup(x => x.Console).Returns(consoleMock.Object);
+
+            Variable variable = new Variable("variable", null);
+
+            Input underTest = new Input(variable);
+
+            underTest.Execute(interpreterMock.Object);
+
+            consoleMock.Verify(x => x.Output("? "), Times.Once);
+
+            interpreterMock.Verify(x => x.Heap, Times.Once);
+
+            interpreterMock.Verify(x => x.Console, Times.Exactly(2));
+
+            heapMock.Verify(x => x.Set(variable.Name, 10), Times.Once);
+
+            consoleMock.Verify(x => x.ParseInput(), Times.Once);
+        }
+
+        [Test]
+        public void Input_Execute_CallsCorrectInterfaceMethodString()
+        {
+            string value = "Ten";
+
+            Mock<IHeap> heapMock = new Mock<IHeap>();
+
+            Mock<IConsole> consoleMock = new Mock<IConsole>();
+            consoleMock.Setup(x => x.ParseInput()).Returns(value);
 
             Mock<IInterpreter> interpreterMock = new Mock<IInterpreter>();
             interpreterMock.Setup(x => x.Heap).Returns(heapMock.Object);
@@ -67,7 +98,7 @@ namespace Basic.UnitTests.Commands.Program
 
             heapMock.Verify(x => x.Set(variable.Name, value), Times.Once);
 
-            consoleMock.Verify(x => x.Input(), Times.Once);
+            consoleMock.Verify(x => x.ParseInput(), Times.Once);
         }
     }
 }

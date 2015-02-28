@@ -18,7 +18,7 @@ namespace Basic.Expressions
         /// </summary>
         public static readonly List<char> VALID_CHARACTERS = new List<char>
         {
-            '+', '-', '=', '*', '/', '!', '&', '|', '^', ';', '<', '>', '(', ')'
+            '+', '-', '=', '*', '/', '!', '&', '|', '^', ';', '<', '>', '(', ')', '%'
         };
 
         /// <summary>
@@ -38,7 +38,8 @@ namespace Basic.Expressions
             { Operators.Subtract, "-" },
             { Operators.And, "&" },
             { Operators.Or, "|" },
-            { Operators.Not, "!" }
+            { Operators.Not, "!" },
+            { Operators.Modulo, "%" }
         };
 
         /// <summary>
@@ -78,6 +79,8 @@ namespace Basic.Expressions
                     return LessThan(Left.Result(interpreter), Right.Result(interpreter));
                 case Operators.GreaterThan:
                     return GreaterThan(Left.Result(interpreter), Right.Result(interpreter));
+                case Operators.Modulo:
+                    return Modulo(Left.Result(interpreter), Right.Result(interpreter));
                 case Operators.None:
                     throw new ExpressionError("None operator is invalid");
                 default:
@@ -159,6 +162,21 @@ namespace Basic.Expressions
             }
 
             return (int)left - (int)right;
+        }
+
+        private object Modulo(object left, object right)
+        {
+            if (left.GetType().Name != right.GetType().Name)
+            {
+                throw new ExpressionError("Modulo expects both types to be Int32");
+            }
+
+            if (left.GetType().Name != "Int32")
+            {
+                throw new ExpressionError("Modulo expects both types to be Int32");
+            }
+
+            return (int)left % (int)right;
         }
 
         private object LessThan(object left, object right)

@@ -8,6 +8,9 @@ namespace Basic
     {
         public override void Load()
         {
+            Bind<IParser<ILine>>().To<LineParser>();
+            Bind<IParser<object>>().To<InputParser>();
+
             Bind<ILineBuffer>().To<LineBuffer>();
             Bind<IConsole>().To<Console>();
             Bind<IHeap>().To<Heap>();
@@ -15,8 +18,6 @@ namespace Basic
             Bind<IStorage>().To<FileStorage>();
 
             Bind<IRandom>().To<Random>();
-
-            Bind<IParser<ILine>>().To<LineParser>();
         }
     }
 }

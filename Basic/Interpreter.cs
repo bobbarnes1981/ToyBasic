@@ -110,7 +110,7 @@ namespace Basic
             ILine line;
             try
             {
-                line = m_parser.Parse(this, new TextStream(input));
+                line = m_parser.Parse(new TextStream(input));
             }
             catch (Error error)
             {
