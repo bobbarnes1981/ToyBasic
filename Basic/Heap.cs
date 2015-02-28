@@ -19,6 +19,11 @@ namespace Basic
 
         public void Set(string variable, object value)
         {
+            if (variable == "Random")
+            {
+                throw new HeapError("Cannot set value of magic Random variable");
+            }
+
             if (!m_heap.ContainsKey(variable))
             {
                 m_heap.Add(variable, null);
@@ -39,6 +44,11 @@ namespace Basic
 
         public object Get(string variable)
         {
+            if (variable == "Random")
+            {
+                return new System.Random().Next();
+            }
+
             if (!m_heap.ContainsKey(variable))
             {
                 throw new HeapError(string.Format("Heap variable '{0}' does not exist", variable));
