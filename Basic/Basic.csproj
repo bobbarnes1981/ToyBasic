@@ -44,6 +44,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\Program\Gosub.cs" />
+    <Compile Include="Commands\Program\Return.cs" />
     <Compile Include="Errors\FrameError.cs" />
     <Compile Include="Errors\StackError.cs" />
     <Compile Include="Errors\StorageError.cs" />

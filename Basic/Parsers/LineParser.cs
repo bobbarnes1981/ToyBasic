@@ -154,6 +154,10 @@ namespace Basic.Parsers
                     expectEnd(input);
                     command = new For(forVariable, start, end, step);
                     break;
+                case Keywords.Gosub:
+                    command = new Gosub(ReadNumber(input));
+                    expectEnd(input);
+                    break;
                 case Keywords.Goto:
                     command = new Goto(ReadNumber(input));
                     expectEnd(input);
@@ -184,6 +188,10 @@ namespace Basic.Parsers
                     break;
                 case Keywords.Rem:
                     command = new Rem(readUntil(input, character => false));
+                    expectEnd(input);
+                    break;
+                case Keywords.Return:
+                    command = new Return();
                     expectEnd(input);
                     break;
                 default:

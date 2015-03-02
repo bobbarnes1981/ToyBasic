@@ -4,12 +4,14 @@
     {
         Dim,
         For,
+        Gosub,
         Goto,
         If,
         Input,
         Let,
         Print,
         Rem,
+        Return,
 
         Exit,
         Help,

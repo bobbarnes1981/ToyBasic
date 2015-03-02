@@ -22,3 +22,10 @@
 220 Print "Enter a word"
 230 Input $y
 240 Print $y
+250 Gosub 280
+260 Print "Return from Gosub"
+270 Goto 310
+280 Rem Subroutine
+290 Print "Subroutine"
+300 Return
+310 Print "End"
