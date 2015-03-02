@@ -2,7 +2,7 @@
 {
     public interface IStack
     {
-        void Push(IFrame frame);
+        IFrame Push();
 
         IFrame Pop();
 

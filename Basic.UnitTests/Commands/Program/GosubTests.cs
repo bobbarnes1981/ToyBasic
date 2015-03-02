@@ -1,5 +1,6 @@
 ﻿using Basic.Commands;
 using Basic.Commands.Program;
+using Basic.Factories;
 using Moq;
 using NUnit.Framework;
 using Basic.Types;
@@ -42,7 +43,10 @@ namespace Basic.UnitTests.Commands.Program
 
             Mock<ICommand> commandMock = new Mock<ICommand>();
 
+            Mock<IFrame> frameMock = new Mock<IFrame>();
+
             Mock<IStack> stackMock = new Mock<IStack>();
+            stackMock.Setup(x => x.Push()).Returns(frameMock.Object);
 
             Mock<ILineBuffer> bufferMock = new Mock<ILineBuffer>();
             bufferMock.Setup(x => x.Current).Returns(new Line(10, commandMock.Object));
@@ -55,11 +59,13 @@ namespace Basic.UnitTests.Commands.Program
 
             underTest.Execute(interpreterMock.Object);
 
+            frameMock.Verify(x => x.Set("gosub_return", 10), Times.Once);
+
             interpreterMock.Verify(x => x.Buffer, Times.Exactly(2));
 
             bufferMock.Verify(x => x.Current, Times.Once);
 
-            stackMock.Verify(x => x.Push(It.IsAny<IFrame>()), Times.Once);
+            stackMock.Verify(x => x.Push(), Times.Once);
 
             bufferMock.Verify(x => x.Jump(20), Times.Once);
         }

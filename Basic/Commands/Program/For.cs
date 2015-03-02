@@ -1,4 +1,5 @@
 ﻿using Basic.Expressions;
+using Basic.Factories;
 using Basic.Types;
 
 namespace Basic.Commands.Program
@@ -50,13 +51,12 @@ namespace Basic.Commands.Program
         /// <param name="interpreter"></param>
         public override void execute(IInterpreter interpreter)
         {
-            IFrame frame = new Frame();
+            IFrame frame = interpreter.Stack.Push();
             frame.Set("for_end", m_end.Result(interpreter));
             frame.Set("for_step", m_step.Result(interpreter));
             frame.Set("for_line", interpreter.Buffer.Current.Number);
             frame.Set("for_var", m_variable.Name);
             m_variable.Set(interpreter, m_start.Result(interpreter));
-            interpreter.Stack.Push(frame);
         }
 
         /// <summary>

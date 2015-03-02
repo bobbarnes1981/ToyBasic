@@ -28,9 +28,8 @@ namespace Basic.Commands.Program
         /// <param name="interpreter"></param>
         public override void execute(IInterpreter interpreter)
         {
-            IFrame frame = new Frame();
+            IFrame frame = interpreter.Stack.Push();
             frame.Set("gosub_return", interpreter.Buffer.Current.Number);
-            interpreter.Stack.Push(frame);
             interpreter.Buffer.Jump((int)m_lineNumber.Value(interpreter));
         }
 

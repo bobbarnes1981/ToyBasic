@@ -53,6 +53,8 @@
     <Compile Include="Expressions\Brackets.cs" />
     <Compile Include="Expressions\Not.cs" />
     <Compile Include="Expressions\Value.cs" />
+    <Compile Include="Factories\FrameFactory.cs" />
+    <Compile Include="Factories\IFactory.cs" />
     <Compile Include="IRandom.cs" />
     <Compile Include="LineBuffer.cs" />
     <Compile Include="Commands\Command.cs" />

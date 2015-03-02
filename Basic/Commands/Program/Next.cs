@@ -37,15 +37,18 @@ namespace Basic.Commands.Program
                 throw new CommandError("Invalid for_var in current stack frame");
             }
 
-            IFrame frame = interpreter.Stack.Pop();
+            IFrame frame = interpreter.Stack.Peek();
             int value = (int)interpreter.Heap.Get(m_variable.Name);
             if (value < frame.Get<int>("for_end"))
             {
                 value += frame.Get<int>("for_step");
                 m_variable.Set(interpreter, value);
-                interpreter.Stack.Push(frame);
                 interpreter.Buffer.Jump(frame.Get<int>("for_line"));
                 interpreter.Buffer.Next();
+            }
+            else
+            {
+                interpreter.Stack.Pop();
             }
         }
 
