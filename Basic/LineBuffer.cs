@@ -73,6 +73,7 @@ namespace Basic
         /// <summary>
         /// Loop through the current buffer and convert any occurrences (within commands) of oldLineNumber to newLineNumber
         /// </summary>
+        /// <param name="interpreter"></param>
         /// <param name="oldLineNumber"></param>
         /// <param name="newLineNumber"></param>
         private void renumber(IInterpreter interpreter, int oldLineNumber, int newLineNumber)
@@ -91,10 +92,20 @@ namespace Basic
                         {
                             case Keywords.Goto:
                                 // renumber goto command
-                                Goto cmd = (Goto)command;
-                                if ((int)cmd.LineNumber.Value(interpreter) == oldLineNumber)
+                                Goto cmdGoto = (Goto)command;
+                                if ((int)cmdGoto.LineNumber.Value(interpreter) == oldLineNumber)
                                 {
-                                    cmd.LineNumber = new Types.Number(newLineNumber);
+                                    cmdGoto.LineNumber = new Types.Number(newLineNumber);
+                                }
+
+                                command = null;
+                                break;
+                            case Keywords.Gosub:
+                                // renumber gosub command
+                                Gosub cmdGosub = (Gosub)command;
+                                if ((int)cmdGosub.LineNumber.Value(interpreter) == oldLineNumber)
+                                {
+                                    cmdGosub.LineNumber = new Types.Number(newLineNumber);
                                 }
 
                                 command = null;

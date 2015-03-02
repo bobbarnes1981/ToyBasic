@@ -1,6 +1,4 @@
 ﻿using Basic.Errors;
-using Basic.Expressions;
-using Basic.Types;
 
 namespace Basic.Commands.Program
 {
@@ -22,11 +20,12 @@ namespace Basic.Commands.Program
             if (interpreter.Stack.Count == 0
                 || !interpreter.Stack.Peek().Exists("gosub_return"))
             {
-                throw new CommandError("Invalid gosub_return in current stack frame");
+                throw new CommandError("Missing gosub_return in current stack frame");
             }
 
-            IFrame frame = interpreter.Stack.Peek();
+            IFrame frame = interpreter.Stack.Pop();
             interpreter.Buffer.Jump(frame.Get<int>("gosub_return"));
+            interpreter.Buffer.Next();
         }
 
         public override string Text

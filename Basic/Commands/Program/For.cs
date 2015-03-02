@@ -50,18 +50,13 @@ namespace Basic.Commands.Program
         /// <param name="interpreter"></param>
         public override void execute(IInterpreter interpreter)
         {
-            if (interpreter.Stack.Count == 0
-                || !interpreter.Stack.Peek().Exists("for_var")
-                || interpreter.Stack.Peek().Get<string>("for_var") != m_variable.Name)
-            {
-                IFrame frame = new Frame();
-                frame.Set("for_end", m_end.Result(interpreter));
-                frame.Set("for_step", m_step.Result(interpreter));
-                frame.Set("for_line", interpreter.Buffer.Current.Number);
-                frame.Set("for_var", m_variable.Name);
-                m_variable.Set(interpreter, m_start.Result(interpreter));
-                interpreter.Stack.Push(frame);
-            }
+            IFrame frame = new Frame();
+            frame.Set("for_end", m_end.Result(interpreter));
+            frame.Set("for_step", m_step.Result(interpreter));
+            frame.Set("for_line", interpreter.Buffer.Current.Number);
+            frame.Set("for_var", m_variable.Name);
+            m_variable.Set(interpreter, m_start.Result(interpreter));
+            interpreter.Stack.Push(frame);
         }
 
         /// <summary>

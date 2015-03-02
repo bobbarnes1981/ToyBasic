@@ -27,8 +27,12 @@ namespace Basic.Commands.Program
         public override void execute(IInterpreter interpreter)
         {
             if (interpreter.Stack.Count == 0
-                || !interpreter.Stack.Peek().Exists("for_var")
-                || interpreter.Stack.Peek().Get<string>("for_var") != m_variable.Name)
+                || !interpreter.Stack.Peek().Exists("for_var"))
+            {
+                throw new CommandError("Missing for_var in current stack frame");
+            }
+
+            if (interpreter.Stack.Peek().Get<string>("for_var") != m_variable.Name)
             {
                 throw new CommandError("Invalid for_var in current stack frame");
             }
@@ -41,6 +45,7 @@ namespace Basic.Commands.Program
                 m_variable.Set(interpreter, value);
                 interpreter.Stack.Push(frame);
                 interpreter.Buffer.Jump(frame.Get<int>("for_line"));
+                interpreter.Buffer.Next();
             }
         }
 

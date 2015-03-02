@@ -1,5 +1,4 @@
-﻿using Basic.Expressions;
-using Basic.Types;
+﻿using Basic.Types;
 
 namespace Basic.Commands.Program
 {
@@ -29,19 +28,19 @@ namespace Basic.Commands.Program
         /// <param name="interpreter"></param>
         public override void execute(IInterpreter interpreter)
         {
-            if (interpreter.Stack.Count == 0
-                || !interpreter.Stack.Peek().Exists("gosub_return")
-                || interpreter.Stack.Peek().Get<int>("gosub_return") != interpreter.Buffer.Current.Number)
-            {
-                IFrame frame = new Frame();
-                frame.Set("gosub_return", interpreter.Buffer.Current.Number);
-                interpreter.Stack.Push(frame);
-                interpreter.Buffer.Jump((int)m_lineNumber.Value(interpreter));
-            }
-            else
-            {
-                interpreter.Stack.Pop();
-            }
+            IFrame frame = new Frame();
+            frame.Set("gosub_return", interpreter.Buffer.Current.Number);
+            interpreter.Stack.Push(frame);
+            interpreter.Buffer.Jump((int)m_lineNumber.Value(interpreter));
+        }
+
+        /// <summary>
+        /// Gets or sets the line number to jump to
+        /// </summary>
+        public Number LineNumber
+        {
+            get { return m_lineNumber; }
+            set { m_lineNumber = value; }
         }
 
         /// <summary>
