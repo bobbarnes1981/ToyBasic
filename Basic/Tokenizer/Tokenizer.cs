@@ -7,9 +7,6 @@ namespace Basic.Tokenizer
 {
     public class Tokenizer : ITokenizer
     {
-        private int m_offset;
-        private string m_input;
-
         private char[] LETTERS =
         {
             'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
@@ -45,14 +42,12 @@ namespace Basic.Tokenizer
 
         private char VAR_SUFFIX = '$';
 
-        public ITokenCollection Tokenize(string input)
+        public ITokenCollection Tokenize(ITextStream input)
         {
-            m_offset = 0;
-            m_input = input;
             ITokenCollection tokens = new TokenCollection();
-            while (m_offset < input.Length)
+            while (!input.End)
             {
-                tokens.Add(ReadToken());
+                tokens.Add(ReadToken(input));
             }
 
             tokens.Add(new Token(Tokens.EndOfLine, null));
@@ -60,7 +55,7 @@ namespace Basic.Tokenizer
             return tokens;
         }
 
-        private IToken ReadToken()
+        private IToken ReadToken(ITextStream input)
         {
             // match the first longest in the list of operators
             int max = OPERATORS.ToList().Max(x => x.Length);
@@ -73,7 +68,7 @@ namespace Basic.Tokenizer
                         bool match = true;
                         for (int j = 0; j < i; j++)
                         {
-                            if (m_offset + j >= m_input.Length || op[j] != m_input[m_offset + j])
+                            if (input.Position + j >= input.Length || op[j] != input.Peek(j))
                             {
                                 match = false;
                                 break;
@@ -82,82 +77,83 @@ namespace Basic.Tokenizer
 
                         if (match)
                         {
-                            m_offset += i;
+                            for (int j = 0; j < i; j++)
+                            {
+                                input.Next();
+                            }
+
                             return new Token(Tokens.Operator, op);
                         }
                     }
                 }
             }
 
-            if (LETTERS.Contains(m_input[m_offset]))
+            if (LETTERS.Contains(input.Peek()))
             {
-                return new Token(Tokens.Text, ReadTill((prev, next) => !LETTERS.Contains(next)));
+                return new Token(Tokens.Text, ReadChars(input, LETTERS));
             }
 
-            if (NUMBERS.Contains(m_input[m_offset]))
+            if (NUMBERS.Contains(input.Peek()))
             {
-                return new Token(Tokens.Number, ReadTill((prev, next) => !NUMBERS.Contains(next)));
+                return new Token(Tokens.Number, ReadChars(input, NUMBERS));
             }
 
-            if (WHITE_SPACE.Contains(m_input[m_offset]))
+            if (WHITE_SPACE.Contains(input.Peek()))
             {
-                return new Token(Tokens.WhiteSpace, ReadTill((prev, next) => !WHITE_SPACE.Contains(next)));
+                return new Token(Tokens.WhiteSpace, ReadChars(input, WHITE_SPACE));
             }
 
-            if (BRACKETS.Contains(m_input[m_offset]))
+            if (BRACKETS.Contains(input.Peek()))
             {
-                return new Token(Tokens.Bracket, m_input[m_offset++].ToString());
+                return new Token(Tokens.Bracket, input.Next().ToString());
             }
 
-            if (INDEXES.Contains(m_input[m_offset]))
+            if (INDEXES.Contains(input.Peek()))
             {
-                return new Token(Tokens.Index, m_input[m_offset++].ToString());
+                return new Token(Tokens.Index, input.Next().ToString());
             }
 
-            if (DOUBLE_QUOTE == m_input[m_offset])
+            if (DOUBLE_QUOTE == input.Peek())
             {
                 string value = string.Empty;
-                while(m_offset + 1 < m_input.Length && m_input[m_offset + 1] != DOUBLE_QUOTE)
+                while(input.Position + 1 < input.Length && input.Peek(1) != DOUBLE_QUOTE)
                 {
-                    m_offset++;
-                    value += m_input[m_offset];
+                    input.Next();
+                    value += input.Peek();
                 }
 
-                m_offset++;
-                if (m_offset >= m_input.Length || m_input[m_offset] != DOUBLE_QUOTE)
+                input.Next();
+                if (input.Position >= input.Length || input.Peek() != DOUBLE_QUOTE)
                 {
                     throw new TokenizerError("Unterminated string token");
                 }
 
-                m_offset++;
+                input.Next();
                 return new Token(Tokens.String, value);
             }
 
-            if (VAR_SUFFIX == m_input[m_offset])
+            if (VAR_SUFFIX == input.Peek())
             {
-                return new Token(Tokens.VarSufix, m_input[m_offset++].ToString());
+                return new Token(Tokens.VarSufix, input.Next().ToString());
             }
 
             throw new Exception();
         }
 
-        private string ReadTill(Func<char, char, bool> endFunc)
+        private string ReadChars(ITextStream input, IEnumerable<char> validChars)
         {
             string output = string.Empty;
-            char prev = ' ';
             char next;
             do
             {
-                next = m_input[m_offset];
-                if (endFunc(prev, next))
+                next = input.Peek();
+                if (!validChars.Contains(next))
                 {
                     break;
                 }
 
-                m_offset++;
-                output += next;
-                prev = next;
-            } while (m_offset < m_input.Length);
+                output += input.Next();
+            } while (!input.End);
 
             return output;
         }

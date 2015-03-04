@@ -1,12 +1,12 @@
 ﻿using System;
 
-namespace Basic
+namespace Basic.Tokenizer
 {
     public class TextStream : ITextStream
     {
         private string m_text;
 
-        private int m_offset;
+        private int m_position;
 
         public TextStream(string text)
         {
@@ -16,17 +16,32 @@ namespace Basic
             }
 
             m_text = text;
-            Reset();
+            m_position = 0;
+        }
+
+        public int Length
+        {
+            get { return m_text.Length;}
+        }
+
+        public int Position
+        {
+            get { return m_position; }
         }
 
         public bool End
         {
-            get { return m_offset >= m_text.Length; }
+            get { return m_position >= m_text.Length; }
+        }
+
+        public char Peek(int offset)
+        {
+            return m_text[m_position + offset];
         }
 
         public char Peek()
         {
-            return m_text[m_offset];
+            return m_text[m_position];
         }
 
         public char Next()
@@ -35,12 +50,7 @@ namespace Basic
             {
                 throw new IndexOutOfRangeException();
             }
-            return m_text[m_offset++];
-        }
-
-        public void Reset()
-        {
-            m_offset = 0;
+            return m_text[m_position++];
         }
 
         /// <summary>

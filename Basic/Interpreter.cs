@@ -121,7 +121,7 @@ namespace Basic
             ILine line;
             try
             {
-                ITokenCollection tokens = m_tokenizer.Tokenize(input);
+                ITokenCollection tokens = m_tokenizer.Tokenize(new TextStream(input));
                 line = m_parser.Parse(tokens);
             }
             catch (Error error)

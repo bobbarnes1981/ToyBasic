@@ -2,6 +2,6 @@
 {
     public interface ITokenizer
     {
-        ITokenCollection Tokenize(string input);
+        ITokenCollection Tokenize(ITextStream input);
     }
 }

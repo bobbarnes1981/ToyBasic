@@ -97,7 +97,7 @@
     <Compile Include="InterpreterModule.cs" />
     <Compile Include="IStack.cs" />
     <Compile Include="IStorage.cs" />
-    <Compile Include="ITextStream.cs" />
+    <Compile Include="Tokenizer\ITextStream.cs" />
     <Compile Include="Keywords.cs" />
     <Compile Include="Errors\CommandError.cs" />
     <Compile Include="Commands\System\Clear.cs" />
@@ -125,7 +125,7 @@
     <Compile Include="Types\Type.cs" />
     <Compile Include="Types\Variable.cs" />
     <Compile Include="Stack.cs" />
-    <Compile Include="TextStream.cs" />
+    <Compile Include="Tokenizer\TextStream.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

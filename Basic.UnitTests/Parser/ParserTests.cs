@@ -1,9 +1,10 @@
 ﻿using Basic.Expressions;
 using Basic.Tokenizer;
+using Basic.Parser;
 using Moq;
 using NUnit.Framework;
 
-namespace Basic.UnitTests.Parsers
+namespace Basic.UnitTests.Parser
 {
     [TestFixture]
     public class ParserTests
@@ -18,7 +19,7 @@ namespace Basic.UnitTests.Parsers
 
             Mock<IInterpreter> interpreterMock = new Mock<IInterpreter>();
 
-            Parser.Parser underTest = new Parser.Parser();
+            Basic.Parser.Parser underTest = new Basic.Parser.Parser();
             INode expression = underTest.ReadExpressionNode(input, null);
 
             Assert.That(expression, Is.TypeOf<Value>());
@@ -38,7 +39,7 @@ namespace Basic.UnitTests.Parsers
 
             Mock<IInterpreter> interpreterMock = new Mock<IInterpreter>();
 
-            Parser.Parser underTest = new Parser.Parser();
+            Basic.Parser.Parser underTest = new Basic.Parser.Parser();
             INode expression = underTest.ReadExpressionNode(input, null);
 
             Assert.That(expression, Is.TypeOf<Value>());
@@ -65,7 +66,7 @@ namespace Basic.UnitTests.Parsers
             Mock<IInterpreter> interpreterMock = new Mock<IInterpreter>();
             interpreterMock.Setup(x => x.Heap).Returns(heapMock.Object);
 
-            Parser.Parser underTest = new Parser.Parser();
+            Basic.Parser.Parser underTest = new Basic.Parser.Parser();
             INode expression = underTest.ReadExpressionNode(input, null);
 
             Assert.That(expression, Is.TypeOf<Value>());
@@ -86,7 +87,7 @@ namespace Basic.UnitTests.Parsers
          
             Mock<IInterpreter> interpreterMock = new Mock<IInterpreter>();
 
-            Parser.Parser underTest = new Parser.Parser();
+            Basic.Parser.Parser underTest = new Basic.Parser.Parser();
             INode expression = underTest.ReadExpressionNode(input, null);
 
             Assert.That(expression, Is.TypeOf<Operator>());
@@ -113,7 +114,7 @@ namespace Basic.UnitTests.Parsers
 
             Mock<IInterpreter> interpreterMock = new Mock<IInterpreter>();
 
-            Parser.Parser underTest = new Parser.Parser();
+            Basic.Parser.Parser underTest = new Basic.Parser.Parser();
             INode expression = underTest.ReadExpressionNode(input, null);
 
             Assert.That(expression, Is.TypeOf<Operator>());
@@ -142,7 +143,7 @@ namespace Basic.UnitTests.Parsers
 
             Mock<IInterpreter> interpreterMock = new Mock<IInterpreter>();
 
-            Parser.Parser underTest = new Parser.Parser();
+            Basic.Parser.Parser underTest = new Basic.Parser.Parser();
             INode expression = underTest.ReadExpressionNode(input, null);
 
             Assert.That(expression, Is.TypeOf<Operator>());
@@ -169,7 +170,7 @@ namespace Basic.UnitTests.Parsers
 
             Mock<IInterpreter> interpreterMock = new Mock<IInterpreter>();
 
-            Parser.Parser underTest = new Parser.Parser();
+            Basic.Parser.Parser underTest = new Basic.Parser.Parser();
             INode expression = underTest.ReadExpressionNode(input, null);
 
             Assert.That(expression, Is.TypeOf<Operator>());
@@ -200,7 +201,7 @@ namespace Basic.UnitTests.Parsers
 
             Mock<IInterpreter> interpreterMock = new Mock<IInterpreter>();
 
-            Parser.Parser underTest = new Parser.Parser();
+            Basic.Parser.Parser underTest = new Basic.Parser.Parser();
             INode expression = underTest.ReadExpressionNode(input, null);
 
             Assert.That(expression, Is.TypeOf<Operator>());
@@ -225,7 +226,7 @@ namespace Basic.UnitTests.Parsers
 
             Mock<IInterpreter> interpreterMock = new Mock<IInterpreter>();
 
-            Parser.Parser underTest = new Parser.Parser();
+            Basic.Parser.Parser underTest = new Basic.Parser.Parser();
             INode expression = underTest.ReadExpressionNode(input, null);
 
             // 1 top level
@@ -308,7 +309,7 @@ namespace Basic.UnitTests.Parsers
 
             Mock<IInterpreter> interpreterMock = new Mock<IInterpreter>();
 
-            Parser.Parser underTest = new Parser.Parser();
+            Basic.Parser.Parser underTest = new Basic.Parser.Parser();
             INode expression = underTest.ReadExpressionNode(input, null);
 
             // 1 top level
@@ -387,7 +388,7 @@ namespace Basic.UnitTests.Parsers
 
             Mock<IInterpreter> interpreterMock = new Mock<IInterpreter>();
 
-            Parser.Parser underTest = new Parser.Parser();
+            Basic.Parser.Parser underTest = new Basic.Parser.Parser();
             INode expression = underTest.ReadExpressionNode(input, null);
 
             // 1 top level
@@ -440,7 +441,7 @@ namespace Basic.UnitTests.Parsers
 
             Mock<IInterpreter> interpreterMock = new Mock<IInterpreter>();
 
-            Parser.Parser underTest = new Parser.Parser();
+            Basic.Parser.Parser underTest = new Basic.Parser.Parser();
             INode expression = underTest.ReadExpressionNode(input, null);
 
             // 1 top level
@@ -504,7 +505,7 @@ namespace Basic.UnitTests.Parsers
 
             Mock<IInterpreter> interpreterMock = new Mock<IInterpreter>();
 
-            Parser.Parser underTest = new Parser.Parser();
+            Basic.Parser.Parser underTest = new Basic.Parser.Parser();
             INode expression = underTest.ReadExpressionNode(input, null);
 
             // 1 top level
@@ -562,7 +563,7 @@ namespace Basic.UnitTests.Parsers
 
             Mock<IInterpreter> interpreterMock = new Mock<IInterpreter>();
 
-            Parser.Parser underTest = new Parser.Parser();
+            Basic.Parser.Parser underTest = new Basic.Parser.Parser();
             INode expression = underTest.ReadExpressionNode(input, null);
 
             // 1 top level
@@ -606,7 +607,7 @@ namespace Basic.UnitTests.Parsers
 
             Mock<IInterpreter> interpreterMock = new Mock<IInterpreter>();
 
-            Parser.Parser underTest = new Parser.Parser();
+            Basic.Parser.Parser underTest = new Basic.Parser.Parser();
             INode expression = underTest.ReadExpressionNode(input, null);
 
             // 1 top level
@@ -649,7 +650,7 @@ namespace Basic.UnitTests.Parsers
 
             Mock<IInterpreter> interpreterMock = new Mock<IInterpreter>();
 
-            Parser.Parser underTest = new Parser.Parser();
+            Basic.Parser.Parser underTest = new Basic.Parser.Parser();
             INode expression = underTest.ReadExpressionNode(input, null);
 
             // 1 top level
