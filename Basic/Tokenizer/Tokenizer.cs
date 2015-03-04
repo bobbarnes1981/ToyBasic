@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Basic.Errors;
 
 namespace Basic.Tokenizer
 {
@@ -42,7 +43,7 @@ namespace Basic.Tokenizer
             '[', ']'
         };
 
-        private char VAR_SUFIX = '$';
+        private char VAR_SUFFIX = '$';
 
         public ITokenCollection Tokenize(string input)
         {
@@ -54,7 +55,7 @@ namespace Basic.Tokenizer
                 tokens.Add(ReadToken());
             }
 
-            tokens.Add(new Token(Tokens.EOL, null));
+            tokens.Add(new Token(Tokens.EndOfLine, null));
 
             return tokens;
         }
@@ -115,10 +116,24 @@ namespace Basic.Tokenizer
 
             if (DOUBLE_QUOTE == m_input[m_offset])
             {
-                return new Token(Tokens.Quote, m_input[m_offset++].ToString());
+                string value = string.Empty;
+                while(m_offset + 1 < m_input.Length && m_input[m_offset + 1] != DOUBLE_QUOTE)
+                {
+                    m_offset++;
+                    value += m_input[m_offset];
+                }
+
+                m_offset++;
+                if (m_offset >= m_input.Length || m_input[m_offset] != DOUBLE_QUOTE)
+                {
+                    throw new TokenizerError("Unterminated string token");
+                }
+
+                m_offset++;
+                return new Token(Tokens.String, value);
             }
 
-            if (VAR_SUFIX == m_input[m_offset])
+            if (VAR_SUFFIX == m_input[m_offset])
             {
                 return new Token(Tokens.VarSufix, m_input[m_offset++].ToString());
             }

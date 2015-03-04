@@ -49,6 +49,7 @@
     <Compile Include="Errors\FrameError.cs" />
     <Compile Include="Errors\StackError.cs" />
     <Compile Include="Errors\StorageError.cs" />
+    <Compile Include="Errors\TokenizerError.cs" />
     <Compile Include="Errors\TypeError.cs" />
     <Compile Include="Expressions\Brackets.cs" />
     <Compile Include="Expressions\Not.cs" />

@@ -17,7 +17,7 @@ namespace Basic.Parser
 
             if (tokens.Peek().TokenType == Tokens.Number)
             {
-                number = int.Parse(tokens.Peek().Value);
+                number = int.Parse(tokens.Next().Value);
             }
 
             ICommand command = readCommand(tokens, number == 0);
@@ -56,7 +56,7 @@ namespace Basic.Parser
         private Keywords readKeyword(ITokenCollection tokens)
         {
             expect(tokens, Tokens.Text);
-            string keywordString = tokens.Peek().Value;
+            string keywordString = tokens.Next().Value;
             Keywords keyword;
             if (!System.Enum.TryParse(keywordString, out keyword))
             {
@@ -177,7 +177,7 @@ namespace Basic.Parser
                     expectEnd(tokens);
                     break;
                 case Keywords.Rem:
-                    command = new Rem(readUntil(tokens, Tokens.EOL));
+                    command = new Rem(readUntil(tokens, Tokens.EndOfLine));
                     expectEnd(tokens);
                     break;
                 case Keywords.Return:
@@ -329,7 +329,7 @@ namespace Basic.Parser
             INode leafNode;
             switch (tokens.Peek().TokenType)
             {
-                case Tokens.Quote:
+                case Tokens.String:
                     leafNode = new Value(ReadString(tokens));
                     break;
                 case Tokens.Text:
@@ -368,8 +368,10 @@ namespace Basic.Parser
             if (!tokens.End && tokens.Peek().TokenType == Tokens.Index && tokens.Peek().Value == "[")
             {
                 expect(tokens, Tokens.Index);
+                tokens.Next();
                 index = ReadExpressionNode(tokens, null);
                 expect(tokens, Tokens.Index);
+                tokens.Next();
                 // check for ]
             }
 
@@ -393,11 +395,9 @@ namespace Basic.Parser
         public Types.String ReadString(ITokenCollection tokens)
         {
             preChecks(tokens, "string");
-            expect(tokens, Tokens.Quote);
-            tokens.Next();
-            string output = readUntil(tokens, Tokens.Quote);
-            tokens.Next();
-            return new Types.String(output);
+            expect(tokens, Tokens.String);
+            string value = tokens.Next().Value;
+            return new Types.String(value);
         }
 
         /// <summary>
@@ -459,7 +459,7 @@ namespace Basic.Parser
         /// </summary>
         protected void expectEnd(ITokenCollection tokens)
         {
-            if (!tokens.End && tokens.Peek().TokenType != Tokens.EOL)
+            if (!tokens.End && tokens.Peek().TokenType != Tokens.EndOfLine)
             {
                 throw new ParserError(string.Format("Expecting end of line but found '{0}'", tokens.Peek()));
             }

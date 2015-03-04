@@ -14,15 +14,7 @@ namespace Basic.UnitTests.Parsers
             string expectedString = "this is a string";
             string expectedText = string.Format("\"{0}\"", expectedString);
             ITokenCollection input = new TokenCollection();
-            input.Add(new Token(Tokens.Quote, "\""));
-            input.Add(new Token(Tokens.Text, "this"));
-            input.Add(new Token(Tokens.WhiteSpace, " "));
-            input.Add(new Token(Tokens.Text, "is"));
-            input.Add(new Token(Tokens.WhiteSpace, " "));
-            input.Add(new Token(Tokens.Text, "a"));
-            input.Add(new Token(Tokens.WhiteSpace, " "));
-            input.Add(new Token(Tokens.Text, "string"));
-            input.Add(new Token(Tokens.Quote, "\""));
+            input.Add(new Token(Tokens.String, expectedString));
 
             Mock<IInterpreter> interpreterMock = new Mock<IInterpreter>();
 

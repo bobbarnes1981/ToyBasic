@@ -4,12 +4,12 @@
     {
         Number,
         Text,
-        Quote,
         Operator,
         WhiteSpace,
         Bracket,
         Index,
         VarSufix,
-        EOL
+        String,
+        EndOfLine
     }
 }
