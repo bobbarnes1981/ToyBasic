@@ -2,9 +2,20 @@
 
 namespace Basic.Parsers
 {
-    public class InputParser : Parser<object>
+    public interface IInputParser
     {
-        public override object Parse(ITextStream input)
+        object Parse(ITextStream input);
+    }
+
+    // TODO: replace this?
+    public class InputParser : IInputParser
+    {
+        protected readonly char[] NUMBERS =
+        {
+            '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'
+        };
+
+        public object Parse(ITextStream input)
         {
             string text = string.Empty;
             char character;

@@ -97,7 +97,7 @@
     <Compile Include="Expressions\OperatorTests.cs" />
     <Compile Include="Types\VariableTests.cs" />
     <Compile Include="HeapTests.cs" />
-    <Compile Include="Parsers\LineParserTests.cs" />
+    <Compile Include="Parser\ParserTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -108,6 +108,9 @@
       <Project>{ea5d26c8-925b-4342-8cf0-1c3f2ea7ed99}</Project>
       <Name>Basic</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Tokenizer\" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

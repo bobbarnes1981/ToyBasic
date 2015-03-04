@@ -56,6 +56,11 @@
     <Compile Include="Factories\FrameFactory.cs" />
     <Compile Include="Factories\IFactory.cs" />
     <Compile Include="IRandom.cs" />
+    <Compile Include="Parser\IParser.cs" />
+    <Compile Include="Parser\Parser.cs" />
+    <Compile Include="Tokenizer\IToken.cs" />
+    <Compile Include="Tokenizer\ITokenCollection.cs" />
+    <Compile Include="Tokenizer\ITokenizer.cs" />
     <Compile Include="LineBuffer.cs" />
     <Compile Include="Commands\Command.cs" />
     <Compile Include="Commands\Program\Clear.cs" />
@@ -74,6 +79,10 @@
     <Compile Include="Errors\HeapError.cs" />
     <Compile Include="Parsers\InputParser.cs" />
     <Compile Include="Random.cs" />
+    <Compile Include="Tokenizer\Token.cs" />
+    <Compile Include="Tokenizer\TokenCollection.cs" />
+    <Compile Include="Tokenizer\Tokenizer.cs" />
+    <Compile Include="Tokenizer\Tokens.cs" />
     <Compile Include="Types\Boolean.cs" />
     <Compile Include="Expressions\Node.cs" />
     <Compile Include="Types\Number.cs" />
@@ -106,13 +115,10 @@
     <Compile Include="IInterpreter.cs" />
     <Compile Include="Interpreter.cs" />
     <Compile Include="Errors\InterpreterError.cs" />
-    <Compile Include="Parsers\IParser.cs" />
     <Compile Include="Line.cs" />
     <Compile Include="Errors\LineError.cs" />
     <Compile Include="Operators.cs" />
-    <Compile Include="Parsers\LineParser.cs" />
     <Compile Include="Errors\ParserError.cs" />
-    <Compile Include="Parsers\Parser.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Types\String.cs" />

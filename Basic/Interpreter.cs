@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Reflection;
 using Basic.Errors;
-using Basic.Parsers;
+using Basic.Parser;
+using Basic.Tokenizer;
 
 namespace Basic
 {
@@ -17,7 +17,9 @@ namespace Basic
 
         private bool m_executing = false;
 
-        private IParser<ILine> m_parser;
+        private ITokenizer m_tokenizer;
+
+        private IParser m_parser;
 
         private ILineBuffer m_buffer;
 
@@ -37,24 +39,33 @@ namespace Basic
         /// <param name="heap"></param>
         /// <param name="stack"></param>
         /// <param name="storage"></param>
+        /// <param name="tokenizer"></param>
         /// <param name="parser"></param>
-        public Interpreter(ILineBuffer buffer, IConsole console, IHeap heap, IStack stack, IStorage storage, IParser<ILine> parser)
+        public Interpreter(ILineBuffer buffer, IConsole console, IHeap heap, IStack stack, IStorage storage, ITokenizer tokenizer, IParser parser)
         {
             if (buffer == null)
                 throw new ArgumentNullException("buffer");
             m_buffer = buffer;
+
             if (console == null)
                 throw new ArgumentNullException("console");
             m_console = console;
+
             if (heap == null)
                 throw new ArgumentNullException("heap");
             m_heap = heap;
+
             if (stack == null)
                 throw new ArgumentNullException("stack");
             m_stack = stack;
+
             if (storage == null)
                 throw new ArgumentNullException("storage");
             m_storage = storage;
+
+            if (tokenizer == null)
+                throw new ArgumentNullException("tokenizer");
+            m_tokenizer = tokenizer;
 
             if (parser == null)
                 throw new ArgumentNullException("parser");
@@ -110,7 +121,8 @@ namespace Basic
             ILine line;
             try
             {
-                line = m_parser.Parse(new TextStream(input));
+                ITokenCollection tokens = m_tokenizer.Tokenize(input);
+                line = m_parser.Parse(tokens);
             }
             catch (Error error)
             {

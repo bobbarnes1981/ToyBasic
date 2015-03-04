@@ -1,5 +1,7 @@
 ﻿using Basic.Factories;
+using Basic.Parser;
 using Basic.Parsers;
+using Basic.Tokenizer;
 using Ninject.Modules;
 
 namespace Basic
@@ -8,9 +10,10 @@ namespace Basic
     {
         public override void Load()
         {
-            Bind<IParser<ILine>>().To<LineParser>();
-            Bind<IParser<object>>().To<InputParser>();
+            Bind<IInputParser>().To<InputParser>(); // REMOVE ME
 
+            Bind<IParser>().To<Parser.Parser>();
+            Bind<ITokenizer>().To<Tokenizer.Tokenizer>();
 
             Bind<ILineBuffer>().To<LineBuffer>();
             Bind<IConsole>().To<Console>();

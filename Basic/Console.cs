@@ -4,9 +4,9 @@ namespace Basic
 {
     public class Console : IConsole
     {
-        private IParser<object> m_inputParser;
+        private IInputParser m_inputParser;
 
-        public Console(IParser<object> inputParser)
+        public Console(IInputParser inputParser)
         {
             m_inputParser = inputParser;
         }

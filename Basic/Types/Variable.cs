@@ -8,7 +8,7 @@ namespace Basic.Types
     /// </summary>
     public class Variable : Type
     {
-        public static readonly char PREFIX = '$';
+        public static readonly char SUFIX = '$';
 
         private readonly INode m_index;
 
@@ -84,10 +84,10 @@ namespace Basic.Types
             {
                 if (m_index != null)
                 {
-                    return string.Format("{0}{1}[{2}]", PREFIX, m_value, m_index.Text);
+                    return string.Format("{0}{1}[{2}]", m_value, SUFIX, m_index.Text);
                 }
 
-                return string.Format("{0}{1}", PREFIX, m_value);
+                return string.Format("{0}{1}", m_value, SUFIX);
             }
         }
     }

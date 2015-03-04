@@ -38,7 +38,7 @@ namespace Basic.UnitTests.Commands.Program
 
             For underTest = new For(variable, start, end, step);
 
-            Assert.That(underTest.Text, Is.EqualTo("For $variable = 1 To 10 Step 1"));
+            Assert.That(underTest.Text, Is.EqualTo("For variable$ = 1 To 10 Step 1"));
         }
 
         [Test]
