@@ -1,16 +1,9 @@
-﻿using Basic.Parsers;
+﻿using System.Linq;
 
 namespace Basic
 {
     public class Console : IConsole
     {
-        private IInputParser m_inputParser;
-
-        public Console(IInputParser inputParser)
-        {
-            m_inputParser = inputParser;
-        }
-
         public void Output(string text)
         {
             System.Console.Write(text);
@@ -23,7 +16,13 @@ namespace Basic
 
         public object ParseInput()
         {
-            return m_inputParser.Parse(new TextStream(Input()));
+            string input = Input();
+            if (input.Any(x => !"0123456789".Contains(x)))
+            {
+                return input;
+            }
+
+            return int.Parse(input);
         }
 
         public void Clear()

@@ -77,7 +77,6 @@
     <Compile Include="Errors\LineBufferError.cs" />
     <Compile Include="Errors\ExpressionError.cs" />
     <Compile Include="Errors\HeapError.cs" />
-    <Compile Include="Parsers\InputParser.cs" />
     <Compile Include="Random.cs" />
     <Compile Include="Tokenizer\Token.cs" />
     <Compile Include="Tokenizer\TokenCollection.cs" />
