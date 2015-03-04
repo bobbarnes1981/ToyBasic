@@ -2,7 +2,7 @@
 
 namespace Basic.UnitTests.Types
 {
-    //[TestFixture]
+    [TestFixture]
     public class VariableTests
     {
         // check correct values are returned

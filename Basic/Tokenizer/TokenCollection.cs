@@ -19,6 +19,10 @@ namespace Basic.Tokenizer
             m_tokens.Add(token);
         }
 
+        public int Length { get { return m_tokens.Count; } }
+
+        public int Position { get { return m_offset; } }
+
         public bool End
         {
             get { return m_offset >= m_tokens.Count; }

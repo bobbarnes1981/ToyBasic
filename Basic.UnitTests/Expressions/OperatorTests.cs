@@ -2,7 +2,7 @@
 
 namespace Basic.UnitTests.Expressions
 {
-    //[TestFixture]
+    [TestFixture]
     public class OperatorTests
     {
         // check correct equations are carried out
