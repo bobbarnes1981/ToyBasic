@@ -18,9 +18,9 @@ Run
 
 ###If - comparison
 
-10 Let $var = 8
+10 Let var$ = 8
 
-20 If 8 == $var THEN Print "are equal"
+20 If 8 == var$ THEN Print "are equal"
 
 Run
 
@@ -34,21 +34,21 @@ Run
 
 ###For - 1 to 10
 
-10 For $x = 1 To 10 Step 1
+10 For x$ = 1 To 10 Step 1
 
-20 Print $x
+20 Print x$
 
-30 Next $x
+30 Next x$
 
 Run
 
 ###Expressions - addition
 
-10 Let $a = 8
+10 Let a$ = 8
 
-20 Let $b = 9
+20 Let b$ = 9
 
-30 Print $a + $b
+30 Print a$ + b$
 
 40 Print 8 + 9
 
