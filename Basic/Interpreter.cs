@@ -178,7 +178,7 @@ namespace Basic
         /// <summary>
         /// Execute the program in the interpreter buffer
         /// </summary>
-        public void Execute()
+        public void Execute(bool debug)
         {
             m_buffer.Reset();
             m_executing = true;
@@ -187,6 +187,15 @@ namespace Basic
                 m_buffer.Next();
                 try
                 {
+                    if (debug)
+                    {
+                        m_console.Output(string.Format("DEBUG: {0}\t{1}\r\n", m_buffer.Current.Number, m_buffer.Current.Command.Text));
+                        if (m_buffer.Current.Command.Keyword == Keywords.Break)
+                        {
+                            m_console.Output("Enter to continue...");
+                            m_console.Input();
+                        }
+                    }
                     m_buffer.Current.Command.Execute(this);
                 }
                 catch (Error error)

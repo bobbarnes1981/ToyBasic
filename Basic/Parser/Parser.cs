@@ -80,6 +80,10 @@ namespace Basic.Parser
                     expectEnd(tokens);
                     command = new Commands.System.Clear();
                     break;
+                case Keywords.Debug:
+                    expectEnd(tokens);
+                    command = new Commands.System.Debug();
+                    break;
                 case Keywords.Exit:
                     expectEnd(tokens);
                     command = new Commands.System.Exit();
@@ -125,6 +129,10 @@ namespace Basic.Parser
             ICommand command;
             switch (keyword)
             {
+                case Keywords.Break:
+                    expectEnd(tokens);
+                    command = new Break();
+                    break;
                 case Keywords.Clear:
                     expectEnd(tokens);
                     command = new Clear();

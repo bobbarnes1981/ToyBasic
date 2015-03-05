@@ -35,7 +35,7 @@ namespace Basic
         /// <summary>
         /// Execute the program in the buffer
         /// </summary>
-        void Execute();
+        void Execute(bool debug);
 
         /// <summary>
         /// Run interpreter

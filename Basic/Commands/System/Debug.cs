@@ -1,15 +1,15 @@
 ﻿namespace Basic.Commands.System
 {
     /// <summary>
-    /// Represents the system command 'Run'
+    /// Represents the system command 'Debug'
     /// </summary>
-    public class Run : Command
+    public class Debug : Command
     {
         /// <summary>
-        /// Creates a new instance of the <see cref="Run"/> class.
+        /// Creates a new instance of the <see cref="Debug"/> class.
         /// </summary>
-        public Run()
-            : base(Keywords.Run, true)
+        public Debug()
+            : base(Keywords.Debug, true)
         {
         }
 
@@ -19,7 +19,7 @@
         /// <param name="interpreter"></param>
         public override void execute(IInterpreter interpreter)
         {
-            interpreter.Execute(false);
+            interpreter.Execute(true);
         }
 
         /// <summary>
@@ -27,7 +27,7 @@
         /// </summary>
         public override string Text
         {
-            get { return Keywords.Run.ToString(); }
+            get { return Keywords.Debug.ToString(); }
         }
     }
 }

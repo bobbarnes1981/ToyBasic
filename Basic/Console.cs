@@ -17,7 +17,7 @@ namespace Basic
         public object ParseInput()
         {
             string input = Input();
-            if (input.Any(x => !"0123456789".Contains(x)))
+            if (input == null || input.Any(x => !"0123456789".Contains(x)))
             {
                 return input;
             }

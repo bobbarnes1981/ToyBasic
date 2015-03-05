@@ -2,6 +2,7 @@
 {
     public enum Keywords
     {
+        Break,
         Dim,
         For,
         Gosub,
@@ -13,6 +14,7 @@
         Rem,
         Return,
 
+        Debug,
         Exit,
         Help,
         List,

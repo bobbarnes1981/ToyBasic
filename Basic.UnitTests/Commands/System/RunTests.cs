@@ -39,7 +39,7 @@ namespace Basic.UnitTests.Commands.System
             Run underTest = new Run();
             underTest.Execute(interpreterMock.Object);
 
-            interpreterMock.Verify(x => x.Execute(), Times.Once);
+            interpreterMock.Verify(x => x.Execute(false), Times.Once);
         }
     }
 }
