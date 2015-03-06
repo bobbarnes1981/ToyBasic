@@ -75,11 +75,13 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="Commands\Program\BreakTests.cs" />
     <Compile Include="Commands\Program\ForTests.cs" />
     <Compile Include="Commands\Program\GosubTests.cs" />
     <Compile Include="Commands\Program\DimTests.cs" />
     <Compile Include="Commands\Program\NextTests.cs" />
     <Compile Include="Commands\Program\ReturnTests.cs" />
+    <Compile Include="Commands\System\DebugTests.cs" />
     <Compile Include="LineBufferTests.cs" />
     <Compile Include="Commands\Program\ClearTests.cs" />
     <Compile Include="Commands\Program\LetTests.cs" />

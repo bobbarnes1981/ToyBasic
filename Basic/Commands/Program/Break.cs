@@ -14,12 +14,11 @@
         }
 
         /// <summary>
-        /// Executes the 'Break' command by calling clear on the interpreter console interface
+        /// Executes the 'Break' command by doing nothing
         /// </summary>
-        /// <param name="interpreter">interpreter to provide the console interface</param>
+        /// <param name="interpreter"></param>
         public override void execute(IInterpreter interpreter)
         {
-            interpreter.Console.Clear();
         }
 
         /// <summary>
