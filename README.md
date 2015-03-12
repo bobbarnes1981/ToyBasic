@@ -2,6 +2,8 @@
 
 [![Build Status](https://travis-ci.org/bobbarnes1981/ToyBasic.svg?branch=master)](https://travis-ci.org/bobbarnes1981/ToyBasic)
 
+[![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/bobbarnes1981/ToyBasic.svg)](http://isitmaintained.com/project/bobbarnes1981/ToyBasic "Average time to resolve an issue") [![Percentage of issues still open](http://isitmaintained.com/badge/open/bobbarnes1981/ToyBasic.svg)](http://isitmaintained.com/project/bobbarnes1981/ToyBasic "Percentage of issues still open")
+
 An attempt to write a simple basic interpreter.
 
 http://bobbarnes1981.github.io/ToyBasic/
